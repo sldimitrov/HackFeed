@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Avatar,
   Box,
@@ -7,12 +8,18 @@ import {
   CardHeader,
   IconButton,
   Typography,
+  Button,
 } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import type { PostCardProps } from '../../types/post.ts';
 
 export default function PostCard({ post }: PostCardProps) {
+  const [expanded, setExpanded] = useState(false);
+
+  const isLong = post.content.length > 100;
+  const displayContent = expanded ? post.content : post.content.slice(0, 100);
+
   return (
     <Card sx={{ mb: 3 }}>
       <CardHeader
@@ -34,18 +41,22 @@ export default function PostCard({ post }: PostCardProps) {
         }
       />
 
-      <CardContent>
-        <Typography
-          variant="body2"
-          sx={{
-            display: '-webkit-box',
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}
-        >
-          {post.content}
+      <CardContent sx={{ py: 1 }}>
+        <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+          {displayContent}
+          {isLong && !expanded && '...'}
         </Typography>
+        {isLong && (
+          <Box sx={{ display: 'flex', justifyContent: 'end', width: '100%' }}>
+            <Button
+              size="small"
+              onClick={() => setExpanded(!expanded)}
+              sx={{ mt: 1, textTransform: 'none' }}
+            >
+              {expanded ? 'See less' : 'See more'}
+            </Button>
+          </Box>
+        )}
       </CardContent>
 
       <CardActions className="flex justify-between px-4 pb-2">
