@@ -14,14 +14,19 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md px-4 py-3">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        {/* Logo */}
+    <header
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000,
+        background: 'white',
+      }}
+    >
+      <Box display="flex" justifyContent="space-between" alignItems="center" px={3} py={1}>
         <Box display="flex" alignItems="center" gap={2}>
           <img src={hacksoftLogo} alt="HackSoft logo" className="h-10" />
         </Box>
 
-        {/* Avatar + Menu */}
         <Box>
           <IconButton onClick={handleOpenMenu}>
             <Avatar alt="User" src="https://i.pravatar.cc/150?img=13" />
@@ -33,22 +38,8 @@ const Header = () => {
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             transformOrigin={{ vertical: 'top', horizontal: 'right' }}
           >
-            <MenuItem
-              onClick={() => {
-                handleCloseMenu();
-                console.log('Profile clicked');
-              }}
-            >
-              Profile
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleCloseMenu();
-                console.log('Logout clicked');
-              }}
-            >
-              Logout
-            </MenuItem>
+            <MenuItem onClick={handleCloseMenu}>Profile</MenuItem>
+            <MenuItem onClick={handleCloseMenu}>Logout</MenuItem>
           </Menu>
         </Box>
       </Box>
