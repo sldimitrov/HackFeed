@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Avatar, IconButton, Menu, MenuItem, Box } from '@mui/material';
 import hacksoftLogo from '../../assets/hacksoftLogo.png';
+import { useAuthStore } from '../../store/useAuthStore.ts';
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { user, logout } = useAuthStore();
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -11,6 +13,11 @@ const Header = () => {
 
   const handleCloseMenu = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    handleCloseMenu();
+    await logout();
   };
 
   return (
@@ -28,19 +35,23 @@ const Header = () => {
         </Box>
 
         <Box>
-          <IconButton onClick={handleOpenMenu}>
-            <Avatar alt="User" src="https://i.pravatar.cc/150?img=13" />
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleCloseMenu}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-          >
-            <MenuItem onClick={handleCloseMenu}>Profile</MenuItem>
-            <MenuItem onClick={handleCloseMenu}>Logout</MenuItem>
-          </Menu>
+          {user && (
+            <>
+              <IconButton onClick={handleOpenMenu}>
+                <Avatar alt="User" src="https://i.pravatar.cc/150?img=13" />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleCloseMenu}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              >
+                <MenuItem onClick={handleCloseMenu}>Profile</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </>
+          )}
         </Box>
       </Box>
     </header>

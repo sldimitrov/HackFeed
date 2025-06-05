@@ -1,6 +1,9 @@
 import { TextField, Button, Box } from '@mui/material';
+import { useUser } from '../../hooks/useUser.ts';
 
 export default function PostCreator() {
+  const user = useUser();
+
   return (
     <Box marginBottom="25px" bgcolor="white" className="rounded-lg shadow-md p-4 mb-4">
       <TextField
