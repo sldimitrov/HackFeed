@@ -37,4 +37,28 @@ export const mockPosts: Post[] = [
       avatar: 'https://i.pravatar.cc/150?img=12',
     },
   },
+  {
+    id: 4,
+    content:
+      'Working on performance improvements this week. Learned a lot about query optimization and caching.',
+    created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
+    reactions: 2,
+    user: {
+      name: 'Nikolay Ivanov',
+      title: 'Backend Engineer, HackSoft',
+      avatar: 'https://i.pravatar.cc/150?img=12',
+    },
+  },
+  {
+    id: 5,
+    content:
+      'Working on performance improvements this week. Learned a lot about query optimization and caching.',
+    created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
+    reactions: 2,
+    user: {
+      name: 'Nikolay Ivanov',
+      title: 'Backend Engineer, HackSoft',
+      avatar: 'https://i.pravatar.cc/150?img=12',
+    },
+  },
 ];
