@@ -13,7 +13,7 @@ export function Feed() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Box position="relative" minHeight="100vh" bgcolor="#f7f7f7" sx={{ overflow: 'hidden' }}>
+    <Box position="relative" minHeight="100vh" bgcolor="#f7f7f7" sx={{ overflowX: 'hidden' }}>
       {/* Orange top-right background */}
       <Box
         component="img"
@@ -46,7 +46,7 @@ export function Feed() {
         }}
       />
 
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, mt: 4, pb: 10 }}>
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, mt: 5, pb: 10 }}>
         <Box
           display="flex"
           flexDirection={isMobile ? 'column' : 'row'}

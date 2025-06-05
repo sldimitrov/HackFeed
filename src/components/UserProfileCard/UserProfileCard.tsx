@@ -4,7 +4,7 @@ import type { UserProfileCardProps } from '../../types/profile.ts';
 
 const UserProfileCard = ({ name, title, avatar, likes, posts, onEdit }: UserProfileCardProps) => {
   return (
-    <Card sx={{ borderRadius: 3, p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+    <Card sx={{ borderRadius: 3, p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
       {/* Header: Avatar + Info + Edit */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex" alignItems="center" gap={2}>
