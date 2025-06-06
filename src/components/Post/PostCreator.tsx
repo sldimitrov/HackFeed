@@ -1,24 +1,32 @@
 import { TextField, Button, Box } from '@mui/material';
 import { useUser } from '../../hooks/useUser.ts';
 import { useState } from 'react';
-import { supabase } from '../../lib/supabaseClient.ts';
+import { useCreatePost } from '../../hooks/useCreatePost.ts';
 
 export default function PostCreator() {
-  const [content, setContent] = useState('');
   const user = useUser();
+  const [content, setContent] = useState('');
+
+  const createPostMutation = useCreatePost();
 
   const handleSubmit = async () => {
-    if (!content.trim()) {
+    if (!content.trim() || !user?.id) {
       return;
     }
 
-    const { error } = await supabase.from('posts').insert([{ content, user_id: user?.id }]);
-
-    if (error) {
-      console.error('Error posting:', error);
-    } else {
-      setContent('');
-    }
+    createPostMutation.mutate(
+      { content, user_id: user.id },
+      {
+        onSuccess: () => {
+          // TODO: Add success toast
+          setContent('');
+        },
+        onError: (error) => {
+          // TODO: Add error toast
+          console.log('Error creating post:', error);
+        },
+      },
+    );
   };
 
   return (
@@ -27,6 +35,7 @@ export default function PostCreator() {
         fullWidth
         multiline
         rows={2}
+        value={content}
         placeholder="Share something to the community..."
         variant="outlined"
         onChange={(e) => setContent(e.target.value)}

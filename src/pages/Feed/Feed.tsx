@@ -1,4 +1,4 @@
-import { Box, Container, useMediaQuery } from '@mui/material';
+import { Box, CircularProgress, Container, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import UserProfileCard from '../../components/UserProfileCard/UserProfileCard.tsx';
 import type { Post } from '../../types/post.ts';
@@ -68,12 +68,21 @@ export function Feed() {
             />
           </Box>
 
-          {/* Right side: Create post and feed */}
           <Box flexGrow={1} width="100%">
             <PostCreator />
-            {!isLoading &&
-              posts &&
-              posts.map((post: Post) => <PostCard key={post.id} post={post} />)}
+            {!isLoading ? (
+              posts ? (
+                posts.map((post: Post) => <PostCard key={post.id} post={post} />)
+              ) : (
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                  <CircularProgress />
+                </Box>
+              )
+            ) : (
+              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                <CircularProgress />
+              </Box>
+            )}
           </Box>
         </Box>
       </Container>

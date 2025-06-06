@@ -13,6 +13,7 @@ import {
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import type { PostCardProps } from '../../types/post.ts';
+import { getMinutesAgo } from '../../util/minutesAgo.ts';
 
 export default function PostCard({ post }: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
@@ -36,7 +37,7 @@ export default function PostCard({ post }: PostCardProps) {
         }
         action={
           <Typography variant="caption" color="text.secondary">
-            20 minutes ago
+            {getMinutesAgo(post.created_at)}
           </Typography>
         }
       />
@@ -64,7 +65,8 @@ export default function PostCard({ post }: PostCardProps) {
           <span role="img" aria-label="fire">
             🔥
           </span>
-          <Typography variant="body2">{post.reactions || 4}</Typography>
+          {/* TODO: Add reactions */}
+          <Typography variant="body2">Generic 4</Typography>
         </Box>
         <Box>
           <IconButton>
