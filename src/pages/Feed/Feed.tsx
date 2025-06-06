@@ -4,13 +4,15 @@ import UserProfileCard from '../../components/UserProfileCard/UserProfileCard.ts
 import type { Post } from '../../types/post.ts';
 import PostCreator from '../../components/Post/PostCreator.tsx';
 import PostCard from '../../components/Post/PostCard.tsx';
-import { mockPosts } from '../../mock/mockPosts.ts';
 import orangeBG from '../../assets/hackSoftOrange.png';
 import grayBG from '../../assets/hackSoftGray.png';
+import { usePosts } from '../../hooks/usePosts.ts';
 
 export function Feed() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const { data: posts, isLoading } = usePosts();
 
   return (
     <Box position="relative" minHeight="100vh" bgcolor="#f7f7f7" sx={{ overflowX: 'hidden' }}>
@@ -69,9 +71,9 @@ export function Feed() {
           {/* Right side: Create post and feed */}
           <Box flexGrow={1} width="100%">
             <PostCreator />
-            {mockPosts.map((post: Post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
+            {!isLoading &&
+              posts &&
+              posts.map((post: Post) => <PostCard key={post.id} post={post} />)}
           </Box>
         </Box>
       </Container>

@@ -17,6 +17,7 @@
     "@mui/material": "^7.1.1",
     "@supabase/supabase-js": "^2.49.10",
     "@tailwindcss/vite": "^4.1.8",
+    "@tanstack/react-query": "^5.80.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
