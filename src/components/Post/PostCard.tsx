@@ -19,8 +19,6 @@ import defaultAvatar from '../../assets/defaultAvatar.jpeg';
 export default function PostCard({ post }: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
 
-  console.log('PostCard rendered with post:', post);
-
   const isLong = post.content.length > 100;
   const displayContent = expanded ? post.content : post.content.slice(0, 100);
 

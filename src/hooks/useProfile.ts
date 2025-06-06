@@ -1,4 +1,3 @@
-// hooks/useUserProfile.ts
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { QUERY_PROFILE } from '../contants/queryKeys.ts';
 import UserService from '../services/userService.ts';

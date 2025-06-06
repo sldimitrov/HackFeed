@@ -1,10 +1,10 @@
 import { TextField, Button, Box } from '@mui/material';
-import { useUser } from '../../hooks/useUser.ts';
 import { useState } from 'react';
 import { useCreatePost } from '../../hooks/useCreatePost.ts';
+import { useAuthStore } from '../../store/useAuthStore.ts';
 
 export default function PostCreator() {
-  const user = useUser();
+  const { user } = useAuthStore();
   const [content, setContent] = useState('');
 
   const createPostMutation = useCreatePost();
@@ -23,7 +23,7 @@ export default function PostCreator() {
         },
         onError: (error) => {
           // TODO: Add error toast
-          console.log('Error creating post:', error);
+          console.error('Error creating post:', error);
         },
       },
     );

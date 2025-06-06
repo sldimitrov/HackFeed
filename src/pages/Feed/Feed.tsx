@@ -8,16 +8,16 @@ import orangeBG from '../../assets/hackSoftOrange.png';
 import grayBG from '../../assets/hackSoftGray.png';
 import { usePosts } from '../../hooks/usePosts.ts';
 import { useUserProfile } from '../../hooks/useProfile.ts';
-import { useUser } from '../../hooks/useUser.ts';
 import { defaultProfile } from '../../contants/profile.ts';
+import { useAuthStore } from '../../store/useAuthStore.ts';
 
 export function Feed() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // TODO: fetch profile
+  const { user } = useAuthStore();
   const { data: posts, isLoading } = usePosts();
-  const user = useUser();
   const { data: profile } = useUserProfile(user?.id);
 
   return (
