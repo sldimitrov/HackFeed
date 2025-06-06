@@ -13,7 +13,7 @@ import {
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import type { PostCardProps } from '../../types/post.ts';
-import { getMinutesAgo } from '../../util/minutesAgo.ts';
+import { getTimeAgo } from '../../util/timeAgo.ts';
 
 export default function PostCard({ post }: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
@@ -37,7 +37,7 @@ export default function PostCard({ post }: PostCardProps) {
         }
         action={
           <Typography variant="caption" color="text.secondary">
-            {getMinutesAgo(post.created_at)}
+            {getTimeAgo(post.created_at)}
           </Typography>
         }
       />
