@@ -14,24 +14,29 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import type { PostCardProps } from '../../types/post.ts';
 import { getTimeAgo } from '../../util/timeAgo.ts';
+import defaultAvatar from '../../assets/defaultAvatar.jpeg';
 
 export default function PostCard({ post }: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
 
+  console.log('PostCard rendered with post:', post);
+
   const isLong = post.content.length > 100;
   const displayContent = expanded ? post.content : post.content.slice(0, 100);
+
+  // TODO: fetch user data based on post.user_id
 
   return (
     <Card sx={{ mb: 3 }}>
       <CardHeader
-        avatar={<Avatar src={post.user.avatar} />}
+        avatar={<Avatar src={defaultAvatar} />}
         title={
           <Box>
             <Typography variant="subtitle1" fontWeight="bold">
-              {post.user.name}
+              {'name'}
             </Typography>
             <Typography variant="caption" color="text.secondary">
-              {post.user.title}
+              {'title'}
             </Typography>
           </Box>
         }

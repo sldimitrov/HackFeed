@@ -5,6 +5,16 @@ export default class PostsService {
   static async list(): Promise<Post[]> {
     const { data, error } = await supabase
       .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw new Error(error.message);
+    return data as Post[];
+  }
+
+  static async listByUser(): Promise<Post[]> {
+    const { data, error } = await supabase
+      .from('posts')
       .select('*, user:profiles(name, avatar_url, title)')
       .order('created_at', { ascending: false });
 

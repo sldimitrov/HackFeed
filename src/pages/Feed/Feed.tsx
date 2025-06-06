@@ -7,12 +7,18 @@ import PostCard from '../../components/Post/PostCard.tsx';
 import orangeBG from '../../assets/hackSoftOrange.png';
 import grayBG from '../../assets/hackSoftGray.png';
 import { usePosts } from '../../hooks/usePosts.ts';
+import { useUserProfile } from '../../hooks/useProfile.ts';
+import { useUser } from '../../hooks/useUser.ts';
+import { defaultProfile } from '../../contants/profile.ts';
 
 export function Feed() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  // TODO: fetch profile
   const { data: posts, isLoading } = usePosts();
+  const user = useUser();
+  const { data: profile } = useUserProfile(user?.id);
 
   return (
     <Box position="relative" minHeight="100vh" bgcolor="#f7f7f7" sx={{ overflowX: 'hidden' }}>
@@ -60,9 +66,9 @@ export function Feed() {
           {/* Left side: Profile card */}
           <Box flexShrink={0} width={isMobile ? '100%' : '260px'}>
             <UserProfileCard
-              name="Ivaylo Bachvarov"
-              title="Co-Founder, HackSoft"
-              avatar="https://i.pravatar.cc/150?img=5"
+              name={profile?.name || defaultProfile.name}
+              title={profile?.title || defaultProfile.title}
+              avatar={profile?.avatar_url || defaultProfile.avatar_url}
               likes={210}
               posts={4}
             />
