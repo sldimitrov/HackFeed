@@ -1,16 +1,18 @@
-import { Box, Container, useMediaQuery } from '@mui/material';
+import { Box, CircularProgress, Container, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import UserProfileCard from '../../components/UserProfileCard/UserProfileCard.tsx';
 import type { Post } from '../../types/post.ts';
 import PostCreator from '../../components/Post/PostCreator.tsx';
 import PostCard from '../../components/Post/PostCard.tsx';
-import { mockPosts } from '../../mock/mockPosts.ts';
 import orangeBG from '../../assets/hackSoftOrange.png';
 import grayBG from '../../assets/hackSoftGray.png';
+import { usePosts } from '../../hooks/usePosts.ts';
 
 export function Feed() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const { data: posts, isLoading } = usePosts();
 
   return (
     <Box position="relative" minHeight="100vh" bgcolor="#f7f7f7" sx={{ overflowX: 'hidden' }}>
@@ -66,12 +68,21 @@ export function Feed() {
             />
           </Box>
 
-          {/* Right side: Create post and feed */}
           <Box flexGrow={1} width="100%">
             <PostCreator />
-            {mockPosts.map((post: Post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
+            {!isLoading ? (
+              posts ? (
+                posts.map((post: Post) => <PostCard key={post.id} post={post} />)
+              ) : (
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                  <CircularProgress />
+                </Box>
+              )
+            ) : (
+              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                <CircularProgress />
+              </Box>
+            )}
           </Box>
         </Box>
       </Container>

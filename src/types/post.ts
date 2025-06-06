@@ -1,9 +1,14 @@
+export interface Reactions {
+  likes: number;
+  comments: number;
+  shares: number;
+}
+
 export interface Post {
   id: number;
   content: string;
   created_at: string;
-  image?: string;
-  reactions?: number;
+  reactions?: Reactions;
   user: {
     name: string;
     title: string;
