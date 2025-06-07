@@ -50,7 +50,7 @@ const Header = () => {
           {user && (
             <>
               <IconButton onClick={handleOpenMenu}>
-                <Avatar alt="User" src={profile?.avatar_url || defaultAvatar} />
+                <Avatar src={profile?.avatar_url || defaultAvatar} alt="Profile Avatar" />
               </IconButton>
               <Menu
                 anchorEl={anchorEl}

@@ -15,7 +15,7 @@ const UserProfileCard = ({ name, title, avatar, likes, posts, onEdit }: UserProf
       {/* Header: Avatar + Info + Edit */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex" alignItems="center" gap={2}>
-          <Avatar src={avatar} sx={{ width: 56, height: 56 }} />
+          <Avatar src={avatar} sx={{ width: 56, height: 56 }} alt="Profile Avatar" />
           <Box>
             <Typography variant="subtitle1" fontWeight="bold">
               {name}

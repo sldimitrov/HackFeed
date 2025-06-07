@@ -5,7 +5,7 @@ export default class PostsService {
   static async list(): Promise<Post[]> {
     const { data, error } = await supabase
       .from('posts')
-      .select('*')
+      .select('*, user:profiles(name, title, avatar_url)')
       .order('created_at', { ascending: false });
 
     if (error) throw new Error(error.message);
