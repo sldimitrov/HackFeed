@@ -15,7 +15,6 @@ import ShareIcon from '@mui/icons-material/Share';
 import type { PostCardProps } from '../../types/post.ts';
 import { getTimeAgo } from '../../util/timeAgo.ts';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
-import { useUserProfile } from '../../hooks/useProfile.ts';
 
 export default function PostCard({ post }: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
@@ -23,19 +22,17 @@ export default function PostCard({ post }: PostCardProps) {
   const isLong = post.content.length > 100;
   const displayContent = expanded ? post.content : post.content.slice(0, 100);
 
-  const { data: currentPostProfile } = useUserProfile(post?.user_id);
-
   return (
     <Card sx={{ mb: 3 }}>
       <CardHeader
-        avatar={<Avatar src={defaultAvatar} />}
+        avatar={<Avatar src={post.user?.avatar_url || defaultAvatar} alt="Profile Avatar" />}
         title={
           <Box>
             <Typography variant="subtitle1" fontWeight="bold">
-              {currentPostProfile?.name || 'Anonymous'}
+              {post.user?.name || 'Anonymous'}
             </Typography>
             <Typography variant="caption" color="text.secondary">
-              {currentPostProfile?.title || 'No title provided'}
+              {post.user?.title || 'No title provided'}
             </Typography>
           </Box>
         }

@@ -1,3 +1,5 @@
+import type { UserProfile } from './profile.ts';
+
 export interface Reactions {
   likes: number;
   comments: number;
@@ -9,6 +11,7 @@ export interface Post {
   content: string;
   created_at: string;
   user_id: string;
+  user: UserProfile;
 }
 
 export interface PostCardProps {

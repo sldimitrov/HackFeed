@@ -103,6 +103,7 @@ export default function ProfilePage() {
           <Avatar
             src={formData.avatar_url || defaultProfile.avatar_url}
             sx={{ width: 100, height: 100 }}
+            alt="Profile Avatar"
           />
         </Box>
 
