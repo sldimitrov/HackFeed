@@ -1,17 +1,12 @@
-import type { UserProfile } from './profile.ts';
-
-export interface Reactions {
-  likes: number;
-  comments: number;
-  shares: number;
-}
-
 export interface Post {
   id: number;
+  avatar_url: string;
+  like_count: number;
+  name: string;
+  title: string;
   content: string;
   created_at: string;
   user_id: string;
-  user: UserProfile;
 }
 
 export interface PostCardProps {

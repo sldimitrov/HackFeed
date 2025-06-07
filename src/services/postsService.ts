@@ -4,8 +4,8 @@ import type { Post } from '../types/post.ts';
 export default class PostsService {
   static async list(): Promise<Post[]> {
     const { data, error } = await supabase
-      .from('posts')
-      .select('*, user:profiles(name, title, avatar_url)')
+      .from('posts_with_data')
+      .select('*')
       .order('created_at', { ascending: false });
 
     if (error) throw new Error(error.message);
