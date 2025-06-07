@@ -11,7 +11,6 @@ export default function Profile() {
     if (user) {
       await ProfileService.updateProfile(user.id, profile);
     }
-    // TODO: Show success message
   };
 
   return (

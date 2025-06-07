@@ -1,9 +1,8 @@
 import { Box, Container, Paper, Typography } from '@mui/material';
-import { AuthForm } from './AuthForm'; // assuming you split form logic here
-import orangeBG from '../../assets/hackSoftOrange.png';
-import grayBG from '../../assets/hackSoftGray.png';
+import { AuthForm } from './AuthForm';
 import hacksoftLogo from '../../assets/hacksoftLogo.png';
 import { useState } from 'react';
+import { Background } from '../../components/base/Background.tsx';
 
 const Auth = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -17,31 +16,8 @@ const Auth = () => {
       justifyContent="center"
       sx={{ bgcolor: '#f7f7f7', overflow: 'hidden' }}
     >
-      {/* Backgrounds */}
-      <Box
-        component="img"
-        src={orangeBG}
-        alt="orange background"
-        sx={{
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          zIndex: 0,
-          maxWidth: '70%',
-        }}
-      />
-      <Box
-        component="img"
-        src={grayBG}
-        alt="gray background"
-        sx={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          zIndex: 0,
-          maxWidth: '70%',
-        }}
-      />
+      {/* Background */}
+      <Background />
 
       {/* Auth Box */}
       <Container maxWidth="xs" sx={{ zIndex: 1 }}>

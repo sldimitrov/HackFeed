@@ -4,12 +4,11 @@ import UserProfileCard from '../../components/UserProfileCard/UserProfileCard.ts
 import type { Post } from '../../types/post.ts';
 import PostCreator from '../../components/Post/PostCreator.tsx';
 import PostCard from '../../components/Post/PostCard.tsx';
-import orangeBG from '../../assets/hackSoftOrange.png';
-import grayBG from '../../assets/hackSoftGray.png';
 import { usePosts } from '../../hooks/usePosts.ts';
 import { useUserProfile } from '../../hooks/useProfile.ts';
 import { defaultProfile } from '../../contants/profile.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
+import { Background } from '../../components/base/Background.tsx';
 
 export function Feed() {
   const theme = useTheme();
@@ -23,37 +22,7 @@ export function Feed() {
 
   return (
     <Box position="relative" minHeight="100vh" bgcolor="#f7f7f7" sx={{ overflowX: 'hidden' }}>
-      {/* Orange top-right background */}
-      <Box
-        component="img"
-        src={orangeBG}
-        alt="orange background"
-        sx={{
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          zIndex: 0,
-          width: 'auto',
-          height: 'auto',
-          maxWidth: '70%',
-        }}
-      />
-
-      {/* Gray bottom-left background */}
-      <Box
-        component="img"
-        src={grayBG}
-        alt="gray background"
-        sx={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          zIndex: 0,
-          width: 'auto',
-          height: 'auto',
-          maxWidth: '70%',
-        }}
-      />
+      <Background />
 
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, mt: 5, pb: 10 }}>
         <Box
