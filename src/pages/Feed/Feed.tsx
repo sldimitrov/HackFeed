@@ -4,49 +4,27 @@ import UserProfileCard from '../../components/UserProfileCard/UserProfileCard.ts
 import type { Post } from '../../types/post.ts';
 import PostCreator from '../../components/Post/PostCreator.tsx';
 import PostCard from '../../components/Post/PostCard.tsx';
-import orangeBG from '../../assets/hackSoftOrange.png';
-import grayBG from '../../assets/hackSoftGray.png';
 import { usePosts } from '../../hooks/usePosts.ts';
+import { useUserProfile } from '../../hooks/useProfile.ts';
+import { defaultProfile } from '../../contants/profile.ts';
+import { useAuthStore } from '../../store/useAuthStore.ts';
+import { Background } from '../../components/base/Background.tsx';
 
 export function Feed() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  // First, we fetch the user
+  const { user } = useAuthStore();
+  // Then we fetch the posts and profile data
   const { data: posts, isLoading } = usePosts();
+  const { data: profile } = useUserProfile(user?.id);
+
+  // useAuthStore.setProfile(profile)
 
   return (
     <Box position="relative" minHeight="100vh" bgcolor="#f7f7f7" sx={{ overflowX: 'hidden' }}>
-      {/* Orange top-right background */}
-      <Box
-        component="img"
-        src={orangeBG}
-        alt="orange background"
-        sx={{
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          zIndex: 0,
-          width: 'auto',
-          height: 'auto',
-          maxWidth: '70%',
-        }}
-      />
-
-      {/* Gray bottom-left background */}
-      <Box
-        component="img"
-        src={grayBG}
-        alt="gray background"
-        sx={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          zIndex: 0,
-          width: 'auto',
-          height: 'auto',
-          maxWidth: '70%',
-        }}
-      />
+      <Background />
 
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, mt: 5, pb: 10 }}>
         <Box
@@ -60,9 +38,9 @@ export function Feed() {
           {/* Left side: Profile card */}
           <Box flexShrink={0} width={isMobile ? '100%' : '260px'}>
             <UserProfileCard
-              name="Ivaylo Bachvarov"
-              title="Co-Founder, HackSoft"
-              avatar="https://i.pravatar.cc/150?img=5"
+              name={profile?.name || defaultProfile.name}
+              title={profile?.title || defaultProfile.title}
+              avatar={profile?.avatar_url || defaultProfile.avatar_url}
               likes={210}
               posts={4}
             />

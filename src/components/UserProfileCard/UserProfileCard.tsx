@@ -1,8 +1,15 @@
 import { Avatar, Box, IconButton, Typography, Card, Divider } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import type { UserProfileCardProps } from '../../types/profile.ts';
+import { useNavigate } from 'react-router-dom';
 
 const UserProfileCard = ({ name, title, avatar, likes, posts, onEdit }: UserProfileCardProps) => {
+  const navigate = useNavigate();
+
+  const handleEditProfile = () => {
+    navigate('/profile');
+  };
+
   return (
     <Card sx={{ borderRadius: 3, p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
       {/* Header: Avatar + Info + Edit */}
@@ -19,7 +26,12 @@ const UserProfileCard = ({ name, title, avatar, likes, posts, onEdit }: UserProf
           </Box>
         </Box>
         <IconButton size="small" onClick={onEdit}>
-          <EditIcon fontSize="small" />
+          <EditIcon
+            fontSize="small"
+            onClick={() => {
+              handleEditProfile();
+            }}
+          />
         </IconButton>
       </Box>
 

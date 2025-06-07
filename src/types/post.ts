@@ -8,12 +8,7 @@ export interface Post {
   id: number;
   content: string;
   created_at: string;
-  reactions?: Reactions;
-  user: {
-    name: string;
-    title: string;
-    avatar: string;
-  };
+  user_id: string;
 }
 
 export interface PostCardProps {
