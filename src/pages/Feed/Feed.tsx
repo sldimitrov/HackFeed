@@ -15,8 +15,9 @@ export function Feed() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // TODO: fetch profile
+  // First, we fetch the user
   const { user } = useAuthStore();
+  // Then we fetch the posts and profile data
   const { data: posts, isLoading } = usePosts();
   const { data: profile } = useUserProfile(user?.id);
 

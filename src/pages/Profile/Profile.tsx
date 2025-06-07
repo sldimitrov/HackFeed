@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Box, TextField, Button, Avatar, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Avatar, Box, Button, TextField, Typography } from '@mui/material';
 import { useAuthStore } from '../../store/useAuthStore';
 import ProfileService from '../../services/profileService.ts';
 
@@ -7,15 +7,11 @@ export default function Profile() {
   const { user } = useAuthStore();
   const [profile, setProfile] = useState({ name: '', title: '', avatar_url: '' });
 
-  useEffect(() => {
-    if (user) {
-      ProfileService.getCurrentProfile(user.id).then(setProfile);
-    }
-  }, [user]);
-
   const handleSave = async () => {
-    await ProfileService.updateProfile(user.id, profile);
-    // Optional: Toast or feedback
+    if (user) {
+      await ProfileService.updateProfile(user.id, profile);
+    }
+    // TODO: Show success message
   };
 
   return (

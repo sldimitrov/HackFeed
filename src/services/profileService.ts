@@ -4,6 +4,8 @@ import { supabase } from '../lib/supabaseClient.ts';
 
 export default class ProfileService {
   static async getCurrentProfile(user_id: string): Promise<UserProfile | null> {
+    console.log('user_id:', user_id);
+
     const { data, error } = await supabase.from('profiles').select('*').eq('id', user_id).single();
 
     if (error) {

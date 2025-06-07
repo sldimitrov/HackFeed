@@ -5,9 +5,8 @@ import { useAuthStore } from '../../store/useAuthStore.ts';
 
 export default function PostCreator() {
   const { user } = useAuthStore();
-  const [content, setContent] = useState('');
-
   const createPostMutation = useCreatePost();
+  const [content, setContent] = useState('');
 
   const handleSubmit = async () => {
     if (!content.trim() || !user?.id) {
