@@ -20,6 +20,8 @@ export function Feed() {
   const { data: posts, isLoading } = usePosts();
   const { data: profile } = useUserProfile(user?.id);
 
+  // useAuthStore.setProfile(profile)
+
   return (
     <Box position="relative" minHeight="100vh" bgcolor="#f7f7f7" sx={{ overflowX: 'hidden' }}>
       <Background />

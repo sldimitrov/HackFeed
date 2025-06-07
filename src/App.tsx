@@ -7,6 +7,7 @@ import './index.css';
 import type { JSX } from 'react';
 import { Box, CircularProgress } from '@mui/material';
 import Profile from './pages/Profile/Profile.tsx';
+import ScrollToTop from "./components/routing/ScrollToTop.tsx";
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
   const { user, loading } = useAuthStore();
@@ -24,6 +25,7 @@ function ProtectedRoute({ children }: { children: JSX.Element }) {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Header />
       <Routes>
         <Route path="/auth" element={<Auth />} />
