@@ -15,9 +15,11 @@ import type { PostCardProps } from '../../types/post.ts';
 import { getTimeAgo } from '../../util/timeAgo.ts';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useAuthStore } from '../../store/useAuthStore.ts';
 import LikesService from '../../services/likesService.ts';
-import ShareService from '../../services/sharesService.ts';
+import { useSharePost } from '../../hooks/useSharePost.ts';
+import { useDeletePost } from '../../hooks/usePosts.ts';
 
 export default function PostCard({ post }: PostCardProps) {
   const { user } = useAuthStore();
@@ -25,6 +27,8 @@ export default function PostCard({ post }: PostCardProps) {
   const [likeCount, setLikeCount] = useState(0);
   const [expanded, setExpanded] = useState(false);
 
+  const sharePost = useSharePost();
+  const deletePost = useDeletePost();
   const isLong = post.content.length > 100;
   const displayContent = expanded ? post.content : post.content.slice(0, 100);
 
@@ -42,8 +46,14 @@ export default function PostCard({ post }: PostCardProps) {
 
   const handleShare = async (postId: number) => {
     if (!user) return;
-    await ShareService.sharePost(postId, user.id);
-    // Optional toast: "Post shared!"
+    await sharePost.mutateAsync({ post_id: postId, user_id: user.id });
+    // TODO add a toast notification
+  };
+
+  const handleDelete = () => {
+    if (confirm('Are you sure you want to delete this post?')) {
+      deletePost.mutate(post.id);
+    }
   };
 
   useEffect(() => {
@@ -53,21 +63,23 @@ export default function PostCard({ post }: PostCardProps) {
   return (
     <Card sx={{ mb: 3 }}>
       <CardHeader
-        avatar={<Avatar src={post.shared_by_avatar_url || defaultAvatar} alt="Profile Avatar" />}
+        avatar={<Avatar src={post.shared_by_avatar_url || post.avatar_url} alt="Profile Avatar" />}
         title={
           <Box>
             <Typography variant="subtitle1" fontWeight="bold">
-              {post.shared_by_name || 'Anonymous'}
+              {post.shared_by_name || post.name}
             </Typography>
             <Typography variant="caption" color="text.secondary">
-              {post.shared_by_title || 'No title provided'}
+              {post.shared_by_title || post.title}
             </Typography>
           </Box>
         }
         action={
-          <Typography variant="caption" color="text.secondary">
-            {getTimeAgo(post.created_at)}
-          </Typography>
+          <Box pt={0.9}>
+            <Typography variant="caption" mt={1} color="text.secondary">
+              {getTimeAgo(post.created_at)}
+            </Typography>
+          </Box>
         }
       />
 
@@ -137,13 +149,15 @@ export default function PostCard({ post }: PostCardProps) {
         </Box>
 
         <Box>
-          <Button
-            size="small"
-            onClick={() => setExpanded(!expanded)}
-            sx={{ mt: 1, textTransform: 'none' }}
-          >
-            {expanded ? 'See less' : 'See more'}
-          </Button>
+          {isLong && (
+            <Button
+              size="small"
+              onClick={() => setExpanded(!expanded)}
+              sx={{ mt: 1, textTransform: 'none' }}
+            >
+              {expanded ? 'See less' : 'See more'}
+            </Button>
+          )}
         </Box>
       </Box>
 
@@ -167,6 +181,16 @@ export default function PostCard({ post }: PostCardProps) {
             </Typography>
           </IconButton>
         </Box>
+
+        {/* Delete button only if current user is the author */}
+        {user?.id === post.user_id && (
+          <IconButton onClick={handleDelete} color="error">
+            <DeleteIcon fontSize="small" />
+            <Typography variant="caption" sx={{ marginTop: '4px', paddingLeft: '3px' }}>
+              Delete
+            </Typography>
+          </IconButton>
+        )}
       </CardActions>
     </Card>
   );
