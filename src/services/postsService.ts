@@ -12,10 +12,11 @@ export default class PostsService {
     return data as Post[];
   }
 
-  static async listByUser(): Promise<Post[]> {
+  static async listByUser(user_id: string): Promise<Post[]> {
     const { data, error } = await supabase
-      .from('posts')
-      .select('*, user:profiles(name, avatar_url, title)')
+      .from('feed_posts_shared')
+      .select('*')
+      .eq('user_id', user_id)
       .order('created_at', { ascending: false });
 
     if (error) throw new Error(error.message);

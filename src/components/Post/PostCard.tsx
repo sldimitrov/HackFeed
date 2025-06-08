@@ -17,6 +17,8 @@ export default function PostCard({ post }: PostCardProps) {
   const [likeCount, setLikeCount] = useState(0);
   const [expanded, setExpanded] = useState(false);
 
+  console.log('post', post);
+
   const sharePost = useSharePost();
   const deletePost = useDeletePost();
   const isLong = post.content.length > 100;
@@ -52,6 +54,7 @@ export default function PostCard({ post }: PostCardProps) {
   return (
     <Card sx={{ mb: 3 }}>
       <PostHeader
+        id={post.shared_by_id || post.user_id}
         avatar={post.shared_by_avatar_url || post.avatar_url}
         name={post.shared_by_name || post.name}
         title={post.shared_by_title || post.title}

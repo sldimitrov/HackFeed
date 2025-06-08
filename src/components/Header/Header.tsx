@@ -28,6 +28,7 @@ const Header = () => {
   const handleLogout = async () => {
     handleCloseMenu();
     await logout();
+    navigate('/auth');
   };
 
   return (

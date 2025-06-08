@@ -1,0 +1,123 @@
+import { useAuthStore } from '../../store/useAuthStore.ts';
+import { useEffect, useState } from 'react';
+import ProfileService from '../../services/profileService.ts';
+import { Avatar, Box, CircularProgress, IconButton, TextField, Typography } from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
+import EditIcon from '@mui/icons-material/Edit';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PostCard from '../../components/Post/PostCard.tsx';
+import { useUserProfile } from '../../hooks/useProfile.ts';
+import { useUserPosts } from '../../hooks/usePosts.ts';
+import NoPosts from '../../components/Post/NoPosts.tsx';
+import type { Post } from '../../types/post.ts';
+import { useParams } from 'react-router-dom';
+
+export function UserProfile() {
+  const { logout } = useAuthStore();
+  const { userId } = useParams();
+  const editable = false; // TODO: find a way to make this editable or not
+  const { data: profile, isLoading } = useUserProfile(userId);
+  const { data: posts, isLoading: loadingPosts } = useUserPosts(userId || '');
+
+  // TODO: find a way to make this editable or not
+
+  const [formData, setFormData] = useState({ name: '', title: '', avatar_url: '' });
+  const [editMode, setEditMode] = useState(false);
+
+  useEffect(() => {
+    if (profile) {
+      setFormData({
+        name: profile.name,
+        title: profile.title,
+        avatar_url: profile.avatar_url,
+      });
+    }
+  }, [profile]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = async () => {
+    if (userId) {
+      await ProfileService.updateProfile(userId, formData);
+      setEditMode(false);
+    } else {
+      console.error('User ID is not defined');
+    }
+  };
+
+  if (isLoading) return <CircularProgress />;
+
+  return (
+    <Box>
+      <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Typography variant="h5">
+          {editable ? 'My Profile' : `${profile?.name}'s Profile`}
+        </Typography>
+        {editable && (
+          <Box>
+            {editMode ? (
+              <IconButton onClick={handleSave}>
+                <SaveIcon />
+              </IconButton>
+            ) : (
+              <IconButton onClick={() => setEditMode(true)}>
+                <EditIcon />
+              </IconButton>
+            )}
+            <IconButton onClick={logout} color="error">
+              <LogoutIcon />
+            </IconButton>
+          </Box>
+        )}
+      </Box>
+
+      <Box display="flex" justifyContent="center" my={3}>
+        <Avatar src={formData.avatar_url} sx={{ width: 100, height: 100 }} />
+      </Box>
+
+      <TextField
+        name="name"
+        label="Name"
+        fullWidth
+        value={formData.name}
+        onChange={handleChange}
+        disabled={!editable || !editMode}
+      />
+
+      <TextField
+        name="title"
+        label="Title"
+        fullWidth
+        value={formData.title}
+        onChange={handleChange}
+        disabled={!editable || !editMode}
+      />
+
+      <TextField
+        name="avatar_url"
+        label="Avatar URL"
+        fullWidth
+        value={formData.avatar_url}
+        onChange={handleChange}
+        disabled={!editable || !editMode}
+      />
+
+      <Box mt={4}>
+        <Typography variant="h6" gutterBottom>
+          Posts
+        </Typography>
+        {loadingPosts ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+            <CircularProgress />
+          </Box>
+        ) : posts && posts.length === 0 ? (
+          <NoPosts message="There are no posts to show yet." />
+        ) : (
+          posts?.map((post: Post) => <PostCard key={post.id} post={post} />)
+        )}
+      </Box>
+    </Box>
+  );
+}
