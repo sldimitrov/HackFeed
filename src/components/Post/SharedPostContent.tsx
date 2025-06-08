@@ -19,7 +19,7 @@ export default function SharedPostContent({ post, expanded }: { post: any; expan
         Reposted from {post.name || 'Anonymous'}
       </Typography>
       <Box display="flex" alignItems="center" gap={1} mb={1}>
-        <Avatar src={post.avatar_url || defaultAvatar} sx={{ width: 30, height: 30 }} />
+        <Avatar src={post.avatar_url || defaultAvatar} sx={{ width: 30, height: 30 }} alt="Profile Avatar" />
         <Box>
           <Typography variant="body2" fontWeight="bold">
             {post.name}

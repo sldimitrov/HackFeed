@@ -9,7 +9,7 @@ import { useUserProfile } from '../../hooks/useProfile.ts';
 import { defaultProfile } from '../../contants/profile.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
 import { Background } from '../../components/base/Background.tsx';
-import NoPosts from "../../components/Post/NoPosts.tsx";
+import NoPosts from '../../components/Post/NoPosts.tsx';
 
 export function Feed() {
   const theme = useTheme();
@@ -38,25 +38,29 @@ export function Feed() {
         >
           {/* Left side: Profile card */}
           <Box flexShrink={0} width={isMobile ? '100%' : '260px'}>
-            <UserProfileCard
-              name={profile?.name || defaultProfile.name}
-              title={profile?.title || defaultProfile.title}
-              avatar={profile?.avatar_url || defaultProfile.avatar_url}
-              likes={210}
-              posts={4}
-            />
+            {profile && (
+                <UserProfileCard
+                    id={user?.id || ''}
+                    name={profile?.name || defaultProfile.name}
+                    title={profile?.title || defaultProfile.title}
+                    avatar={profile?.avatar_url || defaultProfile.avatar_url}
+                    likes={210}
+                    posts={4}
+                />
+            )}
+
           </Box>
 
           <Box flexGrow={1} width="100%">
             <PostCreator />
             {isLoading ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                  <CircularProgress />
-                </Box>
+              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                <CircularProgress />
+              </Box>
             ) : posts && posts.length === 0 ? (
-                <NoPosts message="There are no posts to show yet." />
+              <NoPosts message="There are no posts to show yet." />
             ) : (
-                posts?.map((post: Post) => <PostCard key={post.id} post={post} />)
+              posts?.map((post: Post) => <PostCard key={post.id} post={post} />)
             )}
           </Box>
         </Box>

@@ -6,8 +6,8 @@ import { useAuthStore } from './store/useAuthStore.ts';
 import './index.css';
 import type { JSX } from 'react';
 import { Box, CircularProgress } from '@mui/material';
-import Profile from './pages/Profile/Profile.tsx';
 import ScrollToTop from './components/routing/ScrollToTop.tsx';
+import { UserProfile } from './pages/Profile/UserProfile.tsx';
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
   const { user, loading } = useAuthStore();
@@ -37,14 +37,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/profile/:userId/:slug?" element={<UserProfile />} />
       </Routes>
     </Router>
   );

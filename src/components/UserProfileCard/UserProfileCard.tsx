@@ -2,20 +2,34 @@ import { Avatar, Box, IconButton, Typography, Card, Divider } from '@mui/materia
 import EditIcon from '@mui/icons-material/Edit';
 import type { UserProfileCardProps } from '../../types/profile.ts';
 import { useNavigate } from 'react-router-dom';
+import { slugify } from '../../util/slugify.ts';
 
-const UserProfileCard = ({ name, title, avatar, likes, posts, onEdit }: UserProfileCardProps) => {
+const UserProfileCard = ({
+  id,
+  name,
+  title,
+  avatar,
+  likes,
+  posts,
+  onEdit,
+}: UserProfileCardProps) => {
   const navigate = useNavigate();
 
   const handleEditProfile = () => {
-    navigate('/profile');
+    navigate(`/profile/${id}/${slugify(name)}`, { state: { userId: id } });
   };
 
   return (
-    <Card sx={{ borderRadius: 3, p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+    <Card sx={{ borderRadius: 1, p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
       {/* Header: Avatar + Info + Edit */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex" alignItems="center" gap={2}>
-          <Avatar src={avatar} sx={{ width: 56, height: 56 }} alt="Profile Avatar" />
+          <Avatar
+            src={avatar}
+            sx={{ width: 56, height: 56, cursor: 'pointer' }}
+            alt="Profile Avatar"
+            onClick={handleEditProfile}
+          />
           <Box>
             <Typography variant="subtitle1" fontWeight="bold">
               {name}

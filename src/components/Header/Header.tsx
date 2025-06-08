@@ -5,6 +5,7 @@ import { useAuthStore } from '../../store/useAuthStore.ts';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserProfile } from '../../hooks/useProfile.ts';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
+import { slugify } from '../../util/slugify.ts';
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -22,12 +23,13 @@ const Header = () => {
 
   const handleProfile = () => {
     handleCloseMenu();
-    navigate('/profile');
+    navigate(`/profile/${user?.id}/${slugify(profile?.name || 'user')}`, { state: { userId: user?.id } });
   };
 
   const handleLogout = async () => {
     handleCloseMenu();
     await logout();
+    navigate('/auth');
   };
 
   return (
@@ -49,9 +51,12 @@ const Header = () => {
         <Box>
           {user && (
             <>
-              <IconButton onClick={handleOpenMenu}>
-                <Avatar src={profile?.avatar_url || defaultAvatar} alt="Profile Avatar" />
-              </IconButton>
+              { profile && (
+                  <IconButton onClick={handleOpenMenu}>
+                    <Avatar src={profile?.avatar_url || defaultAvatar} alt="Profile Avatar" />
+                  </IconButton>
+              )}
+
               <Menu
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}

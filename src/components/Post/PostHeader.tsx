@@ -1,21 +1,40 @@
 import { Avatar, Box, CardHeader, Typography } from '@mui/material';
 import { getTimeAgo } from '../../util/timeAgo.ts';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
+import { useNavigate } from 'react-router-dom';
+import { slugify } from '../../util/slugify.ts';
 
 export default function PostHeader({
+  id,
   avatar,
   name,
   title,
   created_at,
 }: {
-  avatar: string;
+  id: string;
+  avatar?: string;
   name: string;
   title: string;
   created_at: string;
 }) {
+  const navigate = useNavigate();
+
+  const handleProfileClick = () => {
+    if (id && name) {
+      navigate(`/profile/${id}/${slugify(name || 'user')}`, { state: { userId: id } });
+    }
+  };
+
   return (
     <CardHeader
-      avatar={<Avatar src={avatar || defaultAvatar} alt="Profile Avatar" />}
+      avatar={
+        <Avatar
+          src={avatar || defaultAvatar}
+          sx={{ cursor: 'pointer' }}
+          alt="Profile Avatar"
+          onClick={handleProfileClick}
+        />
+      }
       title={
         <Box>
           <Typography variant="subtitle1" fontWeight="bold">

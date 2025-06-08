@@ -52,6 +52,7 @@ export default function PostCard({ post }: PostCardProps) {
   return (
     <Card sx={{ mb: 3 }}>
       <PostHeader
+        id={post.shared_by_id || post.user_id}
         avatar={post.shared_by_avatar_url || post.avatar_url}
         name={post.shared_by_name || post.name}
         title={post.shared_by_title || post.title}
