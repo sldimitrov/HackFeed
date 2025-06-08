@@ -8,6 +8,7 @@ export interface UserProfile {
 }
 
 export interface UserProfileCardProps {
+  id: string;
   name: string;
   title: string;
   avatar: string;

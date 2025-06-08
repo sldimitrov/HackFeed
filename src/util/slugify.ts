@@ -1,4 +1,4 @@
-export function slugify(name: string): string {
+export function slugify(name: string = 'user'): string {
   return name
     .toLowerCase()
     .trim()

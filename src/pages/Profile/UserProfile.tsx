@@ -1,16 +1,7 @@
 import { useAuthStore } from '../../store/useAuthStore.ts';
 import { useEffect, useState } from 'react';
 import ProfileService from '../../services/profileService.ts';
-import {
-  Avatar,
-  Box,
-  CircularProgress,
-  Container,
-  IconButton,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Avatar, Box, CircularProgress, IconButton, TextField, Typography } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -22,18 +13,18 @@ import type { Post } from '../../types/post.ts';
 import { useParams } from 'react-router-dom';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
 import { Background } from '../../components/base/Background.tsx';
+import { predefinedAvatars } from '../../contants/predefinedAvatars.ts';
 
 export function UserProfile() {
   const { logout } = useAuthStore();
   const { userId } = useParams();
-  const editable = true; // TODO: find a way to make this editable or not
+  const { user } = useAuthStore();
   const { data: profile, isLoading } = useUserProfile(userId);
   const { data: posts, isLoading: loadingPosts } = useUserPosts(userId || '');
 
-  // TODO: find a way to make this editable or not
-
   const [formData, setFormData] = useState({ name: '', title: '', avatar_url: '' });
   const [editMode, setEditMode] = useState(false);
+  const editable = user?.id === userId;
 
   useEffect(() => {
     if (profile) {
@@ -55,6 +46,20 @@ export function UserProfile() {
       setEditMode(false);
     } else {
       console.error('User ID is not defined');
+    }
+  };
+
+  const handleSaveWithData = async (data: typeof formData) => {
+    if (userId) {
+      await ProfileService.updateProfile(userId, data);
+      setEditMode(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSave();
     }
   };
 
@@ -123,6 +128,7 @@ export function UserProfile() {
           fullWidth
           value={formData.name}
           onChange={handleChange}
+          onKeyDown={editMode ? handleKeyDown : undefined}
           disabled={!editable || !editMode}
           margin="dense"
         />
@@ -133,6 +139,7 @@ export function UserProfile() {
           fullWidth
           value={formData.title}
           onChange={handleChange}
+          onKeyDown={editMode ? handleKeyDown : undefined}
           disabled={!editable || !editMode}
           margin="dense"
         />
@@ -143,9 +150,37 @@ export function UserProfile() {
           fullWidth
           value={formData.avatar_url}
           onChange={handleChange}
+          onKeyDown={editMode ? handleKeyDown : undefined}
           disabled={!editable || !editMode}
           margin="dense"
         />
+
+        {editable && editMode && (
+          <Box display="flex" justifyContent="center" gap={1} flexWrap="wrap" mt={2}>
+            {predefinedAvatars.map((url: string) => (
+              <Avatar
+                key={url}
+                src={url}
+                sx={{
+                  width: 40,
+                  height: 40,
+                  border:
+                    formData.avatar_url === url ? '2px solid orange' : '2px solid transparent',
+                  cursor: 'pointer',
+                  transition: '0.2s',
+                }}
+                onClick={async () => {
+                  setFormData((prev) => {
+                    const updated = { ...prev, avatar_url: url };
+                    // Save immediately after setting
+                    handleSaveWithData(updated);
+                    return updated;
+                  });
+                }}
+              />
+            ))}
+          </Box>
+        )}
 
         <Box mt={4}>
           <Typography variant="h6" gutterBottom>
