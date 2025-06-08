@@ -38,14 +38,17 @@ export function Feed() {
         >
           {/* Left side: Profile card */}
           <Box flexShrink={0} width={isMobile ? '100%' : '260px'}>
-            <UserProfileCard
-              id={user?.id || ''}
-              name={profile?.name || defaultProfile.name}
-              title={profile?.title || defaultProfile.title}
-              avatar={profile?.avatar_url || defaultProfile.avatar_url}
-              likes={210}
-              posts={4}
-            />
+            {profile && (
+                <UserProfileCard
+                    id={user?.id || ''}
+                    name={profile?.name || defaultProfile.name}
+                    title={profile?.title || defaultProfile.title}
+                    avatar={profile?.avatar_url || defaultProfile.avatar_url}
+                    likes={210}
+                    posts={4}
+                />
+            )}
+
           </Box>
 
           <Box flexGrow={1} width="100%">

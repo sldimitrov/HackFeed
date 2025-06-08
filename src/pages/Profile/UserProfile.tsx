@@ -119,7 +119,7 @@ export function UserProfile() {
         </Box>
 
         <Box display="flex" justifyContent="center" my={3}>
-          <Avatar src={formData.avatar_url || defaultAvatar} sx={{ width: 100, height: 100 }} />
+          <Avatar src={formData.avatar_url || defaultAvatar} sx={{ width: 100, height: 100 }} alt="Profile Avatar" />
         </Box>
 
         <TextField
@@ -169,6 +169,7 @@ export function UserProfile() {
                   cursor: 'pointer',
                   transition: '0.2s',
                 }}
+                alt="Profile Avatar"
                 onClick={async () => {
                   setFormData((prev) => {
                     const updated = { ...prev, avatar_url: url };

@@ -17,8 +17,6 @@ export default function PostCard({ post }: PostCardProps) {
   const [likeCount, setLikeCount] = useState(0);
   const [expanded, setExpanded] = useState(false);
 
-  console.log('post', post);
-
   const sharePost = useSharePost();
   const deletePost = useDeletePost();
   const isLong = post.content.length > 100;

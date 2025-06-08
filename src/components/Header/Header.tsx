@@ -51,9 +51,12 @@ const Header = () => {
         <Box>
           {user && (
             <>
-              <IconButton onClick={handleOpenMenu}>
-                <Avatar src={profile?.avatar_url || defaultAvatar} alt="Profile Avatar" />
-              </IconButton>
+              { profile && (
+                  <IconButton onClick={handleOpenMenu}>
+                    <Avatar src={profile?.avatar_url || defaultAvatar} alt="Profile Avatar" />
+                  </IconButton>
+              )}
+
               <Menu
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
