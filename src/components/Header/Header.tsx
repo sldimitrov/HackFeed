@@ -5,7 +5,7 @@ import { useAuthStore } from '../../store/useAuthStore.ts';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserProfile } from '../../hooks/useProfile.ts';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
-import { slugify } from '../../util/slugify.ts';
+import { slugify } from '../../utils/slugify.ts';
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

@@ -1,8 +1,8 @@
 import { Avatar, Box, CardHeader, Typography } from '@mui/material';
-import { getTimeAgo } from '../../util/timeAgo.ts';
+import { getTimeAgo } from '../../utils/timeAgo.ts';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
 import { useNavigate } from 'react-router-dom';
-import { slugify } from '../../util/slugify.ts';
+import { slugify } from '../../utils/slugify.ts';
 
 export default function PostHeader({
   id,

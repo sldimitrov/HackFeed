@@ -2,7 +2,7 @@ import { Avatar, Box, IconButton, Typography, Card, Divider } from '@mui/materia
 import EditIcon from '@mui/icons-material/Edit';
 import type { UserProfileCardProps } from '../../types/profile.ts';
 import { useNavigate } from 'react-router-dom';
-import { slugify } from '../../util/slugify.ts';
+import { slugify } from '../../utils/slugify.ts';
 
 const UserProfileCard = ({
   id,

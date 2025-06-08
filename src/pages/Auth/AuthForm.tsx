@@ -6,6 +6,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { AuthFormData, AuthFormProps } from '../../types/auth.ts';
 import { authSchema } from '../../schemas/authSchema.ts';
 import { useState } from 'react';
+import { toast } from '../../utils/toast.ts';
+import { TOAST_MESSAGES } from '../../contants/toastMessages.ts';
 
 export const AuthForm = ({ isRegister, setIsRegister }: AuthFormProps) => {
   const [error, setError] = useState<string | null>(null);
@@ -24,10 +26,12 @@ export const AuthForm = ({ isRegister, setIsRegister }: AuthFormProps) => {
     try {
       if (isRegister) {
         await register(data.email, data.password);
+        toast.success(TOAST_MESSAGES.REGISTER_SUCCESS);
         reset();
         setIsRegister(false);
       } else {
         await login(data.email, data.password);
+        toast.success(TOAST_MESSAGES.LOGIN_SUCCESS);
         navigate('/');
       }
     } catch (err: any) {
