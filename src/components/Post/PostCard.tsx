@@ -53,14 +53,14 @@ export default function PostCard({ post }: PostCardProps) {
   return (
     <Card sx={{ mb: 3 }}>
       <CardHeader
-        avatar={<Avatar src={post.avatar_url || defaultAvatar} alt="Profile Avatar" />}
+        avatar={<Avatar src={post.shared_by_avatar_url || defaultAvatar} alt="Profile Avatar" />}
         title={
           <Box>
             <Typography variant="subtitle1" fontWeight="bold">
-              {post.name || 'Anonymous'}
+              {post.shared_by_name || 'Anonymous'}
             </Typography>
             <Typography variant="caption" color="text.secondary">
-              {post.title || 'No title provided'}
+              {post.shared_by_title || 'No title provided'}
             </Typography>
           </Box>
         }
@@ -83,7 +83,7 @@ export default function PostCard({ post }: PostCardProps) {
             }}
           >
             <Typography variant="caption" color="text.secondary" sx={{ mb: 1 }}>
-              Reposted from {post.name || 'Anonymous'} · {getTimeAgo(post.created_at)}
+              Reposted from {post.name || 'Anonymous'}
             </Typography>
             <Box display="flex" alignItems="center" gap={1} mb={1}>
               <Avatar src={post.avatar_url || defaultAvatar} sx={{ width: 30, height: 30 }} />

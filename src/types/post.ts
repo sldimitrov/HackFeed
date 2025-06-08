@@ -11,10 +11,12 @@ export interface Post {
   liked_by_current_user: boolean;
 
   shared: boolean;
-  share_count: number;
   shared_at?: string;
+  shared_by_avatar_url: string;
+  shared_by_name: string;
+  shared_by_title?: string;
+  share_count: number;
   shared_by_id?: string;
-  shared_by_name?: string;
 }
 
 export interface PostCardProps {
