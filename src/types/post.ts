@@ -1,13 +1,22 @@
 export interface Post {
   id: number;
-  avatar_url: string;
-  like_count: number;
-  liked_by_current_user: boolean;
+  user_id: string;
   name: string;
   title: string;
+  avatar_url: string;
   content: string;
   created_at: string;
-  user_id: string;
+
+  like_count: number;
+  liked_by_current_user: boolean;
+
+  shared: boolean;
+  shared_at?: string;
+  shared_by_avatar_url: string;
+  shared_by_name: string;
+  shared_by_title?: string;
+  share_count: number;
+  shared_by_id?: string;
 }
 
 export interface PostCardProps {
