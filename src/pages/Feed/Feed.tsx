@@ -15,13 +15,9 @@ export function Feed() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // First, we fetch the user
   const { user } = useAuthStore();
-  // Then we fetch the posts and profile data
   const { data: posts, isLoading } = usePosts();
   const { data: profile } = useUserProfile(user?.id);
-
-  // useAuthStore.setProfile(profile)
 
   return (
     <Box position="relative" minHeight="100vh" bgcolor="#f7f7f7" sx={{ overflowX: 'hidden' }}>
@@ -39,16 +35,15 @@ export function Feed() {
           {/* Left side: Profile card */}
           <Box flexShrink={0} width={isMobile ? '100%' : '260px'}>
             {profile && (
-                <UserProfileCard
-                    id={user?.id || ''}
-                    name={profile?.name || defaultProfile.name}
-                    title={profile?.title || defaultProfile.title}
-                    avatar={profile?.avatar_url || defaultProfile.avatar_url}
-                    likes={210}
-                    posts={4}
-                />
+              <UserProfileCard
+                id={user?.id || ''}
+                name={profile?.name || defaultProfile.name}
+                title={profile?.title || defaultProfile.title}
+                avatar={profile?.avatar_url || defaultProfile.avatar_url}
+                likes={210}
+                posts={4}
+              />
             )}
-
           </Box>
 
           <Box flexGrow={1} width="100%">

@@ -11,7 +11,7 @@ export function useUserProfile(userId: string | undefined) {
       if (!userId) throw new Error('Missing user ID');
       return ProfileService.getCurrentProfile(userId);
     },
-    enabled: !!userId, // не се изпълнява без userId
+    enabled: !!userId,
   });
 }
 

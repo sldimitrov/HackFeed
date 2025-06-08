@@ -1,4 +1,3 @@
-// src/services/profileService.ts
 import type { UserProfile } from '../types/profile.ts';
 import { supabase } from '../lib/supabaseClient.ts';
 

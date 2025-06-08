@@ -1,4 +1,3 @@
-// hooks/useSharePost.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ShareService from '../services/sharesService';
 import { QUERY_POSTS } from '../contants/queryKeys.ts';

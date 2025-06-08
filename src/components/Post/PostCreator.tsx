@@ -22,7 +22,7 @@ export default function PostCreator() {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault(); // prevents newline
+      e.preventDefault();
       handleSubmit();
     }
   };
@@ -54,7 +54,7 @@ export default function PostCreator() {
             borderRadius: 2,
             transition: 'all 0.2s ease-in-out',
             '&:hover': {
-              backgroundColor: '#f57c00', // darker orange
+              backgroundColor: '#f57c00',
               boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
             },
             '&:active': {

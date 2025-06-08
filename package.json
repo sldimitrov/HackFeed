@@ -13,14 +13,18 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@hookform/resolvers": "^5.1.0",
     "@mui/icons-material": "^7.1.1",
     "@mui/material": "^7.1.1",
     "@supabase/supabase-js": "^2.49.10",
     "@tailwindcss/vite": "^4.1.8",
     "@tanstack/react-query": "^5.80.6",
+    "notistack": "^3.0.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-hook-form": "^7.57.0",
     "react-router-dom": "^7.6.2",
+    "yup": "^1.6.1",
     "zustand": "^5.0.5"
   },
   "devDependencies": {

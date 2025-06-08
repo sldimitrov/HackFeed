@@ -1,88 +1,91 @@
-import { useState } from 'react';
-import { Box, TextField, Button, Typography, Alert, Stack } from '@mui/material';
+import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { useAuthStore } from '../../store/useAuthStore.ts';
 import { useNavigate } from 'react-router-dom';
-
-interface AuthFormProps {
-  isRegister: boolean;
-  setIsRegister: (value: boolean) => void;
-}
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import type { AuthFormData, AuthFormProps } from '../../types/auth.ts';
+import { authSchema } from '../../schemas/authSchema.ts';
+import { useState } from 'react';
+import { toast } from '../../utils/toast.ts';
+import { TOAST_MESSAGES } from '../../contants/toastMessages.ts';
 
 export const AuthForm = ({ isRegister, setIsRegister }: AuthFormProps) => {
-  const { login, register } = useAuthStore();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { login, register } = useAuthStore();
   const navigate = useNavigate();
+  const {
+    register: formRegister,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<AuthFormData>({
+    resolver: yupResolver(authSchema),
+  });
 
-  const handleSubmit = async () => {
-    setLoading(true);
-    setError(null);
+  const onSubmit = async (data: AuthFormData) => {
     try {
       if (isRegister) {
-        await register(email, password);
-        resetForm();
+        await register(data.email, data.password);
+        toast.success(TOAST_MESSAGES.REGISTER_SUCCESS);
+        reset();
         setIsRegister(false);
       } else {
-        await login(email, password);
+        await login(data.email, data.password);
+        toast.success(TOAST_MESSAGES.LOGIN_SUCCESS);
         navigate('/');
       }
     } catch (err: any) {
-      setError(err.message || 'Something went wrong');
-    } finally {
-      setLoading(false);
+      setError(err.message || 'An error occurred');
+      // Placeholder for toast
     }
-  };
-
-  const resetForm = () => {
-    setEmail('');
-    setPassword('');
-    setError(null);
-    setLoading(false);
   };
 
   return (
     <Box>
-      <Stack spacing={2}>
-        <TextField
-          type="email"
-          label="Email"
-          variant="outlined"
-          fullWidth
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <TextField
-          type="password"
-          label="Password"
-          variant="outlined"
-          fullWidth
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Stack spacing={2}>
+          <TextField
+            label="Email"
+            fullWidth
+            {...formRegister('email')}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+          />
+          <TextField
+            label="Password"
+            type="password"
+            fullWidth
+            {...formRegister('password')}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+          />
 
-        {error && <Alert severity="error">{error}</Alert>}
+          {error && (
+            <Typography variant="body2" color="error" align="center" sx={{ mt: 1 }}>
+              {error}
+            </Typography>
+          )}
 
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={handleSubmit}
-          disabled={loading}
-        >
-          {isRegister ? 'Sign Up' : 'Log In'}
-        </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            disabled={isSubmitting}
+          >
+            {isRegister ? 'Sign Up' : 'Log In'}
+          </Button>
 
-        <Typography
-          variant="body2"
-          align="center"
-          sx={{ cursor: 'pointer', mt: 1 }}
-          onClick={() => setIsRegister(!isRegister)}
-        >
-          {isRegister ? 'Already have an account? Log in' : "Don't have an account? Sign up"}
-        </Typography>
-      </Stack>
+          <Typography
+            variant="body2"
+            align="center"
+            sx={{ cursor: 'pointer', mt: 1 }}
+            onClick={() => setIsRegister(!isRegister)}
+          >
+            {isRegister ? 'Already have an account? Log in' : "Don't have an account? Sign up"}
+          </Typography>
+        </Stack>
+      </form>
     </Box>
   );
 };
