@@ -1,7 +1,8 @@
-import { TextField, Button, Box } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useCreatePost } from '../../hooks/useCreatePost.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
+import { toast } from '../../utils/toast.ts';
 
 export default function PostCreator() {
   const { user } = useAuthStore();
@@ -9,13 +10,21 @@ export default function PostCreator() {
   const [content, setContent] = useState('');
 
   const handleSubmit = async () => {
-    if (!content.trim() || !user?.id) return;
-
+    if (!content.trim() || !user?.id || content.trim().length < 5) {
+      toast.error('Post content must be at least 5 characters long.');
+      return;
+    }
     createPostMutation.mutate(
       { content, user_id: user.id },
       {
         onSuccess: () => setContent(''),
-        onError: (error) => console.error('Error creating post:', error),
+        onError: (error: any) => {
+          if (error.message.includes('row-level security')) {
+            toast.error('You’re posting too fast. Please wait a moment.');
+          } else {
+            toast.error('Failed to create post. Try again later.');
+          }
+        },
       },
     );
   };
