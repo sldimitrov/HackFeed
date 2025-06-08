@@ -4,7 +4,7 @@ import type { Post } from '../types/post.ts';
 export default class PostsService {
   static async list(): Promise<Post[]> {
     const { data, error } = await supabase
-      .from('posts_with_data')
+      .from('posts_extended')
       .select('*')
       .order('created_at', { ascending: false });
 
