@@ -9,6 +9,7 @@ import { useUserProfile } from '../../hooks/useProfile.ts';
 import { defaultProfile } from '../../contants/profile.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
 import { Background } from '../../components/base/Background.tsx';
+import NoPosts from "../../components/Post/NoPosts.tsx";
 
 export function Feed() {
   const theme = useTheme();
@@ -48,18 +49,14 @@ export function Feed() {
 
           <Box flexGrow={1} width="100%">
             <PostCreator />
-            {!isLoading ? (
-              posts ? (
-                posts.map((post: Post) => <PostCard key={post.id} post={post} />)
-              ) : (
+            {isLoading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
                   <CircularProgress />
                 </Box>
-              )
+            ) : posts && posts.length === 0 ? (
+                <NoPosts message="There are no posts to show yet." />
             ) : (
-              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                <CircularProgress />
-              </Box>
+                posts?.map((post: Post) => <PostCard key={post.id} post={post} />)
             )}
           </Box>
         </Box>
