@@ -10,7 +10,7 @@ import { useUserProfile } from '../../hooks/useProfile.ts';
 import { useUserPosts } from '../../hooks/usePosts.ts';
 import NoPosts from '../../components/Post/NoPosts.tsx';
 import type { Post } from '../../types/post.ts';
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
 import { Background } from '../../components/base/Background.tsx';
 import { predefinedAvatars } from '../../contants/predefinedAvatars.ts';
@@ -21,6 +21,7 @@ export function UserProfile() {
   const { user } = useAuthStore();
   const { data: profile, isLoading } = useUserProfile(userId);
   const { data: posts, isLoading: loadingPosts } = useUserPosts(userId || '');
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState({ name: '', title: '', avatar_url: '' });
   const [editMode, setEditMode] = useState(false);
@@ -48,6 +49,11 @@ export function UserProfile() {
       console.error('User ID is not defined');
     }
   };
+
+  const handleLogout = async () => {
+    logout();
+    navigate('/auth');
+  }
 
   const handleSaveWithData = async (data: typeof formData) => {
     if (userId) {
@@ -111,7 +117,7 @@ export function UserProfile() {
                   <EditIcon />
                 </IconButton>
               )}
-              <IconButton onClick={logout} color="error">
+              <IconButton onClick={handleLogout} color="error">
                 <LogoutIcon />
               </IconButton>
             </Box>

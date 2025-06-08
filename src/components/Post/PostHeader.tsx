@@ -21,7 +21,7 @@ export default function PostHeader({
 
   const handleProfileClick = () => {
     if (id && name) {
-      navigate(`/profile/${id}/${slugify(name)}`, { state: { userId: id } });
+      navigate(`/profile/${id}/${slugify(name || 'user')}`, { state: { userId: id } });
     }
   };
 

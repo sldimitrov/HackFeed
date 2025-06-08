@@ -23,7 +23,7 @@ const Header = () => {
 
   const handleProfile = () => {
     handleCloseMenu();
-    navigate(`/profile/${user?.id}/${slugify(profile?.name)}`, { state: { userId: user?.id } });
+    navigate(`/profile/${user?.id}/${slugify(profile?.name || 'user')}`, { state: { userId: user?.id } });
   };
 
   const handleLogout = async () => {
