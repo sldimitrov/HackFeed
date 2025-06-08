@@ -10,7 +10,7 @@ import { useUserProfile } from '../../hooks/useProfile.ts';
 import { useUserPosts } from '../../hooks/usePosts.ts';
 import NoPosts from '../../components/Post/NoPosts.tsx';
 import type { Post } from '../../types/post.ts';
-import {useNavigate, useParams} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
 import { Background } from '../../components/base/Background.tsx';
 import { predefinedAvatars } from '../../contants/predefinedAvatars.ts';
@@ -21,7 +21,7 @@ export function UserProfile() {
   const { user } = useAuthStore();
   const { data: profile, isLoading } = useUserProfile(userId);
   const { data: posts, isLoading: loadingPosts } = useUserPosts(userId || '');
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({ name: '', title: '', avatar_url: '' });
   const [editMode, setEditMode] = useState(false);
@@ -53,7 +53,7 @@ export function UserProfile() {
   const handleLogout = async () => {
     logout();
     navigate('/auth');
-  }
+  };
 
   const handleSaveWithData = async (data: typeof formData) => {
     if (userId) {
@@ -125,7 +125,11 @@ export function UserProfile() {
         </Box>
 
         <Box display="flex" justifyContent="center" my={3}>
-          <Avatar src={formData.avatar_url || defaultAvatar} sx={{ width: 100, height: 100 }} alt="Profile Avatar" />
+          <Avatar
+            src={formData.avatar_url || defaultAvatar}
+            sx={{ width: 100, height: 100 }}
+            alt="Profile Avatar"
+          />
         </Box>
 
         <TextField

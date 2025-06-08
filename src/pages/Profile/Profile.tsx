@@ -1,4 +1,3 @@
-// src/pages/Profile/Profile.tsx
 import {
   Avatar,
   Box,

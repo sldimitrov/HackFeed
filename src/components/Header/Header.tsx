@@ -23,7 +23,9 @@ const Header = () => {
 
   const handleProfile = () => {
     handleCloseMenu();
-    navigate(`/profile/${user?.id}/${slugify(profile?.name || 'user')}`, { state: { userId: user?.id } });
+    navigate(`/profile/${user?.id}/${slugify(profile?.name || 'user')}`, {
+      state: { userId: user?.id },
+    });
   };
 
   const handleLogout = async () => {
@@ -51,10 +53,10 @@ const Header = () => {
         <Box>
           {user && (
             <>
-              { profile && (
-                  <IconButton onClick={handleOpenMenu}>
-                    <Avatar src={profile?.avatar_url || defaultAvatar} alt="Profile Avatar" />
-                  </IconButton>
+              {profile && (
+                <IconButton onClick={handleOpenMenu}>
+                  <Avatar src={profile?.avatar_url || defaultAvatar} alt="Profile Avatar" />
+                </IconButton>
               )}
 
               <Menu
