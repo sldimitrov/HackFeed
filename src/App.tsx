@@ -6,7 +6,7 @@ import { useAuthStore } from './store/useAuthStore.ts';
 import './index.css';
 import type { JSX } from 'react';
 import { Box, CircularProgress } from '@mui/material';
-import ScrollToTop from './components/routing/ScrollToTop.tsx';
+import ScrollToTop from './components/Routing/ScrollToTop.tsx';
 import { UserProfile } from './pages/Profile/UserProfile.tsx';
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {

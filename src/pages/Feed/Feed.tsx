@@ -8,7 +8,7 @@ import { usePosts } from '../../hooks/usePosts.ts';
 import { useUserProfile } from '../../hooks/useProfile.ts';
 import { defaultProfile } from '../../contants/profile.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
-import { Background } from '../../components/base/Background.tsx';
+import { Background } from '../../components/Base/Background.tsx';
 import NoPosts from '../../components/Post/NoPosts.tsx';
 
 export function Feed() {
