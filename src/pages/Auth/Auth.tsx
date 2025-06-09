@@ -2,7 +2,7 @@ import { Box, Container, Paper, Typography } from '@mui/material';
 import { AuthForm } from './AuthForm';
 import hacksoftLogo from '../../assets/hacksoftLogo.png';
 import { useState } from 'react';
-import { Background } from '../../components/base/Background.tsx';
+import { Background } from '../../components/Base/Background.tsx';
 
 const Auth = () => {
   const [isRegister, setIsRegister] = useState(false);

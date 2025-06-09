@@ -12,7 +12,7 @@ import NoPosts from '../../components/Post/NoPosts.tsx';
 import type { Post } from '../../types/post.ts';
 import { useNavigate, useParams } from 'react-router-dom';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
-import { Background } from '../../components/base/Background.tsx';
+import { Background } from '../../components/Base/Background.tsx';
 import { predefinedAvatars } from '../../contants/predefinedAvatars.ts';
 
 export function UserProfile() {

@@ -15,7 +15,7 @@ import { useAuthStore } from '../../store/useAuthStore';
 import { useUserProfile } from '../../hooks/useProfile';
 import ProfileService from '../../services/profileService';
 import { defaultProfile } from '../../contants/profile';
-import { Background } from '../../components/base/Background';
+import { Background } from '../../components/Base/Background';
 
 export default function ProfilePage() {
   const { user, logout } = useAuthStore();
