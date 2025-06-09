@@ -11,6 +11,8 @@ import PostContent from './PostContent.tsx';
 import PostActions from './PostActions.tsx';
 import PostMeta from './PostMeta.tsx';
 import ConfirmDialog from '../Base/ConfirmDialog.tsx';
+import { toast } from '../../utils/toast.ts';
+import { TOAST_MESSAGES } from '../../contants/toastMessages.ts';
 
 export default function PostCard({ post }: PostCardProps) {
   const { user } = useAuthStore();
@@ -37,8 +39,12 @@ export default function PostCard({ post }: PostCardProps) {
 
   const handleShare = async (postId: number) => {
     if (!user) return;
-    await sharePost.mutateAsync({ post_id: postId, user_id: user.id });
-    // TODO add a toast notification
+    try {
+      await sharePost.mutateAsync({ post_id: postId, user_id: user.id });
+      toast.success(TOAST_MESSAGES.POST_SHARE_SUCCESS);
+    } catch (error) {
+      toast.error(TOAST_MESSAGES.ERROR_GENERIC);
+    }
   };
 
   const handleDelete = () => {
@@ -46,7 +52,12 @@ export default function PostCard({ post }: PostCardProps) {
   };
 
   const handleConfirmDelete = () => {
-    deletePost.mutate(post.id);
+    try {
+      deletePost.mutate(post.id);
+      toast.success(TOAST_MESSAGES.POST_DELETE_SUCCESS);
+    } catch (error) {
+      toast.error(TOAST_MESSAGES.ERROR_GENERIC);
+    }
     setDeleteDialogOpen(false);
   };
 

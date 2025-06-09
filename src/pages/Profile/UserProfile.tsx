@@ -14,6 +14,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
 import { Background } from '../../components/Base/Background.tsx';
 import { predefinedAvatars } from '../../contants/predefinedAvatars.ts';
+import KEYS from '../../contants/keyCodes.ts';
+import { TOAST_MESSAGES } from '../../contants/toastMessages.ts';
+import { toast } from '../../utils/toast.ts';
 
 export function UserProfile() {
   const { logout } = useAuthStore();
@@ -44,6 +47,7 @@ export function UserProfile() {
   const handleSave = async () => {
     if (userId) {
       await ProfileService.updateProfile(userId, formData);
+      toast.success(TOAST_MESSAGES.PROFILE_UPDATE_SUCCESS);
       setEditMode(false);
     } else {
       console.error('User ID is not defined');
@@ -57,13 +61,18 @@ export function UserProfile() {
 
   const handleSaveWithData = async (data: typeof formData) => {
     if (userId) {
-      await ProfileService.updateProfile(userId, data);
+      try {
+        await ProfileService.updateProfile(userId, data);
+        toast.success(TOAST_MESSAGES.PROFILE_UPDATE_SUCCESS);
+      } catch (error) {
+        toast.error(TOAST_MESSAGES.ERROR_GENERIC);
+      }
       setEditMode(false);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === KEYS.ENTER) {
       e.preventDefault();
       handleSave();
     }

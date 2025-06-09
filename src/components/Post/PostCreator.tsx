@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useCreatePost } from '../../hooks/useCreatePost.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
 import { toast } from '../../utils/toast.ts';
+import { TOAST_MESSAGES } from '../../contants/toastMessages.ts';
+import KEYS from '../../contants/keyCodes.ts';
 
 export default function PostCreator() {
   const { user } = useAuthStore();
@@ -11,26 +13,25 @@ export default function PostCreator() {
 
   const handleSubmit = async () => {
     if (!content.trim() || !user?.id || content.trim().length < 5) {
-      toast.error('Post content must be at least 5 characters long.');
+      toast.error(TOAST_MESSAGES.POST_CREATE_CONTENT_TOO_SHORT);
       return;
     }
-    createPostMutation.mutate(
-      { content, user_id: user.id },
-      {
-        onSuccess: () => setContent(''),
-        onError: (error: any) => {
-          if (error.message.includes('row-level security')) {
-            toast.error('You’re posting too fast. Please wait a moment.');
-          } else {
-            toast.error('Failed to create post. Try again later.');
-          }
-        },
-      },
-    );
+
+    try {
+      await createPostMutation.mutateAsync({ content, user_id: user.id });
+      toast.success(TOAST_MESSAGES.POST_CREATE_SUCCESS);
+      setContent('');
+    } catch (error: any) {
+      if (error.message.includes('row-level security')) {
+        toast.error(TOAST_MESSAGES.POST_CREATE_TOO_FAST);
+      } else {
+        toast.error(TOAST_MESSAGES.POST_CREATE_FAILURE);
+      }
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === KEYS.ENTER && !e.shiftKey) {
       e.preventDefault();
       handleSubmit();
     }
