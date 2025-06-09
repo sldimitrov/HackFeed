@@ -177,9 +177,10 @@ Views: `feed_posts_shared` (includes shared_by_id, shared_by_name, shared_by_ava
 
 ## 📷 Screenshots
 
-| Feed View | User Profile |
-|-----------|--------------|
-| ![Feed Screenshot](./screenshots/feed.png) | ![Profile Screenshot](./screenshots/profile.png) |
+| Feed View                     | User Profile                  |
+|------------------------------|-------------------------------|
+| ![Feed Screenshot](https://github.com/user-attachments/assets/3eadccc1-9c6a-4bca-8070-49e9a36a637d) | ![Profile Screenshot](https://github.com/user-attachments/assets/748d915a-6863-4c24-97f0-5be2998f37b2) |
+
 
 ## 🌐 Live Demo
 
