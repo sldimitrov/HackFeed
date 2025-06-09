@@ -23,7 +23,8 @@ export function useDeletePost() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (post_id: number) => PostsService.delete(String(post_id)),
+    mutationFn: ({ post_id, shared }: { post_id: number; shared: boolean }) =>
+      PostsService.delete(String(post_id), shared),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_POSTS] });
     },

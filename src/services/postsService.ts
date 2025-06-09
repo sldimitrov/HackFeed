@@ -35,9 +35,13 @@ export default class PostsService {
     if (error) throw new Error(error.message);
   }
 
-  static async delete(id: string): Promise<void> {
-    const { error } = await supabase.from('posts').delete().eq('id', id);
-
-    if (error) throw new Error(error.message);
+  static async delete(id: string, shared: boolean = false): Promise<void> {
+    if (!shared) {
+      const { error } = await supabase.from('posts').delete().eq('id', id);
+      if (error) throw new Error(error.message);
+    } else {
+      const { error } = await supabase.from('shares').delete().eq('post_id', id);
+      if (error) throw new Error(error.message);
+    }
   }
 }

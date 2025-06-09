@@ -23,6 +23,8 @@ export default function PostCard({ post }: PostCardProps) {
 
   const sharePost = useSharePost();
   const deletePost = useDeletePost();
+  const showDelete =
+    (user?.id === post.user_id && !post.shared_by_id) || user?.id === post.shared_by_id;
   const isLong = post.content.length > 100;
 
   const handleLike = async () => {
@@ -53,7 +55,7 @@ export default function PostCard({ post }: PostCardProps) {
 
   const handleConfirmDelete = () => {
     try {
-      deletePost.mutate(post.id);
+      deletePost.mutate({ post_id: post.id, shared: post.shared });
       toast.success(TOAST_MESSAGES.POST_DELETE_SUCCESS);
     } catch (error) {
       toast.error(TOAST_MESSAGES.ERROR_GENERIC);
@@ -97,7 +99,7 @@ export default function PostCard({ post }: PostCardProps) {
         onLike={handleLike}
         onShare={() => handleShare(post.id)}
         onDelete={handleDelete}
-        showDelete={user?.id === post.user_id}
+        showDelete={showDelete}
       />
 
       <ConfirmDialog
