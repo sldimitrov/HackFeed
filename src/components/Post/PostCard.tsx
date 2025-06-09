@@ -10,12 +10,14 @@ import SharedPostContent from './SharedPostContent.tsx';
 import PostContent from './PostContent.tsx';
 import PostActions from './PostActions.tsx';
 import PostMeta from './PostMeta.tsx';
+import ConfirmDialog from '../Base/ConfirmDialog.tsx';
 
 export default function PostCard({ post }: PostCardProps) {
   const { user } = useAuthStore();
   const [liked, setLiked] = useState(post.liked_by_current_user || false);
   const [likeCount, setLikeCount] = useState(0);
   const [expanded, setExpanded] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const sharePost = useSharePost();
   const deletePost = useDeletePost();
@@ -40,9 +42,12 @@ export default function PostCard({ post }: PostCardProps) {
   };
 
   const handleDelete = () => {
-    if (confirm('Are you sure you want to delete this post?')) {
-      deletePost.mutate(post.id);
-    }
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    deletePost.mutate(post.id);
+    setDeleteDialogOpen(false);
   };
 
   useEffect(() => {
@@ -82,6 +87,14 @@ export default function PostCard({ post }: PostCardProps) {
         onShare={() => handleShare(post.id)}
         onDelete={handleDelete}
         showDelete={user?.id === post.user_id}
+      />
+
+      <ConfirmDialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete this post?"
+        content="This action cannot be undone. Are you sure you want to proceed?"
       />
     </Card>
   );

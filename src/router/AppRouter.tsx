@@ -1,4 +1,3 @@
-// src/router/AppRouter.tsx
 import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import Header from '../components/Header/Header';
 import Feed from '../pages/Feed/Feed';
