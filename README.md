@@ -12,6 +12,18 @@ HackFeed is a full-stack feed application built with **React** and **Supabase**,
 
 ---
 
+## 📚 Table of Contents
+
+- [Tech Stack & Dependencies](#-tech-stack--dependencies)
+- [Features](#-features)
+- [Project Architecture & Technical Decisions](#-project-architecture--technical-decisions)
+- [Getting Started](#-getting-started)
+- [Project Goals](#-project-goals)
+- [Screenshots](#-screenshots)
+- [Live Demo](#-live-demo)
+- [Author](#-author)
+
+
 ## 📦 Tech Stack & Dependencies
 
 ### 🧩 Frontend Framework & Styling
