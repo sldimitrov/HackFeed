@@ -10,12 +10,16 @@ import SharedPostContent from './SharedPostContent.tsx';
 import PostContent from './PostContent.tsx';
 import PostActions from './PostActions.tsx';
 import PostMeta from './PostMeta.tsx';
+import ConfirmDialog from '../Base/ConfirmDialog.tsx';
+import { toast } from '../../utils/toast.ts';
+import { TOAST_MESSAGES } from '../../contants/toastMessages.ts';
 
 export default function PostCard({ post }: PostCardProps) {
   const { user } = useAuthStore();
   const [liked, setLiked] = useState(post.liked_by_current_user || false);
   const [likeCount, setLikeCount] = useState(0);
   const [expanded, setExpanded] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const sharePost = useSharePost();
   const deletePost = useDeletePost();
@@ -35,14 +39,26 @@ export default function PostCard({ post }: PostCardProps) {
 
   const handleShare = async (postId: number) => {
     if (!user) return;
-    await sharePost.mutateAsync({ post_id: postId, user_id: user.id });
-    // TODO add a toast notification
+    try {
+      await sharePost.mutateAsync({ post_id: postId, user_id: user.id });
+      toast.success(TOAST_MESSAGES.POST_SHARE_SUCCESS);
+    } catch (error) {
+      toast.error(TOAST_MESSAGES.ERROR_GENERIC);
+    }
   };
 
   const handleDelete = () => {
-    if (confirm('Are you sure you want to delete this post?')) {
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    try {
       deletePost.mutate(post.id);
+      toast.success(TOAST_MESSAGES.POST_DELETE_SUCCESS);
+    } catch (error) {
+      toast.error(TOAST_MESSAGES.ERROR_GENERIC);
     }
+    setDeleteDialogOpen(false);
   };
 
   useEffect(() => {
@@ -82,6 +98,14 @@ export default function PostCard({ post }: PostCardProps) {
         onShare={() => handleShare(post.id)}
         onDelete={handleDelete}
         showDelete={user?.id === post.user_id}
+      />
+
+      <ConfirmDialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete this post?"
+        content="This action cannot be undone. Are you sure you want to proceed?"
       />
     </Card>
   );

@@ -16,27 +16,37 @@ export const AuthForm = ({ isRegister, setIsRegister }: AuthFormProps) => {
   const {
     register: formRegister,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm<AuthFormData>({
     resolver: yupResolver(authSchema),
   });
 
   const onSubmit = async (data: AuthFormData) => {
+    setError(null); // Clear previous error
+
     try {
       if (isRegister) {
         await register(data.email, data.password);
         toast.success(TOAST_MESSAGES.REGISTER_SUCCESS);
-        reset();
-        setIsRegister(false);
       } else {
         await login(data.email, data.password);
         toast.success(TOAST_MESSAGES.LOGIN_SUCCESS);
-        navigate('/');
       }
+
+      navigate('/');
     } catch (err: any) {
-      setError(err.message || 'An error occurred');
-      // Placeholder for toast
+      const errorMessage = err?.message || 'An unexpected error occurred';
+
+      // Set inline form error
+      setError(errorMessage);
+
+      // Show toast only if it’s not a typical field error (optional)
+      if (
+        !errorMessage.toLowerCase().includes('email') &&
+        !errorMessage.toLowerCase().includes('password')
+      ) {
+        toast.error(errorMessage);
+      }
     }
   };
 
