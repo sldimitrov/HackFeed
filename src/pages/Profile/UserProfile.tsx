@@ -17,15 +17,21 @@ import { predefinedAvatars } from '../../contants/predefinedAvatars.ts';
 import KEYS from '../../contants/keyCodes.ts';
 import { TOAST_MESSAGES } from '../../contants/toastMessages.ts';
 import { toast } from '../../utils/toast.ts';
+import { ImageUploader } from '../../services/uploadPhoto.ts';
 
 export function UserProfile() {
   const { logout } = useAuthStore();
   const { userId } = useParams();
   const { user } = useAuthStore();
   const { data: profile, isLoading } = useUserProfile(userId);
-  const { data: posts, isLoading: loadingPosts } = useUserPosts(userId || '');
+  const {
+    data: posts,
+    isLoading: loadingPosts,
+    refetch: refetchPosts,
+  } = useUserPosts(userId || '');
   const navigate = useNavigate();
 
+  const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({ name: '', title: '', avatar_url: '' });
   const [editMode, setEditMode] = useState(false);
   const editable = user?.id === userId;
@@ -64,6 +70,7 @@ export function UserProfile() {
       try {
         await ProfileService.updateProfile(userId, data);
         toast.success(TOAST_MESSAGES.PROFILE_UPDATE_SUCCESS);
+        refetchPosts(); // Refresh posts after update
       } catch (error) {
         toast.error(TOAST_MESSAGES.ERROR_GENERIC);
       }
@@ -134,11 +141,13 @@ export function UserProfile() {
         </Box>
 
         <Box display="flex" justifyContent="center" my={3}>
-          <Avatar
-            src={formData.avatar_url || defaultAvatar}
-            sx={{ width: 100, height: 100 }}
-            alt="Profile Avatar"
-          />
+          {!isLoading && (
+            <Avatar
+              src={formData.avatar_url || defaultAvatar}
+              sx={{ width: 100, height: 100 }}
+              alt="Profile Avatar"
+            />
+          )}
         </Box>
 
         <TextField
@@ -199,6 +208,51 @@ export function UserProfile() {
                 }}
               />
             ))}
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              id="upload-avatar"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+
+                setUploading(true); // 🔄 Start spinner
+
+                const uploader = new ImageUploader();
+                const uploadedUrl = await uploader.upload(file);
+
+                if (uploadedUrl) {
+                  setFormData((prev) => {
+                    const updated = { ...prev, avatar_url: uploadedUrl };
+                    handleSaveWithData(updated);
+                    return updated;
+                  });
+                }
+
+                setUploading(false); // ✅ Done
+              }}
+            />
+
+            <label htmlFor="upload-avatar">
+              <Avatar
+                sx={{
+                  width: 40,
+                  height: 40,
+                  border: '2px dashed gray',
+                  cursor: 'pointer',
+                  display: 'flex', // 👈 key to centering content
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: '0.2s',
+                  fontSize: 24, // better size for '+'
+                  color: 'gray', // optional: style the plus
+                }}
+                alt="Upload Avatar"
+              >
+                {uploading ? <CircularProgress size={20} /> : '+'}
+              </Avatar>
+            </label>
           </Box>
         )}
 
