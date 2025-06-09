@@ -23,8 +23,8 @@ export default function PostActions({
       {/* Like */}
       <Box display="flex" alignItems="center" gap={1}>
         <IconButton onClick={onLike}>
-          <ThumbUpOffAltIcon sx={{ marginLeft: '5px' }} />
-          <Typography variant="caption" sx={{ marginTop: '4px', paddingLeft: '3px' }}>
+          <ThumbUpOffAltIcon sx={{ marginLeft: '5px', color: `${liked && 'orange'}` }} />
+          <Typography variant="caption" sx={{ marginTop: '2px', paddingLeft: '4px' }}>
             {liked ? 'Liked' : 'Like'}
           </Typography>
         </IconButton>

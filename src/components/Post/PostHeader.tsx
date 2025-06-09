@@ -3,6 +3,7 @@ import { getTimeAgo } from '../../utils/timeAgo.ts';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
 import { useNavigate } from 'react-router-dom';
 import { slugify } from '../../utils/slugify.ts';
+import { defaultProfile } from '../../contants/profile.ts';
 
 export default function PostHeader({
   id,
@@ -20,7 +21,7 @@ export default function PostHeader({
   const navigate = useNavigate();
 
   const handleProfileClick = () => {
-    if (id && name) {
+    if (id) {
       navigate(`/profile/${id}/${slugify(name || 'user')}`, { state: { userId: id } });
     }
   };
@@ -38,10 +39,10 @@ export default function PostHeader({
       title={
         <Box>
           <Typography variant="subtitle1" fontWeight="bold">
-            {name}
+            {name || defaultProfile.name}
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            {title}
+            {title || defaultProfile.title}
           </Typography>
         </Box>
       }

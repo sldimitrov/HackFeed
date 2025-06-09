@@ -104,7 +104,7 @@ export function UserProfile() {
           flexWrap="wrap"
         >
           <Typography variant="h5" fontSize={{ xs: '1.25rem', sm: '1.5rem' }}>
-            {editable ? 'My Profile' : `${profile?.name}'s Profile`}
+            {editable ? 'My Profile' : `${profile?.name || 'Hacker'}'s Profile`}
           </Typography>
           {editable && (
             <Box>
