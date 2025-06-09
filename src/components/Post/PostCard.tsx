@@ -12,7 +12,7 @@ import PostActions from './PostActions.tsx';
 import PostMeta from './PostMeta.tsx';
 import ConfirmDialog from '../Base/ConfirmDialog.tsx';
 import { toast } from '../../utils/toast.ts';
-import { TOAST_MESSAGES } from '../../contants/toastMessages.ts';
+import { TOAST_MESSAGES, TOAST_TEMPLATES } from '../../contants/toastMessages.ts';
 
 export default function PostCard({ post }: PostCardProps) {
   const { user } = useAuthStore();
@@ -20,9 +20,13 @@ export default function PostCard({ post }: PostCardProps) {
   const [likeCount, setLikeCount] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [lastSharedTimes, setLastSharedTimes] = useState<{ [postId: number]: number }>({});
+  const COOLDOWN_MS = 1 * 60 * 1000;
 
   const sharePost = useSharePost();
   const deletePost = useDeletePost();
+  const showDelete =
+    (user?.id === post.user_id && !post.shared_by_id) || user?.id === post.shared_by_id;
   const isLong = post.content.length > 100;
 
   const handleLike = async () => {
@@ -39,8 +43,19 @@ export default function PostCard({ post }: PostCardProps) {
 
   const handleShare = async (postId: number) => {
     if (!user) return;
+
+    const now = Date.now();
+    const lastShared = lastSharedTimes[postId] || 0;
+
+    if (now - lastShared < COOLDOWN_MS) {
+      const remaining = Math.ceil((COOLDOWN_MS - (now - lastShared)) / 1000);
+      toast.info(TOAST_TEMPLATES.SHARE_COOLDOWN(remaining));
+      return;
+    }
+
     try {
       await sharePost.mutateAsync({ post_id: postId, user_id: user.id });
+      setLastSharedTimes((prev) => ({ ...prev, [postId]: now }));
       toast.success(TOAST_MESSAGES.POST_SHARE_SUCCESS);
     } catch (error) {
       toast.error(TOAST_MESSAGES.ERROR_GENERIC);
@@ -53,7 +68,7 @@ export default function PostCard({ post }: PostCardProps) {
 
   const handleConfirmDelete = () => {
     try {
-      deletePost.mutate(post.id);
+      deletePost.mutate({ post_id: post.id, shared: post.shared });
       toast.success(TOAST_MESSAGES.POST_DELETE_SUCCESS);
     } catch (error) {
       toast.error(TOAST_MESSAGES.ERROR_GENERIC);
@@ -97,7 +112,7 @@ export default function PostCard({ post }: PostCardProps) {
         onLike={handleLike}
         onShare={() => handleShare(post.id)}
         onDelete={handleDelete}
-        showDelete={user?.id === post.user_id}
+        showDelete={showDelete}
       />
 
       <ConfirmDialog

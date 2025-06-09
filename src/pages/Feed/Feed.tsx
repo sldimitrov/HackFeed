@@ -55,7 +55,13 @@ export function Feed() {
             ) : posts && posts.length === 0 ? (
               <NoPosts message="There are no posts to show yet." />
             ) : (
-              posts?.map((post: Post) => <PostCard key={post.id} post={post} />)
+              posts?.map((post: Post) => {
+                const isRepost = post.shared;
+
+                const key = isRepost ? `repost-${post.id}-${post.shared_by_id}` : `post-${post.id}`;
+
+                return <PostCard key={key} post={post} />;
+              })
             )}
           </Box>
         </Box>

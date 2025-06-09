@@ -22,3 +22,8 @@ export const TOAST_MESSAGES = {
   // Settings / Misc
   SETTINGS_SAVE_SUCCESS: 'Settings saved.',
 };
+
+// For dynamic messages with parameters
+export const TOAST_TEMPLATES = {
+  SHARE_COOLDOWN: (seconds: number) => `You can share again in ${seconds} seconds.`,
+};
