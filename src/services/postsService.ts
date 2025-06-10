@@ -16,7 +16,7 @@ export default class PostsService {
     const { data, error } = await supabase
       .from('feed_posts_shared')
       .select('*')
-      .eq('user_id', user_id)
+      .or(`and(user_id.eq.${user_id},shared_by_id.is.null),shared_by_id.eq.${user_id}`)
       .order('created_at', { ascending: false });
 
     if (error) throw new Error(error.message);
