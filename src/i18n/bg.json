@@ -1,0 +1,17 @@
+{
+  "profile": {
+    "header": {
+      "myProfile": "Моят профил",
+      "userProfile": "Профилът на {name}"
+    },
+    "fields": {
+      "name": "Име",
+      "title": "Заглавие",
+      "avatarUrl": "URL на аватар"
+    },
+    "postsSection": {
+      "title": "Публикации",
+      "noPosts": "Все още няма публикации за показване."
+    }
+  }
+}

@@ -19,9 +19,6 @@ const UserProfileCard = ({
     navigate(`/profile/${id}/${slugify(name)}`, { state: { userId: id } });
   };
 
-  console.log('likes', likes);
-  console.log('posts', posts);
-
   return (
     <Card sx={{ borderRadius: 1, p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
       {/* Header: Avatar + Info + Edit */}

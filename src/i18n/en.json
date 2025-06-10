@@ -1,0 +1,24 @@
+{
+  "profile": {
+    "header": {
+      "myProfile": "My Profile",
+      "userProfile": "{name}'s Profile",
+      "language": {
+        "en": "EN",
+        "bg": "BG"
+      }
+    },
+    "avatarBlock": {
+      "upload": "+"
+    },
+    "fields": {
+      "name": "Name",
+      "title": "Title",
+      "avatarUrl": "Avatar URL"
+    },
+    "postsSection": {
+      "title": "Posts",
+      "noPosts": "There are no posts to show yet."
+    }
+  }
+}
