@@ -1,6 +1,4 @@
 import { useAuthStore } from '../../store/useAuthStore.ts';
-import { useEffect, useState } from 'react';
-import ProfileService from '../../services/profileService.ts';
 import { Avatar, Box, CircularProgress, IconButton, TextField, Typography } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
@@ -14,75 +12,57 @@ import { useNavigate, useParams } from 'react-router-dom';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
 import { Background } from '../../components/Base/Background.tsx';
 import { predefinedAvatars } from '../../contants/predefinedAvatars.ts';
-import KEYS from '../../contants/keyCodes.ts';
-import { TOAST_MESSAGES } from '../../contants/toastMessages.ts';
-import { toast } from '../../utils/toast.ts';
-import { ImageUploader } from '../../services/uploadPhoto.ts';
+import { useProfileForm } from '../../hooks/useProfileForm.ts';
+import { useAvatarUpload } from '../../hooks/useAvatarUpload.ts';
 
 export function UserProfile() {
-  const { logout } = useAuthStore();
+  const { logout, user } = useAuthStore();
   const { userId } = useParams();
-  const { user } = useAuthStore();
+  const navigate = useNavigate();
+
   const { data: profile, isLoading } = useUserProfile(userId);
   const {
     data: posts,
     isLoading: loadingPosts,
     refetch: refetchPosts,
   } = useUserPosts(userId || '');
-  const navigate = useNavigate();
 
-  const [uploading, setUploading] = useState(false);
-  const [formData, setFormData] = useState({ name: '', title: '', avatar_url: '' });
-  const [editMode, setEditMode] = useState(false);
   const editable = user?.id === userId;
 
-  useEffect(() => {
-    if (profile) {
-      setFormData({
-        name: profile.name,
-        title: profile.title,
-        avatar_url: profile.avatar_url,
-      });
-    }
-  }, [profile]);
+  const {
+    formData,
+    setFormData,
+    editMode,
+    setEditMode,
+    saving,
+    handleChange,
+    handleSave,
+    handleKeyDown,
+  } = useProfileForm({
+    profile,
+    userId,
+    onSaveSuccess: () => {
+      refetchPosts(); // Refresh posts after profile update
+    },
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const { uploading, handleUpload } = useAvatarUpload({
+    onUploadComplete: (uploadedUrl: string) => {
+      const updatedData = { ...formData, avatar_url: uploadedUrl };
+      setFormData(updatedData);
+      handleSave(updatedData); // Auto-save after upload
+    },
+  });
 
-  const handleSave = async () => {
-    if (userId) {
-      await ProfileService.updateProfile(userId, formData);
-      toast.success(TOAST_MESSAGES.PROFILE_UPDATE_SUCCESS);
-      setEditMode(false);
-    } else {
-      console.error('User ID is not defined');
-    }
-  };
-
-  const handleLogout = async () => {
+  const handleLogout = async (): Promise<void> => {
     logout();
     navigate('/auth');
   };
 
-  const handleSaveWithData = async (data: typeof formData) => {
-    if (userId) {
-      try {
-        await ProfileService.updateProfile(userId, data);
-        toast.success(TOAST_MESSAGES.PROFILE_UPDATE_SUCCESS);
-        refetchPosts(); // Refresh posts after update
-      } catch (error) {
-        toast.error(TOAST_MESSAGES.ERROR_GENERIC);
-      }
-      setEditMode(false);
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === KEYS.ENTER) {
-      e.preventDefault();
-      handleSave();
-    }
+  const handlePredefinedAvatarClick = (url: string): void => {
+    const updatedData = { ...formData, avatar_url: url };
+    setFormData(updatedData);
+    handleSave(updatedData); // Auto-save after selection
   };
 
   if (isLoading) return <CircularProgress />;
@@ -125,8 +105,8 @@ export function UserProfile() {
           {editable && (
             <Box>
               {editMode ? (
-                <IconButton onClick={handleSave}>
-                  <SaveIcon />
+                <IconButton onClick={() => handleSave()} disabled={saving}>
+                  {saving ? <CircularProgress size={20} /> : <SaveIcon />}
                 </IconButton>
               ) : (
                 <IconButton onClick={() => setEditMode(true)}>
@@ -198,40 +178,16 @@ export function UserProfile() {
                   transition: '0.2s',
                 }}
                 alt="Profile Avatar"
-                onClick={async () => {
-                  setFormData((prev) => {
-                    const updated = { ...prev, avatar_url: url };
-                    // Save immediately after setting
-                    handleSaveWithData(updated);
-                    return updated;
-                  });
-                }}
+                onClick={() => handlePredefinedAvatarClick(url)}
               />
             ))}
+
             <input
               type="file"
               accept="image/*"
               style={{ display: 'none' }}
               id="upload-avatar"
-              onChange={async (e) => {
-                const file = e.target.files?.[0];
-                if (!file) return;
-
-                setUploading(true); // 🔄 Start spinner
-
-                const uploader = new ImageUploader();
-                const uploadedUrl = await uploader.upload(file);
-
-                if (uploadedUrl) {
-                  setFormData((prev) => {
-                    const updated = { ...prev, avatar_url: uploadedUrl };
-                    handleSaveWithData(updated);
-                    return updated;
-                  });
-                }
-
-                setUploading(false); // ✅ Done
-              }}
+              onChange={handleUpload}
             />
 
             <label htmlFor="upload-avatar">
@@ -241,12 +197,12 @@ export function UserProfile() {
                   height: 40,
                   border: '2px dashed gray',
                   cursor: 'pointer',
-                  display: 'flex', // 👈 key to centering content
+                  display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   transition: '0.2s',
-                  fontSize: 24, // better size for '+'
-                  color: 'gray', // optional: style the plus
+                  fontSize: 24,
+                  color: 'gray',
                 }}
                 alt="Upload Avatar"
               >
