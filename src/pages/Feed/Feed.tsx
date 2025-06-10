@@ -10,6 +10,7 @@ import { defaultProfile } from '../../contants/profile.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
 import { Background } from '../../components/Base/Background.tsx';
 import NoPosts from '../../components/Post/NoPosts.tsx';
+import { useMemo } from 'react';
 
 export function Feed() {
   const theme = useTheme();
@@ -18,6 +19,25 @@ export function Feed() {
   const { user } = useAuthStore();
   const { data: posts, isLoading } = usePosts();
   const { data: profile } = useUserProfile(user?.id);
+
+  const { userPostsCount, totalUserLikes } = useMemo(() => {
+    let count = 0;
+    let likes = 0;
+
+    if (posts && user?.id) {
+      const postsForProfileCard = posts.filter((post: Post) => {
+        const isMyOriginalAndNotShared = post.user_id === user.id && post.shared_by_id === null;
+        const isSharedByMe = post.shared_by_id === user.id;
+
+        return isMyOriginalAndNotShared || isSharedByMe;
+      });
+
+      count = postsForProfileCard.length;
+      likes = postsForProfileCard.reduce((sum, post) => sum + (post.like_count || 0), 0);
+    }
+
+    return { userPostsCount: count, totalUserLikes: likes };
+  }, [posts, user?.id]);
 
   return (
     <Box position="relative" minHeight="100vh" bgcolor="#f7f7f7" sx={{ overflowX: 'hidden' }}>
@@ -40,8 +60,8 @@ export function Feed() {
                 name={profile?.name || defaultProfile.name}
                 title={profile?.title || defaultProfile.title}
                 avatar={profile?.avatar_url || defaultProfile.avatar_url}
-                likes={210}
-                posts={4}
+                likes={totalUserLikes}
+                posts={userPostsCount}
               />
             )}
           </Box>
