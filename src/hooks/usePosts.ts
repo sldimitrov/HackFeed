@@ -8,10 +8,9 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import type { Post } from '../types/post.ts';
+import { PAGE_SIZE } from '../contants/paginate.ts';
 
 export function useInfinitePosts() {
-  const PAGE_SIZE = 5;
-
   return useInfiniteQuery<Post[], Error, InfiniteData<Post[]>, string[], number>({
     queryKey: [QUERY_POSTS],
     queryFn: ({ pageParam = 0 }) => PostsService.list(pageParam, PAGE_SIZE),
