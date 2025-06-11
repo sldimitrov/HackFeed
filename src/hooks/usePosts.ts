@@ -8,6 +8,8 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import type { Post, UpdatePostPayload } from '../types/post.ts';
+import { MUTATION_TYPE } from '../contants/mutationType.ts';
+import type { MutationType } from '../types/mutation.ts';
 
 export function useInfinitePosts() {
   const PAGE_SIZE = 5;
@@ -29,17 +31,14 @@ export function useUserPosts(user_id: string) {
   });
 }
 
-export function useUpdatePost() {
+export function useUpdatePost(type: MutationType = MUTATION_TYPE.FEED_POST) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ id, content }: UpdatePostPayload) => PostsService.update(id, content),
     onSuccess: () => {
-      // Invalidate or refetch post list
-      queryClient.invalidateQueries({ queryKey: [QUERY_POSTS] });
-    },
-    onError: (error) => {
-      console.error('Failed to update post:', error);
+      const queryKey = type === MUTATION_TYPE.USER_POST ? QUERY_USER_POSTS : QUERY_POSTS;
+      queryClient.invalidateQueries({ queryKey: [queryKey] });
     },
   });
 }
