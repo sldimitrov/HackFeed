@@ -1,14 +1,24 @@
 import PostsService from '../services/postsService.ts';
 import { QUERY_POSTS, QUERY_USER_POSTS } from '../contants/queryKeys.ts';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  type InfiniteData,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import type { Post } from '../types/post.ts';
 
-export function usePosts(enabled = true) {
-  return useQuery({
+export function useInfinitePosts() {
+  const PAGE_SIZE = 5;
+
+  return useInfiniteQuery<Post[], Error, InfiniteData<Post[]>, string[], number>({
     queryKey: [QUERY_POSTS],
-    queryFn: () => PostsService.list(),
+    queryFn: ({ pageParam = 0 }) => PostsService.list(pageParam, PAGE_SIZE),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length < PAGE_SIZE ? undefined : allPages.length * PAGE_SIZE,
     staleTime: 10000,
-    enabled,
   });
 }
 

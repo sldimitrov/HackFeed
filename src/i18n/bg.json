@@ -18,6 +18,10 @@
       "posts": "Публикации"
     }
   },
+  "feed": {
+    "loadingMore": "Зареждане на още...",
+    "showMore": "Покажи още"
+  },
   "posts": {
     "actions": {
       "like": "Харесай",

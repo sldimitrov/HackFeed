@@ -1,10 +1,9 @@
-import { Box, CircularProgress, Container, useMediaQuery } from '@mui/material';
+import { Box, Button, CircularProgress, Container, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import UserProfileCard from '../../components/UserProfileCard/UserProfileCard.tsx';
 import type { Post } from '../../types/post.ts';
 import PostCreator from '../../components/Post/PostCreator.tsx';
 import PostCard from '../../components/Post/PostCard.tsx';
-import { usePosts } from '../../hooks/usePosts.ts';
 import { useUserProfile } from '../../hooks/useProfile.ts';
 import { defaultProfile } from '../../contants/profile.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
@@ -12,6 +11,7 @@ import { Background } from '../../components/Base/Background.tsx';
 import NoPosts from '../../components/Post/NoPosts.tsx';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useInfinitePosts } from '../../hooks/usePosts.ts';
 
 export function Feed() {
   const { t } = useTranslation();
@@ -19,8 +19,10 @@ export function Feed() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { user } = useAuthStore();
-  const { data: posts, isLoading } = usePosts();
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfinitePosts();
   const { data: profile } = useUserProfile(user?.id);
+
+  const posts = data?.pages.flat() ?? [];
 
   const { userPostsCount, totalUserLikes } = useMemo(() => {
     let count = 0;
@@ -35,7 +37,10 @@ export function Feed() {
       });
 
       count = postsForProfileCard.length;
-      likes = postsForProfileCard.reduce((sum, post) => sum + (post.like_count || 0), 0);
+      likes = postsForProfileCard.reduce(
+        (sum: number, post: Post) => sum + (post.like_count || 0),
+        0,
+      );
     }
 
     return { userPostsCount: count, totalUserLikes: likes };
@@ -70,6 +75,7 @@ export function Feed() {
 
           <Box flexGrow={1} width="100%">
             <PostCreator />
+
             {isLoading ? (
               <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
                 <CircularProgress />
@@ -77,13 +83,40 @@ export function Feed() {
             ) : posts && posts.length === 0 ? (
               <NoPosts message={t('profile.postsSection.noPosts')} />
             ) : (
-              posts?.map((post: Post) => {
+              posts.map((post: Post) => {
                 const isRepost = post.shared;
-
                 const key = isRepost ? `repost-${post.id}-${post.shared_by_id}` : `post-${post.id}`;
-
                 return <PostCard key={key} post={post} />;
               })
+            )}
+
+            {hasNextPage && (
+              <Box mt={2} display="flex" justifyContent="center">
+                <Button
+                  onClick={() => fetchNextPage()}
+                  disabled={isFetchingNextPage}
+                  variant="contained"
+                  color="warning"
+                  sx={{
+                    textTransform: 'capitalize',
+                    fontWeight: 500,
+                    px: 3,
+                    m: 0.5,
+                    fontSize: '0.875rem',
+                    borderRadius: 1,
+                    transition: 'all 0.2s ease-in-out',
+                    '&:hover': {
+                      backgroundColor: '#f57c00',
+                      boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+                    },
+                    '&:active': {
+                      transform: 'scale(0.98)',
+                    },
+                  }}
+                >
+                  {isFetchingNextPage ? t('feed.loadingMore') : t('feed.showMore')}
+                </Button>
+              </Box>
             )}
           </Box>
         </Box>
