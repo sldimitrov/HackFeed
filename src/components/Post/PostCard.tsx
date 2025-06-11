@@ -13,6 +13,7 @@ import PostMeta from './PostMeta.tsx';
 import ConfirmDialog from '../Base/ConfirmDialog.tsx';
 import { toast } from '../../utils/toast.ts';
 import { useTranslation } from 'react-i18next';
+import KEYS from '../../contants/keyCodes.ts';
 
 export default function PostCard({ post }: PostCardProps) {
   const { t } = useTranslation();
@@ -71,10 +72,10 @@ export default function PostCard({ post }: PostCardProps) {
 
     try {
       await updatePost.mutateAsync({ id: String(post.id), content: editedContent });
-      toast.success(t('posts.updateSuccess'));
+      toast.success(t('toast.posts.updateSuccess'));
       setEditing(false);
     } catch (error) {
-      toast.error(t('posts.updateError'));
+      toast.error(t('toast.posts.updateError'));
     }
   };
 
@@ -122,6 +123,12 @@ export default function PostCard({ post }: PostCardProps) {
               minRows={4}
               value={editedContent}
               onChange={(e) => setEditedContent(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === KEYS.ENTER && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSaveEdit();
+                }
+              }}
               variant="outlined"
               sx={{ mb: 1 }}
             />

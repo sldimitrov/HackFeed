@@ -27,11 +27,18 @@ export default function PostMeta({
 
   return (
     <Box
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      sx={{ marginBottom: '15px' }}
-      gap={1}
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        flexDirection: 'row',
+        marginBottom: '15px',
+        gap: 1,
+        '@media (max-width: 360px)': {
+          flexDirection: 'column',
+          alignItems: 'center',
+        },
+      }}
     >
       <Box display="flex" alignItems="center" gap={1}>
         <IconButton
@@ -50,7 +57,17 @@ export default function PostMeta({
         </Typography>
       </Box>
 
-      <Box display="flex" gap={1} mr={1}>
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 1,
+          mr: 1,
+          '@media (max-width: 360px)': {
+            mt: 1,
+            justifyContent: 'flex-end',
+          },
+        }}
+      >
         {isEditing ? (
           <>
             <Button
