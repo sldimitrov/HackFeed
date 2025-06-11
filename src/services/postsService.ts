@@ -2,11 +2,12 @@ import { supabase } from '../lib/supabaseClient.ts';
 import type { Post } from '../types/post.ts';
 
 export default class PostsService {
-  static async list(): Promise<Post[]> {
+  static async list(offset = 0, limit = 5): Promise<Post[]> {
     const { data, error } = await supabase
       .from('feed_posts_shared')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1); // inclusive range
 
     if (error) throw new Error(error.message);
     return data as Post[];

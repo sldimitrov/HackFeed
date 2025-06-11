@@ -22,3 +22,8 @@ export interface Post {
 export interface PostCardProps {
   post: Post;
 }
+
+export interface InfinitePostPages {
+  pages: Post[][];
+  pageParams: number[];
+}

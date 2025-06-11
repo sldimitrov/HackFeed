@@ -18,6 +18,10 @@
       "posts": "Posts"
     }
   },
+  "feed": {
+    "loadingMore": "Loading more...",
+    "showMore": "Show more"
+  },
   "posts": {
     "actions": {
       "like": "Like",
