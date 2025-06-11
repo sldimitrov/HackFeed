@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import ProfileService from '../services/profileService';
 import { toast } from '../utils/toast';
-import { TOAST_MESSAGES } from '../contants/toastMessages';
 import KEYS from '../contants/keyCodes.ts';
+import { useTranslation } from 'react-i18next';
 
 export interface ProfileFormData {
   name: string;
@@ -32,6 +32,7 @@ export const useProfileForm = ({
   userId,
   onSaveSuccess,
 }: UseProfileFormProps): UseProfileFormReturn => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<ProfileFormData>({
     name: '',
     title: '',
@@ -67,12 +68,11 @@ export const useProfileForm = ({
 
     try {
       await ProfileService.updateProfile(userId, dataToSave);
-      toast.success(TOAST_MESSAGES.PROFILE_UPDATE_SUCCESS);
+      toast.success(t('toast.profile.updateSuccess'));
       setEditMode(false);
       onSaveSuccess?.();
     } catch (error) {
-      console.error('Profile update failed:', error);
-      toast.error(TOAST_MESSAGES.ERROR_GENERIC);
+      toast.error(t('toast.auth.errorGeneric'));
     } finally {
       setSaving(false);
     }

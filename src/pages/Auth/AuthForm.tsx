@@ -7,9 +7,10 @@ import type { AuthFormData, AuthFormProps } from '../../types/auth.ts';
 import { authSchema } from '../../schemas/authSchema.ts';
 import { useState } from 'react';
 import { toast } from '../../utils/toast.ts';
-import { TOAST_MESSAGES } from '../../contants/toastMessages.ts';
+import { useTranslation } from 'react-i18next';
 
 export const AuthForm = ({ isRegister, setIsRegister }: AuthFormProps) => {
+  const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
   const { login, register } = useAuthStore();
   const navigate = useNavigate();
@@ -27,10 +28,10 @@ export const AuthForm = ({ isRegister, setIsRegister }: AuthFormProps) => {
     try {
       if (isRegister) {
         await register(data.email, data.password);
-        toast.success(TOAST_MESSAGES.REGISTER_SUCCESS);
+        toast.success(t('toast.auth.registerSuccess'));
       } else {
         await login(data.email, data.password);
-        toast.success(TOAST_MESSAGES.LOGIN_SUCCESS);
+        toast.success(t('toast.auth.loginSuccess'));
       }
 
       navigate('/');

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ImageUploader } from '../services/uploadPhoto';
 import { toast } from '../utils/toast';
-import { TOAST_MESSAGES } from '../contants/toastMessages';
+import i18next from 'i18next';
 
 interface UseAvatarUploadProps {
   onUploadComplete: (url: string) => void;
@@ -33,14 +33,13 @@ export const useAvatarUpload = ({
 
       if (uploadedUrl) {
         onUploadComplete(uploadedUrl);
-        toast.success('Avatar uploaded successfully!');
       } else {
         throw new Error('Upload failed - no URL returned');
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Upload failed';
       setUploadError(errorMessage);
-      toast.error(TOAST_MESSAGES.ERROR_GENERIC);
+      toast.error(i18next.t('toast.auth.errorGeneric'));
       console.error('Avatar upload failed:', error);
     } finally {
       setUploading(false);

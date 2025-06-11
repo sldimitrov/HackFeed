@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabaseClient';
 import { toast } from '../utils/toast.ts';
+import i18next from 'i18next';
 
 export class ImageUploader {
   private bucket: string;
@@ -19,7 +20,7 @@ export class ImageUploader {
 
     if (error) {
       console.error('Upload error:', error.message);
-      toast.error('Image upload failed');
+      toast.error(i18next.t('toast.settings.imageUploadFailed'));
       return null;
     }
 
@@ -27,11 +28,11 @@ export class ImageUploader {
 
     const imageUrl = data?.publicUrl;
     if (!imageUrl) {
-      toast.error('Failed to retrieve image URL');
+      toast.error(i18next.t('toast.settings.imageUrlRetrievalFailed'));
       return null;
     }
 
-    toast.success('Image uploaded successfully!');
+    toast.success(i18next.t('toast.settings.imageUploadSuccess'));
     return imageUrl;
   }
 }

@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useCreatePost } from '../../hooks/useCreatePost.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
 import { toast } from '../../utils/toast.ts';
-import { TOAST_MESSAGES } from '../../contants/toastMessages.ts';
 import KEYS from '../../contants/keyCodes.ts';
 import { useTranslation } from 'react-i18next';
 
@@ -15,19 +14,19 @@ export default function PostCreator() {
 
   const handleSubmit = async () => {
     if (!content.trim() || !user?.id || content.trim().length < 5) {
-      toast.error(TOAST_MESSAGES.POST_CREATE_CONTENT_TOO_SHORT);
+      toast.error(t('toast.posts.createContentTooShort'));
       return;
     }
 
     try {
       await createPostMutation.mutateAsync({ content, user_id: user.id });
-      toast.success(TOAST_MESSAGES.POST_CREATE_SUCCESS);
+      toast.success(t('toast.posts.createSuccess'));
       setContent('');
     } catch (error: any) {
       if (error.message.includes('row-level security')) {
-        toast.error(TOAST_MESSAGES.POST_CREATE_TOO_FAST);
+        toast.error(t('toast.posts.createTooFast'));
       } else {
-        toast.error(TOAST_MESSAGES.POST_CREATE_FAILURE);
+        toast.error(t('toast.posts.createFailure'));
       }
     }
   };
