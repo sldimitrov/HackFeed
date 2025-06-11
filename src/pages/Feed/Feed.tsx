@@ -23,6 +23,22 @@ export function Feed() {
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfinitePosts();
   const { data: profile } = useUserProfile(user?.id);
 
+  const fetchNextPageSafe = async () => {
+    const previousScroll = window.scrollY;
+    const previousHeight = document.body.scrollHeight;
+
+    await fetchNextPage();
+
+    // Delay a bit to wait for DOM paint
+    setTimeout(() => {
+      const newHeight = document.body.scrollHeight;
+      window.scrollTo({
+        top: previousScroll + (newHeight - previousHeight - 220),
+        behavior: 'auto',
+      });
+    }, 150); // 50–150ms usually works
+  };
+
   const posts = data?.pages.flat() ?? [];
 
   const { userPostsCount, totalUserLikes } = useMemo(() => {
@@ -94,7 +110,7 @@ export function Feed() {
             {hasNextPage && (
               <Box mt={2} display="flex" justifyContent="center">
                 <Button
-                  onClick={() => fetchNextPage()}
+                  onClick={() => fetchNextPageSafe()}
                   disabled={isFetchingNextPage}
                   variant="contained"
                   color="warning"

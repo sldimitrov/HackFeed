@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Card, Divider, TextField } from '@mui/material';
+import { Box, Divider, TextField } from '@mui/material';
 import type { PostCardProps } from '../../types/post.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
 import LikesService from '../../services/likesService.ts';
@@ -14,6 +14,7 @@ import ConfirmDialog from '../Base/ConfirmDialog.tsx';
 import { toast } from '../../utils/toast.ts';
 import { useTranslation } from 'react-i18next';
 import KEYS from '../../contants/keyCodes.ts';
+import MotionCard from '../Base/MotionCard.tsx';
 
 export default function PostCard({ post, mutationType }: PostCardProps) {
   const { t } = useTranslation();
@@ -103,7 +104,7 @@ export default function PostCard({ post, mutationType }: PostCardProps) {
   }, [post.id, user]);
 
   return (
-    <Card sx={{ mb: 3 }}>
+    <MotionCard sx={{ mb: 3 }}>
       <PostHeader
         id={post.shared_by_id || post.user_id}
         avatar={post.shared_by_avatar_url || post.avatar_url}
@@ -168,6 +169,6 @@ export default function PostCard({ post, mutationType }: PostCardProps) {
         title={t('posts.confirmDialog.deleteTitle')}
         content={t('posts.confirmDialog.deleteContent')}
       />
-    </Card>
+    </MotionCard>
   );
 }
