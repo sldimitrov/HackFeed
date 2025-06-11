@@ -5,8 +5,10 @@ import { useAuthStore } from '../../store/useAuthStore.ts';
 import { toast } from '../../utils/toast.ts';
 import { TOAST_MESSAGES } from '../../contants/toastMessages.ts';
 import KEYS from '../../contants/keyCodes.ts';
+import { useTranslation } from 'react-i18next';
 
 export default function PostCreator() {
+  const { t } = useTranslation();
   const { user } = useAuthStore();
   const createPostMutation = useCreatePost();
   const [content, setContent] = useState('');
@@ -44,7 +46,7 @@ export default function PostCreator() {
         multiline
         rows={2}
         value={content}
-        placeholder="What’s on your hacker mind today?"
+        placeholder={t('posts.creator.placeholder')}
         variant="outlined"
         onChange={(e) => setContent(e.target.value)}
         onKeyDown={handleKeyDown}
@@ -72,7 +74,7 @@ export default function PostCreator() {
             },
           }}
         >
-          post
+          {t('posts.creator.postButton')}
         </Button>
       </Box>
     </Box>

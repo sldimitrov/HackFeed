@@ -2,7 +2,7 @@
   "profile": {
     "header": {
       "myProfile": "Моят профил",
-      "userProfile": "Профилът на {name}"
+      "userProfile": "Профилът на {{name}}"
     },
     "fields": {
       "name": "Име",
@@ -12,6 +12,40 @@
     "postsSection": {
       "title": "Публикации",
       "noPosts": "Все още няма публикации за показване."
+    },
+    "card": {
+      "likes": "Харесвания",
+      "posts": "Публикации"
+    }
+  },
+  "posts": {
+    "actions": {
+      "like": "Харесай",
+      "liked": "Харесано",
+      "share": "Сподели",
+      "delete": "Изтрий"
+    },
+    "meta": {
+      "likes": "{{likeCount}} харесвания",
+      "seeMore": "Виж повече",
+      "seeLess": "Виж по-малко"
+    },
+    "creator": {
+      "placeholder": "Какво витае днес в твоя хакерски ум?",
+      "postButton": "публикувай",
+      "contentTooShort": "Съдържанието е твърде кратко за публикуване.",
+      "createSuccess": "Публикацията е създадена успешно!",
+      "createTooFast": "Публикувате твърде бързо. Моля, изчакайте.",
+      "createFailure": "Неуспешно създаване на публикация. Опитайте отново."
+    },
+    "sharedContent": {
+      "repostedFrom": "Споделено от {{name}}"
+    },
+    "confirmDialog": {
+      "deleteTitle": "Изтриване на тази публикация?",
+      "deleteContent": "Това действие не може да бъде отменено. Сигурни ли сте, че искате да продължите?",
+      "delete": "Изтрий",
+      "cancel": "Отмени"
     }
   }
 }

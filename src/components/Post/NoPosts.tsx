@@ -1,7 +1,7 @@
 import { Box, Card, Typography } from '@mui/material';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 
-export default function NoPosts({ message = 'No posts to display yet.' }: { message?: string }) {
+export default function NoPosts({ message }: { message?: string }) {
   return (
     <Card
       elevation={2}

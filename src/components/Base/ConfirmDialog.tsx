@@ -6,6 +6,7 @@ import {
   DialogActions,
   Button,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -19,9 +20,11 @@ export default function ConfirmDialog({
   open,
   onClose,
   onConfirm,
-  title = 'Are you sure?',
-  content = 'This action cannot be undone.',
+  title,
+  content,
 }: ConfirmDialogProps) {
+  const { t } = useTranslation();
+
   return (
     <Dialog open={open} onClose={onClose} disableScrollLock>
       <DialogTitle>{title}</DialogTitle>
@@ -29,9 +32,9 @@ export default function ConfirmDialog({
         <DialogContentText>{content}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t('posts.confirmDialog.cancel')}</Button>
         <Button onClick={onConfirm} color="error" variant="contained">
-          Delete
+          {t('posts.confirmDialog.delete')}
         </Button>
       </DialogActions>
     </Dialog>

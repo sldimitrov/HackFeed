@@ -2,14 +2,7 @@
   "profile": {
     "header": {
       "myProfile": "My Profile",
-      "userProfile": "{name}'s Profile",
-      "language": {
-        "en": "EN",
-        "bg": "BG"
-      }
-    },
-    "avatarBlock": {
-      "upload": "+"
+      "userProfile": "{{name}}'s Profile"
     },
     "fields": {
       "name": "Name",
@@ -19,6 +12,40 @@
     "postsSection": {
       "title": "Posts",
       "noPosts": "There are no posts to show yet."
+    },
+    "card": {
+      "likes": "Likes",
+      "posts": "Posts"
+    }
+  },
+  "posts": {
+    "actions": {
+      "like": "Like",
+      "liked": "Liked",
+      "share": "Share",
+      "delete": "Delete"
+    },
+    "meta": {
+      "likes": "{{likeCount}} likes",
+      "seeMore": "See more",
+      "seeLess": "See less"
+    },
+    "creator": {
+      "placeholder": "What’s on your hacker mind today?",
+      "postButton": "post",
+      "contentTooShort": "Content is too short to post.",
+      "createSuccess": "Post created successfully!",
+      "createTooFast": "You are posting too fast. Please wait.",
+      "createFailure": "Failed to create post. Please try again."
+    },
+    "sharedContent": {
+      "repostedFrom": "Reposted from {{name}}"
+    },
+    "confirmDialog": {
+      "deleteTitle": "Delete this post?",
+      "deleteContent": "This action cannot be undone. Are you sure you want to proceed?",
+      "delete": "Delete",
+      "cancel": "Cancel"
     }
   }
 }
