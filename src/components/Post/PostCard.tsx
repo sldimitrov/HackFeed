@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Divider, TextField } from '@mui/material';
+import { Box, CircularProgress, Divider, TextField } from '@mui/material';
 import type { PostCardProps } from '../../types/post.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
 import LikesService from '../../services/likesService.ts';
@@ -15,6 +15,9 @@ import { toast } from '../../utils/toast.ts';
 import { useTranslation } from 'react-i18next';
 import KEYS from '../../contants/keyCodes.ts';
 import MotionCard from '../Base/MotionCard.tsx';
+import { useComments } from '../../hooks/useComments.ts';
+import CommentsService from '../../services/commentsService.ts';
+import { CommentCard } from './CommentCard.tsx';
 
 export default function PostCard({ post, mutationType }: PostCardProps) {
   const { t } = useTranslation();
@@ -24,10 +27,14 @@ export default function PostCard({ post, mutationType }: PostCardProps) {
   const [editing, setEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(post.content);
   const [expanded, setExpanded] = useState(false);
+  const [newComment, setNewComment] = useState('');
+  const [commentsOpen, setCommentsOpen] = useState(false);
+  const toggleComments = () => setCommentsOpen((prev) => !prev);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [lastSharedTimes, setLastSharedTimes] = useState<{ [postId: number]: number }>({});
   const COOLDOWN_MS = 1 * 60 * 1000;
 
+  const { data: comments, refetch: refetchComments, isLoading } = useComments(String(post.id));
   const updatePost = useUpdatePost(mutationType);
   const sharePost = useSharePost();
   const deletePost = useDeletePost();
@@ -45,6 +52,22 @@ export default function PostCard({ post, mutationType }: PostCardProps) {
       setLikeCount((prev) => prev + 1);
     }
     setLiked(!liked);
+  };
+
+  const handleAddComment = async () => {
+    if (!newComment.trim() || !user) return;
+
+    try {
+      await CommentsService.create({
+        post_id: post.id,
+        user_id: user.id,
+        content: newComment,
+      });
+      setNewComment('');
+      refetchComments();
+    } catch (error) {
+      toast.error(t('comments.addError'));
+    }
   };
 
   const handleShare = async (postId: number) => {
@@ -154,12 +177,51 @@ export default function PostCard({ post, mutationType }: PostCardProps) {
 
       <Divider />
 
+      {isLoading && (
+        <div className="flex w-full justify-center">
+          <CircularProgress />
+        </div>
+      )}
+
+      <Box sx={{ px: 2, pt: 1 }}>
+        {commentsOpen && comments && (
+          <Box mt={2} px={2}>
+            <TextField
+              fullWidth
+              size="small"
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleAddComment();
+                }
+              }}
+              placeholder={t('comments.placeholder')}
+              sx={{ mt: 1 }}
+            />
+            <Box mt={2}>
+              {comments.map((comment) => (
+                <CommentCard
+                  key={comment.id}
+                  author={comment.profiles.name}
+                  avatar={comment.profiles.avatar_url || ''}
+                  content={comment.content}
+                  timestamp={comment.created_at}
+                />
+              ))}
+            </Box>
+          </Box>
+        )}
+      </Box>
+
       <PostActions
         liked={liked}
         onLike={handleLike}
         onShare={() => handleShare(post.id)}
         onDelete={handleDelete}
         showDelete={showDelete}
+        onToggleComments={toggleComments}
       />
 
       <ConfirmDialog

@@ -21,6 +21,18 @@ export interface Post {
   shared_by_id?: string;
 }
 
+export interface Comment {
+  id: string;
+  post_id: string;
+  user_id: string;
+  content: string;
+  created_at: string;
+  profiles: {
+    name: string;
+    avatar_url: string | null;
+  };
+}
+
 export interface PostCardProps {
   post: Post;
   mutationType?: MutationType;

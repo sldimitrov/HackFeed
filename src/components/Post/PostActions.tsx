@@ -10,6 +10,7 @@ interface PostActionsProps {
   onShare: () => void;
   onDelete?: () => void;
   showDelete?: boolean;
+  onToggleComments: () => void;
 }
 
 export default function PostActions({
@@ -18,6 +19,7 @@ export default function PostActions({
   onShare,
   onDelete,
   showDelete = false,
+  onToggleComments,
 }: PostActionsProps) {
   const { t } = useTranslation();
 
@@ -25,12 +27,19 @@ export default function PostActions({
     <CardActions className="flex justify-between px-2 pb-2">
       <Box display="flex" alignItems="center" gap={1}>
         <IconButton onClick={onLike}>
-          <ThumbUpOffAltIcon sx={{ marginLeft: '5px', color: `${liked && 'orange'}` }} />
+          <ThumbUpOffAltIcon sx={{ marginLeft: '5px', color: liked ? 'orange' : 'inherit' }} />
           <Typography variant="caption" sx={{ marginTop: '2px', paddingLeft: '4px' }}>
             {liked ? t('posts.actions.liked') : t('posts.actions.like')}
           </Typography>
         </IconButton>
+
+        <IconButton onClick={onToggleComments}>
+          <Typography variant="caption" sx={{ marginTop: '2px', paddingLeft: '4px' }}>
+            💬 {t('posts.actions.comment')}
+          </Typography>
+        </IconButton>
       </Box>
+
       <Box display="flex" alignItems="center" gap={1}>
         <IconButton onClick={onShare}>
           <ReplyIcon style={{ transform: 'scaleX(-1)' }} />
@@ -38,6 +47,7 @@ export default function PostActions({
             {t('posts.actions.share')}
           </Typography>
         </IconButton>
+
         {showDelete && onDelete && (
           <IconButton onClick={onDelete} color="error">
             <DeleteIcon fontSize="small" />
