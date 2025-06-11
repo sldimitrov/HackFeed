@@ -3,6 +3,7 @@ import NoPosts from '../../../components/Post/NoPosts.tsx';
 import type { Post } from '../../../types/post.ts';
 import PostCard from '../../../components/Post/PostCard.tsx';
 import { useTranslation } from 'react-i18next';
+import { MUTATION_TYPE } from '../../../contants/mutationType.ts';
 
 interface Props {
   loading: boolean;
@@ -24,7 +25,7 @@ export default function PostsSection({ loading, posts }: Props) {
       ) : posts.length === 0 ? (
         <NoPosts message={t('profile.postsSection.noPosts')} />
       ) : (
-        posts.map((p) => <PostCard key={p.id} post={p} />)
+        posts.map((p) => <PostCard key={p.id} post={p} mutationType={MUTATION_TYPE.USER_POST} />)
       )}
     </Box>
   );

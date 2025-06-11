@@ -1,3 +1,5 @@
+import type { MutationType } from './mutation.ts';
+
 export interface Post {
   id: number;
   user_id: string;
@@ -21,11 +23,7 @@ export interface Post {
 
 export interface PostCardProps {
   post: Post;
-}
-
-export interface InfinitePostPages {
-  pages: Post[][];
-  pageParams: number[];
+  mutationType?: MutationType;
 }
 
 export interface UpdatePostPayload {

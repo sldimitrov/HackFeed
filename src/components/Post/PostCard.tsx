@@ -15,7 +15,7 @@ import { toast } from '../../utils/toast.ts';
 import { useTranslation } from 'react-i18next';
 import KEYS from '../../contants/keyCodes.ts';
 
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post, mutationType }: PostCardProps) {
   const { t } = useTranslation();
   const { user } = useAuthStore();
   const [liked, setLiked] = useState(post.liked_by_current_user || false);
@@ -27,7 +27,7 @@ export default function PostCard({ post }: PostCardProps) {
   const [lastSharedTimes, setLastSharedTimes] = useState<{ [postId: number]: number }>({});
   const COOLDOWN_MS = 1 * 60 * 1000;
 
-  const updatePost = useUpdatePost();
+  const updatePost = useUpdatePost(mutationType);
   const sharePost = useSharePost();
   const deletePost = useDeletePost();
   const showDelete =
