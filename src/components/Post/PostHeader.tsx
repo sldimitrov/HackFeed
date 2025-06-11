@@ -1,9 +1,10 @@
-import { Avatar, Box, CardHeader, Typography } from '@mui/material';
+import { Avatar, Box, CardHeader, IconButton, Typography } from '@mui/material';
 import { getTimeAgo } from '../../utils/timeAgo.ts';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
 import { useNavigate } from 'react-router-dom';
 import { slugify } from '../../utils/slugify.ts';
 import { defaultProfile } from '../../contants/profile.ts';
+import EditIcon from '@mui/icons-material/Edit';
 
 export default function PostHeader({
   id,
@@ -11,12 +12,16 @@ export default function PostHeader({
   name,
   title,
   created_at,
+  canEdit = false,
+  onEdit,
 }: {
   id: string;
   avatar?: string;
   name: string;
   title: string;
   created_at: string;
+  canEdit?: boolean;
+  onEdit?: () => void;
 }) {
   const navigate = useNavigate();
 
@@ -51,6 +56,11 @@ export default function PostHeader({
           <Typography variant="caption" mt={1} color="text.secondary">
             {getTimeAgo(created_at)}
           </Typography>
+          {canEdit && onEdit && (
+            <IconButton onClick={onEdit} size="small" sx={{ ml: 1, mb: 0.5 }}>
+              <EditIcon fontSize="small" />
+            </IconButton>
+          )}
         </Box>
       }
     />

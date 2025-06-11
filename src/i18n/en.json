@@ -20,7 +20,10 @@
   },
   "feed": {
     "loadingMore": "Loading more...",
-    "showMore": "Show more"
+    "showMore": "Show more",
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel"
   },
   "posts": {
     "actions": {
@@ -71,6 +74,7 @@
     "posts": {
       "createSuccess": "Post published successfully!",
       "updateSuccess": "Post updated successfully.",
+      "updateError": "Failed to update post. Please try again later.",
       "deleteSuccess": "Post deleted successfully.",
       "shareSuccess": "Post shared successfully!",
       "createContentTooShort": "Post content must be at least 5 characters long.",

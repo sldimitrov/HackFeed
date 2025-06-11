@@ -7,7 +7,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import type { Post } from '../types/post.ts';
+import type { Post, UpdatePostPayload } from '../types/post.ts';
 
 export function useInfinitePosts() {
   const PAGE_SIZE = 5;
@@ -26,6 +26,21 @@ export function useUserPosts(user_id: string) {
   return useQuery<Post[]>({
     queryKey: [QUERY_USER_POSTS],
     queryFn: () => PostsService.listByUser(user_id),
+  });
+}
+
+export function useUpdatePost() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, content }: UpdatePostPayload) => PostsService.update(id, content),
+    onSuccess: () => {
+      // Invalidate or refetch post list
+      queryClient.invalidateQueries({ queryKey: [QUERY_POSTS] });
+    },
+    onError: (error) => {
+      console.error('Failed to update post:', error);
+    },
   });
 }
 
