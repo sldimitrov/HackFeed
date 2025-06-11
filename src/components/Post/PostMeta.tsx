@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Typography } from '@mui/material';
+import { Box, Button, IconButton, Typography, CircularProgress } from '@mui/material';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { useTranslation } from 'react-i18next';
 
@@ -7,9 +7,22 @@ interface PostMetaProps {
   isLong: boolean;
   expanded: boolean;
   onToggleExpand: () => void;
+  onSaveEdit?: () => void;
+  onCancelEdit?: () => void;
+  isEditing?: boolean;
+  isSaving?: boolean;
 }
 
-export default function PostMeta({ likeCount, isLong, expanded, onToggleExpand }: PostMetaProps) {
+export default function PostMeta({
+  likeCount,
+  isLong,
+  expanded,
+  onToggleExpand,
+  onSaveEdit,
+  onCancelEdit,
+  isEditing,
+  isSaving,
+}: PostMetaProps) {
   const { t } = useTranslation();
 
   return (
@@ -33,14 +46,32 @@ export default function PostMeta({ likeCount, isLong, expanded, onToggleExpand }
           <ThumbUpOffAltIcon fontSize="small" />
         </IconButton>
         <Typography variant="caption" sx={{ paddingTop: '4px' }} color="text.secondary">
-          {t('posts.meta.likes', { likeCount: likeCount })}
+          {t('posts.meta.likes', { likeCount })}
         </Typography>
       </Box>
-      <Box>
-        {isLong && (
-          <Button size="small" onClick={onToggleExpand} sx={{ mt: 1, textTransform: 'none' }}>
-            {expanded ? t('posts.meta.seeLess') : t('posts.meta.seeMore')}
-          </Button>
+
+      <Box display="flex" gap={1} mr={1}>
+        {isEditing ? (
+          <>
+            <Button
+              size="small"
+              variant="contained"
+              color="warning"
+              onClick={onSaveEdit}
+              disabled={isSaving}
+            >
+              {isSaving ? <CircularProgress size={16} /> : t('feed.save')}
+            </Button>
+            <Button size="small" variant="outlined" color="warning" onClick={onCancelEdit}>
+              {t('feed.cancel')}
+            </Button>
+          </>
+        ) : (
+          isLong && (
+            <Button size="small" onClick={onToggleExpand} sx={{ textTransform: 'none' }}>
+              {expanded ? t('posts.meta.seeLess') : t('posts.meta.seeMore')}
+            </Button>
+          )
         )}
       </Box>
     </Box>

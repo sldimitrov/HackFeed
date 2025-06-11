@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, Card, Divider, TextField } from '@mui/material';
+import { Box, Card, Divider, TextField } from '@mui/material';
 import type { PostCardProps } from '../../types/post.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
 import LikesService from '../../services/likesService.ts';
@@ -13,7 +13,6 @@ import PostMeta from './PostMeta.tsx';
 import ConfirmDialog from '../Base/ConfirmDialog.tsx';
 import { toast } from '../../utils/toast.ts';
 import { useTranslation } from 'react-i18next';
-import { warningButtonStyles } from '../../styles/buttonStyles.ts';
 
 export default function PostCard({ post }: PostCardProps) {
   const { t } = useTranslation();
@@ -126,25 +125,6 @@ export default function PostCard({ post }: PostCardProps) {
               variant="outlined"
               sx={{ mb: 1 }}
             />
-            <Box display="flex" justifyContent="end" gap={2}>
-              <Button
-                onClick={handleSaveEdit}
-                disabled={updatePost.isPending}
-                variant="contained"
-                color="warning"
-                sx={warningButtonStyles}
-              >
-                {updatePost.isPending ? t('feed.saving') : t('feed.save')}
-              </Button>
-              <Button
-                onClick={cancelEdit}
-                variant="outlined"
-                color="warning"
-                sx={warningButtonStyles}
-              >
-                {t('feed.cancel')}
-              </Button>
-            </Box>
           </>
         ) : post.shared ? (
           <SharedPostContent post={post} expanded={expanded} />
@@ -158,6 +138,10 @@ export default function PostCard({ post }: PostCardProps) {
         isLong={isLong}
         expanded={expanded}
         onToggleExpand={() => setExpanded(!expanded)}
+        isEditing={editing}
+        isSaving={updatePost.isPending}
+        onSaveEdit={handleSaveEdit}
+        onCancelEdit={cancelEdit}
       />
 
       <Divider />
