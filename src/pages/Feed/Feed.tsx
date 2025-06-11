@@ -13,6 +13,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInfinitePosts } from '../../hooks/usePosts.ts';
 import { warningButtonStyles } from '../../styles/buttonStyles.ts';
+import { fetchNextPageSafe } from '../../utils/pagination.ts';
 
 export function Feed() {
   const { t } = useTranslation();
@@ -22,22 +23,6 @@ export function Feed() {
   const { user } = useAuthStore();
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfinitePosts();
   const { data: profile } = useUserProfile(user?.id);
-
-  const fetchNextPageSafe = async () => {
-    const previousScroll = window.scrollY;
-    const previousHeight = document.body.scrollHeight;
-
-    await fetchNextPage();
-
-    // Delay a bit to wait for DOM paint
-    setTimeout(() => {
-      const newHeight = document.body.scrollHeight;
-      window.scrollTo({
-        top: previousScroll + (newHeight - previousHeight - 220),
-        behavior: 'auto',
-      });
-    }, 150); // 50–150ms usually works
-  };
 
   const posts = data?.pages.flat() ?? [];
 
@@ -110,7 +95,7 @@ export function Feed() {
             {hasNextPage && (
               <Box mt={2} display="flex" justifyContent="center">
                 <Button
-                  onClick={() => fetchNextPageSafe()}
+                  onClick={() => fetchNextPageSafe(fetchNextPage)}
                   disabled={isFetchingNextPage}
                   variant="contained"
                   color="warning"
