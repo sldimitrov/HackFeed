@@ -27,3 +27,8 @@ export interface InfinitePostPages {
   pages: Post[][];
   pageParams: number[];
 }
+
+export interface UpdatePostPayload {
+  id: string;
+  content: string;
+}

@@ -5,6 +5,7 @@ import { useAuthStore } from '../../store/useAuthStore.ts';
 import { toast } from '../../utils/toast.ts';
 import KEYS from '../../contants/keyCodes.ts';
 import { useTranslation } from 'react-i18next';
+import { warningButtonStyles } from '../../styles/buttonStyles.ts';
 
 export default function PostCreator() {
   const { t } = useTranslation();
@@ -52,27 +53,7 @@ export default function PostCreator() {
       />
 
       <Box className="flex justify-end mt-2">
-        <Button
-          onClick={handleSubmit}
-          variant="contained"
-          color="warning"
-          sx={{
-            textTransform: 'capitalize',
-            fontWeight: 500,
-            px: 3,
-            m: 0.5,
-            fontSize: '0.875rem',
-            borderRadius: 2,
-            transition: 'all 0.2s ease-in-out',
-            '&:hover': {
-              backgroundColor: '#f57c00',
-              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-            },
-            '&:active': {
-              transform: 'scale(0.98)',
-            },
-          }}
-        >
+        <Button onClick={handleSubmit} variant="contained" color="warning" sx={warningButtonStyles}>
           {t('posts.creator.postButton')}
         </Button>
       </Box>

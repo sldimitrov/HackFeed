@@ -20,7 +20,10 @@
   },
   "feed": {
     "loadingMore": "Зареждане на още...",
-    "showMore": "Покажи още"
+    "showMore": "Покажи още",
+    "save": "Запази",
+    "saving": "Запазване...",
+    "cancel": "Отмени"
   },
   "posts": {
     "actions": {

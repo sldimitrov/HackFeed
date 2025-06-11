@@ -20,7 +20,10 @@
   },
   "feed": {
     "loadingMore": "Loading more...",
-    "showMore": "Show more"
+    "showMore": "Show more",
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel"
   },
   "posts": {
     "actions": {
