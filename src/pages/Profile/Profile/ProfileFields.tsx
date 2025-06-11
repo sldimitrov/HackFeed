@@ -1,5 +1,6 @@
 import { TextField } from '@mui/material';
 import type { EditableProfile } from '../../../types/profile.ts';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   editable: boolean;
@@ -17,12 +18,13 @@ export default function ProfileFields({
   handleKeyDown,
 }: Props) {
   const disabled = !editable || !editMode;
+  const { t } = useTranslation();
 
   return (
     <>
       <TextField
         name="name"
-        label="Name"
+        label={t('profile.fields.name')}
         fullWidth
         margin="dense"
         value={formData.name}
@@ -32,7 +34,7 @@ export default function ProfileFields({
       />
       <TextField
         name="title"
-        label="Title"
+        label={t('profile.fields.title')}
         fullWidth
         margin="dense"
         value={formData.title}
@@ -42,7 +44,7 @@ export default function ProfileFields({
       />
       <TextField
         name="avatar_url"
-        label="Avatar URL"
+        label={t('profile.fields.avatarUrl')}
         fullWidth
         margin="dense"
         value={formData.avatar_url}

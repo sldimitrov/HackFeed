@@ -11,8 +11,10 @@ import { useAuthStore } from '../../store/useAuthStore.ts';
 import { Background } from '../../components/Base/Background.tsx';
 import NoPosts from '../../components/Post/NoPosts.tsx';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export function Feed() {
+  const { t } = useTranslation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -73,7 +75,7 @@ export function Feed() {
                 <CircularProgress />
               </Box>
             ) : posts && posts.length === 0 ? (
-              <NoPosts message="There are no posts to show yet." />
+              <NoPosts message={t('profile.postsSection.noPosts')} />
             ) : (
               posts?.map((post: Post) => {
                 const isRepost = post.shared;

@@ -1,0 +1,86 @@
+{
+  "profile": {
+    "header": {
+      "myProfile": "My Profile",
+      "userProfile": "{{name}}'s Profile"
+    },
+    "fields": {
+      "name": "Name",
+      "title": "Title",
+      "avatarUrl": "Avatar URL"
+    },
+    "postsSection": {
+      "title": "Posts",
+      "noPosts": "There are no posts to show yet."
+    },
+    "card": {
+      "likes": "Likes",
+      "posts": "Posts"
+    }
+  },
+  "posts": {
+    "actions": {
+      "like": "Like",
+      "liked": "Liked",
+      "share": "Share",
+      "delete": "Delete"
+    },
+    "meta": {
+      "likes": "{{likeCount}} likes",
+      "seeMore": "See more",
+      "seeLess": "See less"
+    },
+    "creator": {
+      "placeholder": "What’s on your hacker mind today?",
+      "postButton": "post"
+    },
+    "sharedContent": {
+      "repostedFrom": "Reposted from {{name}}"
+    },
+    "confirmDialog": {
+      "deleteTitle": "Delete this post?",
+      "deleteContent": "This action cannot be undone. Are you sure you want to proceed?",
+      "delete": "Delete",
+      "cancel": "Cancel"
+    }
+  },
+  "timeAgo": {
+    "justNow": "just now",
+    "oneMinute": "1 minute ago",
+    "minutes": "{{count}} minutes ago",
+    "oneHour": "1 hour ago",
+    "hours": "{{count}} hours ago",
+    "oneDay": "1 day ago",
+    "days": "{{count}} days ago"
+  },
+  "toast": {
+    "auth": {
+      "loginSuccess": "Logged in successfully",
+      "registerSuccess": "Account created successfully",
+      "profileUpdated": "Profile updated",
+      "errorGeneric": "Something went wrong",
+      "userDeleted": "User deleted successfully"
+    },
+    "profile": {
+      "updateSuccess": "Profile updated successfully."
+    },
+    "posts": {
+      "createSuccess": "Post published successfully!",
+      "updateSuccess": "Post updated successfully.",
+      "deleteSuccess": "Post deleted successfully.",
+      "shareSuccess": "Post shared successfully!",
+      "createContentTooShort": "Post content must be at least 5 characters long.",
+      "createFailure": "Failed to create post. Please try again later.",
+      "createTooFast": "You’re posting too fast. Please wait a moment."
+    },
+    "settings": {
+      "saveSuccess": "Settings saved.",
+      "imageUploadFailed": "Image upload failed.",
+      "imageUrlRetrievalFailed": "Failed to retrieve image URL.",
+      "imageUploadSuccess": "Image uploaded successfully!"
+    },
+    "templates": {
+      "shareCooldown": "You can share again in {{seconds}} seconds."
+    }
+  }
+}

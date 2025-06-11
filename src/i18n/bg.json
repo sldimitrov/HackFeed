@@ -1,0 +1,90 @@
+{
+  "profile": {
+    "header": {
+      "myProfile": "Моят профил",
+      "userProfile": "Профилът на {{name}}"
+    },
+    "fields": {
+      "name": "Име",
+      "title": "Заглавие",
+      "avatarUrl": "URL на аватар"
+    },
+    "postsSection": {
+      "title": "Публикации",
+      "noPosts": "Все още няма публикации за показване."
+    },
+    "card": {
+      "likes": "Харесвания",
+      "posts": "Публикации"
+    }
+  },
+  "posts": {
+    "actions": {
+      "like": "Харесай",
+      "liked": "Харесано",
+      "share": "Сподели",
+      "delete": "Изтрий"
+    },
+    "meta": {
+      "likes": "{{likeCount}} харесвания",
+      "seeMore": "Виж повече",
+      "seeLess": "Виж по-малко"
+    },
+    "creator": {
+      "placeholder": "Какво витае днес в твоя хакерски ум?",
+      "postButton": "публикувай",
+      "contentTooShort": "Съдържанието е твърде кратко за публикуване.",
+      "createSuccess": "Публикацията е създадена успешно!",
+      "createTooFast": "Публикувате твърде бързо. Моля, изчакайте.",
+      "createFailure": "Неуспешно създаване на публикация. Опитайте отново."
+    },
+    "sharedContent": {
+      "repostedFrom": "Споделено от {{name}}"
+    },
+    "confirmDialog": {
+      "deleteTitle": "Изтриване на тази публикация?",
+      "deleteContent": "Това действие не може да бъде отменено. Сигурни ли сте, че искате да продължите?",
+      "delete": "Изтрий",
+      "cancel": "Отмени"
+    }
+  },
+  "timeAgo": {
+    "justNow": "току-що",
+    "oneMinute": "преди 1 минута",
+    "minutes": "преди {{count}} минути",
+    "oneHour": "преди 1 час",
+    "hours": "преди {{count}} часа",
+    "oneDay": "преди 1 ден",
+    "days": "преди {{count}} дни"
+  },
+  "toast": {
+    "auth": {
+      "loginSuccess": "Успешно влязохте",
+      "registerSuccess": "Акаунтът беше създаден успешно",
+      "profileUpdated": "Профилът е актуализиран",
+      "errorGeneric": "Нещо се обърка",
+      "userDeleted": "Потребителят беше изтрит успешно"
+    },
+    "profile": {
+      "updateSuccess": "Профилът е актуализиран успешно."
+    },
+    "posts": {
+      "createSuccess": "Публикацията беше успешно качена!",
+      "updateSuccess": "Публикацията беше актуализирана успешно.",
+      "deleteSuccess": "Публикацията беше изтрита успешно.",
+      "shareSuccess": "Публикацията беше споделена успешно!",
+      "createContentTooShort": "Съдържанието на публикацията трябва да бъде поне 5 символа.",
+      "createFailure": "Неуспешно създаване на публикация. Опитайте отново по-късно.",
+      "createTooFast": "Публикувате твърде бързо. Моля, изчакайте."
+    },
+    "settings": {
+      "saveSuccess": "Настройките са запазени.",
+      "imageUploadFailed": "Качването на снимка се провали.",
+      "imageUrlRetrievalFailed": "Грешка при зареждане на снимка.",
+      "imageUploadSuccess": "Снимката беше успешно качена!"
+    },
+    "templates": {
+      "shareCooldown": "Можете да споделите отново след {{seconds}} секунди."
+    }
+  }
+}

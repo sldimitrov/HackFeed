@@ -12,9 +12,10 @@ import PostActions from './PostActions.tsx';
 import PostMeta from './PostMeta.tsx';
 import ConfirmDialog from '../Base/ConfirmDialog.tsx';
 import { toast } from '../../utils/toast.ts';
-import { TOAST_MESSAGES, TOAST_TEMPLATES } from '../../contants/toastMessages.ts';
+import { useTranslation } from 'react-i18next';
 
 export default function PostCard({ post }: PostCardProps) {
+  const { t } = useTranslation();
   const { user } = useAuthStore();
   const [liked, setLiked] = useState(post.liked_by_current_user || false);
   const [likeCount, setLikeCount] = useState(0);
@@ -49,16 +50,16 @@ export default function PostCard({ post }: PostCardProps) {
 
     if (now - lastShared < COOLDOWN_MS) {
       const remaining = Math.ceil((COOLDOWN_MS - (now - lastShared)) / 1000);
-      toast.info(TOAST_TEMPLATES.SHARE_COOLDOWN(remaining));
+      toast.info(t('toast.templates.shareCooldown', { seconds: remaining }));
       return;
     }
 
     try {
       await sharePost.mutateAsync({ post_id: postId, user_id: user.id });
       setLastSharedTimes((prev) => ({ ...prev, [postId]: now }));
-      toast.success(TOAST_MESSAGES.POST_SHARE_SUCCESS);
+      toast.success(t('toast.posts.shareSuccess'));
     } catch (error) {
-      toast.error(TOAST_MESSAGES.ERROR_GENERIC);
+      toast.error(t('toast.auth.errorGeneric'));
     }
   };
 
@@ -69,9 +70,9 @@ export default function PostCard({ post }: PostCardProps) {
   const handleConfirmDelete = () => {
     try {
       deletePost.mutate({ post_id: post.id, shared: post.shared });
-      toast.success(TOAST_MESSAGES.POST_DELETE_SUCCESS);
+      toast.success(t('toast.posts.deleteSuccess'));
     } catch (error) {
-      toast.error(TOAST_MESSAGES.ERROR_GENERIC);
+      toast.error(t('toast.auth.errorGeneric'));
     }
     setDeleteDialogOpen(false);
   };
@@ -119,8 +120,8 @@ export default function PostCard({ post }: PostCardProps) {
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
         onConfirm={handleConfirmDelete}
-        title="Delete this post?"
-        content="This action cannot be undone. Are you sure you want to proceed?"
+        title={t('posts.confirmDialog.deleteTitle')}
+        content={t('posts.confirmDialog.deleteContent')}
       />
     </Card>
   );

@@ -1,5 +1,6 @@
 import { Box, Button, IconButton, Typography } from '@mui/material';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import { useTranslation } from 'react-i18next';
 
 interface PostMetaProps {
   likeCount: number;
@@ -9,6 +10,8 @@ interface PostMetaProps {
 }
 
 export default function PostMeta({ likeCount, isLong, expanded, onToggleExpand }: PostMetaProps) {
+  const { t } = useTranslation();
+
   return (
     <Box
       display="flex"
@@ -17,7 +20,6 @@ export default function PostMeta({ likeCount, isLong, expanded, onToggleExpand }
       sx={{ marginBottom: '15px' }}
       gap={1}
     >
-      {/* Likes display */}
       <Box display="flex" alignItems="center" gap={1}>
         <IconButton
           sx={{
@@ -31,15 +33,13 @@ export default function PostMeta({ likeCount, isLong, expanded, onToggleExpand }
           <ThumbUpOffAltIcon fontSize="small" />
         </IconButton>
         <Typography variant="caption" sx={{ paddingTop: '4px' }} color="text.secondary">
-          {likeCount} likes
+          {t('posts.meta.likes', { likeCount: likeCount })}
         </Typography>
       </Box>
-
-      {/* Expand / Collapse */}
       <Box>
         {isLong && (
           <Button size="small" onClick={onToggleExpand} sx={{ mt: 1, textTransform: 'none' }}>
-            {expanded ? 'See less' : 'See more'}
+            {expanded ? t('posts.meta.seeLess') : t('posts.meta.seeMore')}
           </Button>
         )}
       </Box>

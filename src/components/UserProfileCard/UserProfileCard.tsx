@@ -3,6 +3,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import type { UserProfileCardProps } from '../../types/profile.ts';
 import { useNavigate } from 'react-router-dom';
 import { slugify } from '../../utils/slugify.ts';
+import { useTranslation } from 'react-i18next';
 
 const UserProfileCard = ({
   id,
@@ -13,14 +14,12 @@ const UserProfileCard = ({
   posts,
   onEdit,
 }: UserProfileCardProps) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleEditProfile = () => {
     navigate(`/profile/${id}/${slugify(name)}`, { state: { userId: id } });
   };
-
-  console.log('likes', likes);
-  console.log('posts', posts);
 
   return (
     <Card sx={{ borderRadius: 1, p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -59,13 +58,13 @@ const UserProfileCard = ({
         <Box>
           <Typography variant="h6">{likes}</Typography>
           <Typography variant="caption" color="text.secondary">
-            Likes
+            {t('profile.card.likes')}
           </Typography>
         </Box>
         <Box>
           <Typography variant="h6">{posts}</Typography>
           <Typography variant="caption" color="text.secondary">
-            Posts
+            {t('profile.card.posts')}
           </Typography>
         </Box>
       </Box>
