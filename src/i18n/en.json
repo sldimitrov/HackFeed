@@ -54,6 +54,8 @@
       "comment": "Comments",
       "addComment": "Add a comment",
       "noComments": "There are no comments yet.",
+      "showLess": "Show less",
+      "showMore": "Show more",
       "tooltip": "You're currently commenting on the original post!",
       "commentPlaceholder": "Write a comment...",
       "confirmDeleteTitle": "Delete this comment?",

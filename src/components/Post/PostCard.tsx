@@ -36,7 +36,8 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [lastSharedTimes, setLastSharedTimes] = useState<{ [postId: number]: number }>({});
   const [lastCommentTimes, setLastCommentTimes] = useState<{ [postId: number]: number }>({});
-  const COOLDOWN_MS = 60 * 1000; // 1 minute
+  // TODO: TURN BACK TO 1 MINUTE - 60 * 1000
+  const COOLDOWN_MS = 60 * 100; // 1 minute
 
   const updatePost = useUpdatePost(mutationType);
   const sharePost = useSharePost();
