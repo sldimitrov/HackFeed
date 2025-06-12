@@ -32,8 +32,23 @@ export function CommentCard({
   };
 
   return (
-    <Card sx={{ display: 'flex', justifyContent: 'space-between' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, p: 2, mb: 1 }}>
+    <Card
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        justifyContent: 'space-between',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          justifyContent: 'space-between',
+          gap: 2,
+          p: 2,
+          mb: 1,
+        }}
+      >
         <Avatar
           src={avatar}
           alt={author}
