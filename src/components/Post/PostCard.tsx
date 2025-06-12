@@ -18,7 +18,7 @@ import MotionCard from '../Base/MotionCard.tsx';
 import CommentsService from '../../services/commentsService.ts';
 import CommentSection from './CommentsSection.tsx';
 import { useQueryClient } from '@tanstack/react-query';
-import { QUERY_COMMENTS_BATCH } from '../../contants/queryKeys.ts';
+import { QUERY_COMMENTS_BATCH, QUERY_POSTS } from '../../contants/queryKeys.ts';
 
 export default function PostCard({ post, mutationType, comments }: PostCardProps) {
   const { t } = useTranslation();
@@ -132,6 +132,9 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
   const handleConfirmDelete = () => {
     try {
       deletePost.mutate({ post_id: post.id, shared: post.shared });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_POSTS],
+      });
       toast.success(t('toast.posts.deleteSuccess'));
     } catch (error) {
       toast.error(t('toast.auth.errorGeneric'));
