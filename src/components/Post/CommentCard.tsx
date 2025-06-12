@@ -2,6 +2,7 @@ import { Avatar, Box, Card, IconButton, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
 import { slugify } from '../../utils/slugify.ts';
+import { TruncatedText } from '../Base/TruncatedText.tsx';
 
 interface CommentCardProps {
   author: string;
@@ -41,14 +42,17 @@ export function CommentCard({
         />
         <Box>
           <Typography fontWeight={600}>{author}</Typography>
-          <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-            {content}
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            {new Date(timestamp).toLocaleString('bg-BG')}
-          </Typography>
+
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <TruncatedText text={content} maxLength={220} />
+
+            <Typography variant="caption" color="text.secondary">
+              {new Date(timestamp).toLocaleString('bg-BG')}
+            </Typography>
+          </Box>
         </Box>
       </Box>
+
       {currentUserId === userId && (
         <Box sx={{ display: 'flex', alignItems: 'center', p: 1 }}>
           <IconButton onClick={() => onDeleteRequest(commentId)} color="error" size="small">

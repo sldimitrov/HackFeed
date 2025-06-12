@@ -4,9 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 interface PostMetaProps {
   likeCount: number;
-  isLong: boolean;
-  expanded: boolean;
-  onToggleExpand: () => void;
   onSaveEdit?: () => void;
   onCancelEdit?: () => void;
   isEditing?: boolean;
@@ -15,9 +12,6 @@ interface PostMetaProps {
 
 export default function PostMeta({
   likeCount,
-  isLong,
-  expanded,
-  onToggleExpand,
   onSaveEdit,
   onCancelEdit,
   isEditing,
@@ -68,7 +62,7 @@ export default function PostMeta({
           },
         }}
       >
-        {isEditing ? (
+        {isEditing && (
           <>
             <Button
               size="small"
@@ -83,12 +77,6 @@ export default function PostMeta({
               {t('feed.cancel')}
             </Button>
           </>
-        ) : (
-          isLong && (
-            <Button size="small" onClick={onToggleExpand} sx={{ textTransform: 'none' }}>
-              {expanded ? t('posts.meta.seeLess') : t('posts.meta.seeMore')}
-            </Button>
-          )
         )}
       </Box>
     </Box>

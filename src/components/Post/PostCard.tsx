@@ -29,20 +29,19 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
   const [likeCount, setLikeCount] = useState(0);
   const [editing, setEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(post.content);
-  const [expanded, setExpanded] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [commentsOpen, setCommentsOpen] = useState(false);
   const toggleComments = () => setCommentsOpen((prev) => !prev);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [lastSharedTimes, setLastSharedTimes] = useState<{ [postId: number]: number }>({});
-  const COOLDOWN_MS = 1 * 60 * 1000;
+  const [lastCommentTimes, setLastCommentTimes] = useState<{ [postId: number]: number }>({});
+  const COOLDOWN_MS = 60 * 1000; // 1 minute
 
   const updatePost = useUpdatePost(mutationType);
   const sharePost = useSharePost();
   const deletePost = useDeletePost();
   const showDelete =
     (user?.id === post.user_id && !post.shared_by_id) || user?.id === post.shared_by_id;
-  const isLong = post.content.length > 175;
 
   const handleLike = async () => {
     if (!user) return;
@@ -59,12 +58,24 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
   const handleAddComment = async () => {
     if (!newComment.trim() || !user) return;
 
+    const now = Date.now();
+    const lastComment = lastCommentTimes[post.id] || 0;
+
+    if (now - lastComment < COOLDOWN_MS) {
+      const remaining = Math.ceil((COOLDOWN_MS - (now - lastComment)) / 1000);
+      toast.info(t('toast.comments.commentCooldown', { seconds: remaining }));
+      return;
+    }
+
     try {
       await CommentsService.create({
         post_id: post.id,
         user_id: user.id,
         content: newComment,
       });
+
+      setLastCommentTimes((prev) => ({ ...prev, [post.id]: now }));
+
       toast.success(t('toast.comments.commentSuccess'));
       setNewComment('');
 
@@ -164,17 +175,14 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
             />
           </>
         ) : post.shared ? (
-          <SharedPostContent post={post} expanded={expanded} isLong={isLong} />
+          <SharedPostContent post={post} />
         ) : (
-          <PostContent content={post.content} expanded={expanded} isLong={isLong} />
+          <PostContent content={post.content} />
         )}
       </Box>
 
       <PostMeta
         likeCount={likeCount}
-        isLong={isLong}
-        expanded={expanded}
-        onToggleExpand={() => setExpanded(!expanded)}
         isEditing={editing}
         isSaving={updatePost.isPending}
         onSaveEdit={handleSaveEdit}
