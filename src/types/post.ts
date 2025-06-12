@@ -21,17 +21,17 @@ export interface Post {
   shared_by_id?: string;
 }
 
-export interface Comment {
+export type Comment = {
   id: string;
-  post_id: string;
-  user_id: string;
   content: string;
   created_at: string;
+  user_id: string;
+  post_id: string;
   profiles: {
     name: string;
     avatar_url: string | null;
   };
-}
+};
 
 export interface PostCardProps {
   post: Post;

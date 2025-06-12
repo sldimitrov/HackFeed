@@ -17,7 +17,7 @@ export function CommentCard({ author, avatar, content, timestamp }: CommentCardP
           {content}
         </Typography>
         <Typography variant="caption" color="text.secondary">
-          {new Date(timestamp).toLocaleString()}
+          {new Date(timestamp).toLocaleString('bg-BG')}
         </Typography>
       </Box>
     </Card>

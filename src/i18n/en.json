@@ -49,6 +49,12 @@
       "deleteContent": "This action cannot be undone. Are you sure you want to proceed?",
       "delete": "Delete",
       "cancel": "Cancel"
+    },
+    "comments": {
+      "comments": "Comments",
+      "addComment": "Add a comment",
+      "noComments": "There are no comments yet.",
+      "commentPlaceholder": "Write a comment..."
     }
   },
   "timeAgo": {

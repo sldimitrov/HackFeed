@@ -8,7 +8,14 @@ export function useComments(postId: string) {
     queryFn: async (): Promise<Comment[]> => {
       const { data, error } = await CommentsService.getByPost(postId);
       if (error) throw new Error(error.message);
-      return data ?? [];
+
+      return (data ?? []).map((comment) => ({
+        ...comment,
+        profiles: {
+          name: comment.profiles.name || '',
+          avatar_url: comment.profiles.avatar_url || null,
+        },
+      }));
     },
   });
 }

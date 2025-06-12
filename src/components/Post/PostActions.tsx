@@ -2,6 +2,7 @@ import { Box, CardActions, IconButton, Typography } from '@mui/material';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ReplyIcon from '@mui/icons-material/Reply';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CommentIcon from '@mui/icons-material/Comment';
 import { useTranslation } from 'react-i18next';
 
 interface PostActionsProps {
@@ -25,7 +26,7 @@ export default function PostActions({
 
   return (
     <CardActions className="flex justify-between px-2 pb-2">
-      <Box display="flex" alignItems="center" gap={1}>
+      <Box display="flex" alignItems="center" gap={2}>
         <IconButton onClick={onLike}>
           <ThumbUpOffAltIcon sx={{ marginLeft: '5px', color: liked ? 'orange' : 'inherit' }} />
           <Typography variant="caption" sx={{ marginTop: '2px', paddingLeft: '4px' }}>
@@ -34,13 +35,14 @@ export default function PostActions({
         </IconButton>
 
         <IconButton onClick={onToggleComments}>
-          <Typography variant="caption" sx={{ marginTop: '2px', paddingLeft: '4px' }}>
-            💬 {t('posts.actions.comment')}
+          <CommentIcon />
+          <Typography variant="caption" sx={{ marginTop: '2px', paddingLeft: '5px' }}>
+            {t('posts.comments.comment')}
           </Typography>
         </IconButton>
       </Box>
 
-      <Box display="flex" alignItems="center" gap={1}>
+      <Box display="flex" alignItems="center" gap={2}>
         <IconButton onClick={onShare}>
           <ReplyIcon style={{ transform: 'scaleX(-1)' }} />
           <Typography variant="caption" sx={{ marginTop: '4px', paddingLeft: '3px' }}>

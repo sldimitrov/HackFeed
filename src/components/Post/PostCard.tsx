@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, CircularProgress, Divider, TextField } from '@mui/material';
+import { Box, CircularProgress, Divider, TextField, Typography } from '@mui/material';
 import type { PostCardProps } from '../../types/post.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
 import LikesService from '../../services/likesService.ts';
@@ -17,7 +17,7 @@ import KEYS from '../../contants/keyCodes.ts';
 import MotionCard from '../Base/MotionCard.tsx';
 import { useComments } from '../../hooks/useComments.ts';
 import CommentsService from '../../services/commentsService.ts';
-import { CommentCard } from './CommentCard.tsx';
+import CommentSection from './CommentsSection.tsx';
 
 export default function PostCard({ post, mutationType }: PostCardProps) {
   const { t } = useTranslation();
@@ -63,6 +63,7 @@ export default function PostCard({ post, mutationType }: PostCardProps) {
         user_id: user.id,
         content: newComment,
       });
+      // TODO: add success toast
       setNewComment('');
       refetchComments();
     } catch (error) {
@@ -183,37 +184,13 @@ export default function PostCard({ post, mutationType }: PostCardProps) {
         </div>
       )}
 
-      <Box sx={{ px: 2, pt: 1 }}>
-        {commentsOpen && comments && (
-          <Box mt={2} px={2}>
-            <TextField
-              fullWidth
-              size="small"
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleAddComment();
-                }
-              }}
-              placeholder={t('comments.placeholder')}
-              sx={{ mt: 1 }}
-            />
-            <Box mt={2}>
-              {comments.map((comment) => (
-                <CommentCard
-                  key={comment.id}
-                  author={comment.profiles.name}
-                  avatar={comment.profiles.avatar_url || ''}
-                  content={comment.content}
-                  timestamp={comment.created_at}
-                />
-              ))}
-            </Box>
-          </Box>
-        )}
-      </Box>
+      <CommentSection
+        commentsOpen={commentsOpen}
+        comments={comments}
+        newComment={newComment}
+        setNewComment={setNewComment}
+        handleAddComment={handleAddComment}
+      />
 
       <PostActions
         liked={liked}
