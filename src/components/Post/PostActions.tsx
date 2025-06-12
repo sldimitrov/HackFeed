@@ -33,7 +33,9 @@ export default function PostActions({
             {liked ? t('posts.actions.liked') : t('posts.actions.like')}
           </Typography>
         </IconButton>
+      </Box>
 
+      <Box display="flex" alignItems="center">
         <IconButton onClick={onToggleComments}>
           <CommentIcon />
           <Typography variant="caption" sx={{ marginTop: '2px', paddingLeft: '5px' }}>
@@ -49,16 +51,18 @@ export default function PostActions({
             {t('posts.actions.share')}
           </Typography>
         </IconButton>
+      </Box>
 
-        {showDelete && onDelete && (
+      {showDelete && onDelete && (
+        <Box display="flex" alignItems="center" gap={2}>
           <IconButton onClick={onDelete} color="error">
             <DeleteIcon fontSize="small" />
             <Typography variant="caption" sx={{ marginTop: '4px', paddingLeft: '3px' }}>
               {t('posts.actions.delete')}
             </Typography>
           </IconButton>
-        )}
-      </Box>
+        </Box>
+      )}
     </CardActions>
   );
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, CircularProgress, Divider, TextField, Typography } from '@mui/material';
+import { Box, Divider, TextField } from '@mui/material';
 import type { PostCardProps } from '../../types/post.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
 import LikesService from '../../services/likesService.ts';
@@ -15,13 +15,15 @@ import { toast } from '../../utils/toast.ts';
 import { useTranslation } from 'react-i18next';
 import KEYS from '../../contants/keyCodes.ts';
 import MotionCard from '../Base/MotionCard.tsx';
-import { useComments } from '../../hooks/useComments.ts';
 import CommentsService from '../../services/commentsService.ts';
 import CommentSection from './CommentsSection.tsx';
+import { useQueryClient } from '@tanstack/react-query';
 
-export default function PostCard({ post, mutationType }: PostCardProps) {
+export default function PostCard({ post, mutationType, comments }: PostCardProps) {
   const { t } = useTranslation();
   const { user } = useAuthStore();
+  const queryClient = useQueryClient();
+
   const [liked, setLiked] = useState(post.liked_by_current_user || false);
   const [likeCount, setLikeCount] = useState(0);
   const [editing, setEditing] = useState(false);
@@ -34,7 +36,6 @@ export default function PostCard({ post, mutationType }: PostCardProps) {
   const [lastSharedTimes, setLastSharedTimes] = useState<{ [postId: number]: number }>({});
   const COOLDOWN_MS = 1 * 60 * 1000;
 
-  const { data: comments, refetch: refetchComments, isLoading } = useComments(String(post.id));
   const updatePost = useUpdatePost(mutationType);
   const sharePost = useSharePost();
   const deletePost = useDeletePost();
@@ -65,7 +66,10 @@ export default function PostCard({ post, mutationType }: PostCardProps) {
       });
       // TODO: add success toast
       setNewComment('');
-      refetchComments();
+
+      queryClient.invalidateQueries({
+        queryKey: ['comments-batch'],
+      });
     } catch (error) {
       toast.error(t('comments.addError'));
     }
@@ -177,12 +181,6 @@ export default function PostCard({ post, mutationType }: PostCardProps) {
       />
 
       <Divider />
-
-      {isLoading && (
-        <div className="flex w-full justify-center">
-          <CircularProgress />
-        </div>
-      )}
 
       <CommentSection
         commentsOpen={commentsOpen}

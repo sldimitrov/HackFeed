@@ -21,7 +21,7 @@ export interface Post {
   shared_by_id?: string;
 }
 
-export type Comment = {
+export type PostComment = {
   id: string;
   content: string;
   created_at: string;
@@ -36,6 +36,7 @@ export type Comment = {
 export interface PostCardProps {
   post: Post;
   mutationType?: MutationType;
+  comments: Comment[] | undefined;
 }
 
 export interface UpdatePostPayload {
