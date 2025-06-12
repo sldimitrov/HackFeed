@@ -51,10 +51,12 @@
       "cancel": "Cancel"
     },
     "comments": {
-      "comments": "Comments",
+      "comment": "Comments",
       "addComment": "Add a comment",
       "noComments": "There are no comments yet.",
-      "commentPlaceholder": "Write a comment..."
+      "commentPlaceholder": "Write a comment...",
+      "confirmDeleteTitle": "Delete this comment?",
+      "confirmDeleteContent": "This action cannot be undone. Are you sure you want to delete this comment?"
     }
   },
   "timeAgo": {
@@ -98,7 +100,9 @@
     },
     "comments": {
       "commentSuccess": "Comment added successfully!",
-      "commentError": "Error adding comment. Please try again later."
+      "commentError": "Error adding comment. Please try again later.",
+      "deleteSuccess": "Comment deleted successfully!",
+      "deleteError": "Error deleting comment. Please try again later."
     }
   }
 }

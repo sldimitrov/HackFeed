@@ -21,6 +21,7 @@ export default function UserProfile() {
 
   // TODO: Avoid showing the default avatar on load
   // TODO: Refetch posts after share or delete own post
+  // TODO: Show cooler when !editing for visiting profile
 
   const {
     formData,

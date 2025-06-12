@@ -102,8 +102,8 @@ export default function CommentSection({
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
         onConfirm={handleConfirmDelete}
-        title={t('comments.confirmDialog.deleteTitle')}
-        content={t('comments.confirmDialog.deleteContent')}
+        title={t('posts.comments.confirmDeleteTitle')}
+        content={t('posts.comments.confirmDeleteContent')}
         isLoading={isPending}
       />
     </Box>
