@@ -1,9 +1,16 @@
 import { Avatar, Box, Typography } from '@mui/material';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
 
-export default function SharedPostContent({ post, expanded }: { post: any; expanded: boolean }) {
-  const isLong = post.content.length > 100;
-  const displayContent = expanded ? post.content : post.content.slice(0, 100);
+export default function SharedPostContent({
+  post,
+  expanded,
+  isLong,
+}: {
+  post: any;
+  expanded: boolean;
+  isLong: boolean;
+}) {
+  const displayContent = expanded ? post.content : post.content.slice(0, 170);
 
   return (
     <Box

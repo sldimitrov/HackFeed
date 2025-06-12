@@ -39,6 +39,10 @@ class CommentsService {
   }) {
     return supabase.from('comments').insert([{ post_id, user_id, content }]);
   }
+
+  async delete(commentId: string) {
+    return supabase.from('comments').delete().eq('id', commentId);
+  }
 }
 
 export default new CommentsService();

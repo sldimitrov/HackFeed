@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import CommentsService from '../services/commentsService.ts';
 import type { PostComment } from '../types/post.ts';
 import { QUERY_COMMENTS_BATCH } from '../contants/queryKeys.ts';
@@ -25,6 +25,20 @@ export function useCommentsBatch(postIds: string[]) {
       }
 
       return grouped;
+    },
+  });
+}
+
+export function useDeleteComment() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (commentId: string) => {
+      const { error } = await CommentsService.delete(commentId);
+      if (error) throw new Error(error.message);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['comments-batch'] });
     },
   });
 }

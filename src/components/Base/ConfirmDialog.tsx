@@ -5,6 +5,7 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  CircularProgress,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
@@ -14,6 +15,7 @@ interface ConfirmDialogProps {
   onConfirm: () => void;
   title?: string;
   content?: string;
+  isLoading?: boolean;
 }
 
 export default function ConfirmDialog({
@@ -22,6 +24,7 @@ export default function ConfirmDialog({
   onConfirm,
   title,
   content,
+  isLoading = false,
 }: ConfirmDialogProps) {
   const { t } = useTranslation();
 
@@ -33,8 +36,8 @@ export default function ConfirmDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>{t('posts.confirmDialog.cancel')}</Button>
-        <Button onClick={onConfirm} color="error" variant="contained">
-          {t('posts.confirmDialog.delete')}
+        <Button onClick={onConfirm} disabled={isLoading} variant="contained" color="error">
+          {isLoading ? <CircularProgress size={20} /> : t('posts.confirmDialog.delete')}
         </Button>
       </DialogActions>
     </Dialog>

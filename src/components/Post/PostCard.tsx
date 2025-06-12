@@ -18,7 +18,7 @@ import MotionCard from '../Base/MotionCard.tsx';
 import CommentsService from '../../services/commentsService.ts';
 import CommentSection from './CommentsSection.tsx';
 import { useQueryClient } from '@tanstack/react-query';
-import {QUERY_COMMENTS_BATCH} from "../../contants/queryKeys.ts";
+import { QUERY_COMMENTS_BATCH } from '../../contants/queryKeys.ts';
 
 export default function PostCard({ post, mutationType, comments }: PostCardProps) {
   const { t } = useTranslation();
@@ -42,7 +42,7 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
   const deletePost = useDeletePost();
   const showDelete =
     (user?.id === post.user_id && !post.shared_by_id) || user?.id === post.shared_by_id;
-  const isLong = post.content.length > 100;
+  const isLong = post.content.length > 175;
 
   const handleLike = async () => {
     if (!user) return;
@@ -164,9 +164,9 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
             />
           </>
         ) : post.shared ? (
-          <SharedPostContent post={post} expanded={expanded} />
+          <SharedPostContent post={post} expanded={expanded} isLong={isLong} />
         ) : (
-          <PostContent content={post.content} expanded={expanded} />
+          <PostContent content={post.content} expanded={expanded} isLong={isLong} />
         )}
       </Box>
 
@@ -189,6 +189,7 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
         newComment={newComment}
         setNewComment={setNewComment}
         handleAddComment={handleAddComment}
+        userId={user?.id || ''}
       />
 
       <PostActions
