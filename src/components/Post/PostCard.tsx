@@ -29,22 +29,19 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
   const [likeCount, setLikeCount] = useState(0);
   const [editing, setEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(post.content);
-  const [expanded, setExpanded] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [commentsOpen, setCommentsOpen] = useState(false);
   const toggleComments = () => setCommentsOpen((prev) => !prev);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [lastSharedTimes, setLastSharedTimes] = useState<{ [postId: number]: number }>({});
   const [lastCommentTimes, setLastCommentTimes] = useState<{ [postId: number]: number }>({});
-  // TODO: TURN BACK TO 1 MINUTE - 60 * 1000
-  const COOLDOWN_MS = 60 * 100; // 1 minute
+  const COOLDOWN_MS = 60 * 1000; // 1 minute
 
   const updatePost = useUpdatePost(mutationType);
   const sharePost = useSharePost();
   const deletePost = useDeletePost();
   const showDelete =
     (user?.id === post.user_id && !post.shared_by_id) || user?.id === post.shared_by_id;
-  const isLong = post.content.length > 175;
 
   const handleLike = async () => {
     if (!user) return;
@@ -178,17 +175,14 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
             />
           </>
         ) : post.shared ? (
-          <SharedPostContent post={post} expanded={expanded} isLong={isLong} />
+          <SharedPostContent post={post} />
         ) : (
-          <PostContent content={post.content} expanded={expanded} isLong={isLong} />
+          <PostContent content={post.content} />
         )}
       </Box>
 
       <PostMeta
         likeCount={likeCount}
-        isLong={isLong}
-        expanded={expanded}
-        onToggleExpand={() => setExpanded(!expanded)}
         isEditing={editing}
         isSaving={updatePost.isPending}
         onSaveEdit={handleSaveEdit}

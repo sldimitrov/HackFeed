@@ -1,17 +1,8 @@
 import { Avatar, Box, Typography } from '@mui/material';
 import defaultAvatar from '../../assets/defaultAvatar.jpeg';
+import { TruncatedText } from '../Base/TruncatedText.tsx';
 
-export default function SharedPostContent({
-  post,
-  expanded,
-  isLong,
-}: {
-  post: any;
-  expanded: boolean;
-  isLong: boolean;
-}) {
-  const displayContent = expanded ? post.content : post.content.slice(0, 170);
-
+export default function SharedPostContent({ post }: { post: any }) {
   return (
     <Box
       sx={{
@@ -41,8 +32,7 @@ export default function SharedPostContent({
         </Box>
       </Box>
       <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-        {displayContent}
-        {isLong && !expanded && '...'}
+        <TruncatedText text={post.content} maxLength={140} />
       </Typography>
     </Box>
   );
