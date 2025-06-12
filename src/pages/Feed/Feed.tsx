@@ -13,6 +13,8 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInfinitePosts } from '../../hooks/usePosts.ts';
 import { warningButtonStyles } from '../../styles/buttonStyles.ts';
+import { fetchNextPageSafe } from '../../utils/pagination.ts';
+import { useCommentsBatch } from '../../hooks/useComments.ts';
 
 export function Feed() {
   const { t } = useTranslation();
@@ -23,23 +25,10 @@ export function Feed() {
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfinitePosts();
   const { data: profile } = useUserProfile(user?.id);
 
-  const fetchNextPageSafe = async () => {
-    const previousScroll = window.scrollY;
-    const previousHeight = document.body.scrollHeight;
-
-    await fetchNextPage();
-
-    // Delay a bit to wait for DOM paint
-    setTimeout(() => {
-      const newHeight = document.body.scrollHeight;
-      window.scrollTo({
-        top: previousScroll + (newHeight - previousHeight - 220),
-        behavior: 'auto',
-      });
-    }, 150); // 50–150ms usually works
-  };
-
   const posts = data?.pages.flat() ?? [];
+
+  const postIds = useMemo(() => posts.map((p) => String(p.id)), [posts]);
+  const { data: groupedComments } = useCommentsBatch(postIds);
 
   const { userPostsCount, totalUserLikes } = useMemo(() => {
     let count = 0;
@@ -103,14 +92,16 @@ export function Feed() {
               posts.map((post: Post) => {
                 const isRepost = post.shared;
                 const key = isRepost ? `repost-${post.id}-${post.shared_by_id}` : `post-${post.id}`;
-                return <PostCard key={key} post={post} />;
+                const comments = groupedComments?.[post.id] ?? [];
+
+                return <PostCard key={key} post={post} comments={comments} />;
               })
             )}
 
             {hasNextPage && (
               <Box mt={2} display="flex" justifyContent="center">
                 <Button
-                  onClick={() => fetchNextPageSafe()}
+                  onClick={() => fetchNextPageSafe(fetchNextPage)}
                   disabled={isFetchingNextPage}
                   variant="contained"
                   color="warning"

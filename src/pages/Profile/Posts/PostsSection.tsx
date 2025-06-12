@@ -3,7 +3,8 @@ import NoPosts from '../../../components/Post/NoPosts.tsx';
 import type { Post } from '../../../types/post.ts';
 import PostCard from '../../../components/Post/PostCard.tsx';
 import { useTranslation } from 'react-i18next';
-import { MUTATION_TYPE } from '../../../contants/mutationType.ts';
+import { useMemo } from 'react';
+import { useCommentsBatch } from '../../../hooks/useComments.ts';
 
 interface Props {
   loading: boolean;
@@ -12,6 +13,9 @@ interface Props {
 
 export default function PostsSection({ loading, posts }: Props) {
   const { t } = useTranslation();
+
+  const postIds = useMemo(() => posts.map((p) => String(p.id)), [posts]);
+  const { data: groupedComments } = useCommentsBatch(postIds);
 
   return (
     <Box mt={4}>
@@ -25,7 +29,13 @@ export default function PostsSection({ loading, posts }: Props) {
       ) : posts.length === 0 ? (
         <NoPosts message={t('profile.postsSection.noPosts')} />
       ) : (
-        posts.map((p) => <PostCard key={p.id} post={p} mutationType={MUTATION_TYPE.USER_POST} />)
+        posts.map((post: Post) => {
+          const isRepost = post.shared;
+          const key = isRepost ? `repost-${post.id}-${post.shared_by_id}` : `post-${post.id}`;
+          const comments = groupedComments?.[post.id] ?? [];
+
+          return <PostCard key={key} post={post} comments={comments} />;
+        })
       )}
     </Box>
   );

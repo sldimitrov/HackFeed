@@ -15,15 +15,24 @@ import { toast } from '../../utils/toast.ts';
 import { useTranslation } from 'react-i18next';
 import KEYS from '../../contants/keyCodes.ts';
 import MotionCard from '../Base/MotionCard.tsx';
+import CommentsService from '../../services/commentsService.ts';
+import CommentSection from './CommentsSection.tsx';
+import { useQueryClient } from '@tanstack/react-query';
+import { QUERY_COMMENTS_BATCH } from '../../contants/queryKeys.ts';
 
-export default function PostCard({ post, mutationType }: PostCardProps) {
+export default function PostCard({ post, mutationType, comments }: PostCardProps) {
   const { t } = useTranslation();
   const { user } = useAuthStore();
+  const queryClient = useQueryClient();
+
   const [liked, setLiked] = useState(post.liked_by_current_user || false);
   const [likeCount, setLikeCount] = useState(0);
   const [editing, setEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(post.content);
   const [expanded, setExpanded] = useState(false);
+  const [newComment, setNewComment] = useState('');
+  const [commentsOpen, setCommentsOpen] = useState(false);
+  const toggleComments = () => setCommentsOpen((prev) => !prev);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [lastSharedTimes, setLastSharedTimes] = useState<{ [postId: number]: number }>({});
   const COOLDOWN_MS = 1 * 60 * 1000;
@@ -33,7 +42,7 @@ export default function PostCard({ post, mutationType }: PostCardProps) {
   const deletePost = useDeletePost();
   const showDelete =
     (user?.id === post.user_id && !post.shared_by_id) || user?.id === post.shared_by_id;
-  const isLong = post.content.length > 100;
+  const isLong = post.content.length > 175;
 
   const handleLike = async () => {
     if (!user) return;
@@ -45,6 +54,26 @@ export default function PostCard({ post, mutationType }: PostCardProps) {
       setLikeCount((prev) => prev + 1);
     }
     setLiked(!liked);
+  };
+
+  const handleAddComment = async () => {
+    if (!newComment.trim() || !user) return;
+
+    try {
+      await CommentsService.create({
+        post_id: post.id,
+        user_id: user.id,
+        content: newComment,
+      });
+      toast.success(t('toast.comments.commentSuccess'));
+      setNewComment('');
+
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_COMMENTS_BATCH],
+      });
+    } catch (error) {
+      toast.error(t('toast.comments.commentError'));
+    }
   };
 
   const handleShare = async (postId: number) => {
@@ -135,9 +164,9 @@ export default function PostCard({ post, mutationType }: PostCardProps) {
             />
           </>
         ) : post.shared ? (
-          <SharedPostContent post={post} expanded={expanded} />
+          <SharedPostContent post={post} expanded={expanded} isLong={isLong} />
         ) : (
-          <PostContent content={post.content} expanded={expanded} />
+          <PostContent content={post.content} expanded={expanded} isLong={isLong} />
         )}
       </Box>
 
@@ -154,12 +183,23 @@ export default function PostCard({ post, mutationType }: PostCardProps) {
 
       <Divider />
 
+      <CommentSection
+        commentsOpen={commentsOpen}
+        comments={comments}
+        newComment={newComment}
+        setNewComment={setNewComment}
+        handleAddComment={handleAddComment}
+        userId={user?.id || ''}
+        isPostShared={post.shared}
+      />
+
       <PostActions
         liked={liked}
         onLike={handleLike}
         onShare={() => handleShare(post.id)}
         onDelete={handleDelete}
         showDelete={showDelete}
+        onToggleComments={toggleComments}
       />
 
       <ConfirmDialog
