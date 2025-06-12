@@ -1,4 +1,4 @@
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, TextField, Tooltip, Typography } from '@mui/material';
 import KEYS from '../../contants/keyCodes';
 import type { PostComment } from '../../types/post';
 import { useTranslation } from 'react-i18next';
@@ -6,6 +6,7 @@ import { CommentCard } from './CommentCard.tsx';
 import { useDeleteComment } from '../../hooks/useComments.ts';
 import { toast } from '../../utils/toast.ts';
 import ConfirmDialog from '../Base/ConfirmDialog.tsx';
+import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 import { useState } from 'react';
 
 interface CommentSectionProps {
@@ -15,6 +16,7 @@ interface CommentSectionProps {
   setNewComment: (value: string) => void;
   handleAddComment: () => void;
   userId: string;
+  isPostShared: boolean;
 }
 
 export default function CommentSection({
@@ -24,6 +26,7 @@ export default function CommentSection({
   setNewComment,
   handleAddComment,
   userId,
+  isPostShared,
 }: CommentSectionProps) {
   const { t } = useTranslation();
 
@@ -57,20 +60,32 @@ export default function CommentSection({
   return (
     <Box sx={{ px: 2, pt: 1 }}>
       <Box mt={2}>
-        <TextField
-          fullWidth
-          size="small"
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === KEYS.ENTER && !e.shiftKey) {
-              e.preventDefault();
-              handleAddComment();
-            }
-          }}
-          placeholder={t('posts.comments.addComment')}
-          sx={{ mt: 1 }}
-        />
+        <Box sx={{ display: 'flex' }}>
+          <TextField
+            fullWidth
+            size="small"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === KEYS.ENTER && !e.shiftKey) {
+                e.preventDefault();
+                handleAddComment();
+              }
+            }}
+            placeholder={t('posts.comments.addComment')}
+            sx={{ mt: 1 }}
+          />
+          {isPostShared && (
+            <Tooltip title={t('posts.comments.tooltip')} arrow>
+              <Typography
+                variant="body2"
+                sx={{ mt: 2, ml: 1, color: 'text.disabled', cursor: 'help' }}
+              >
+                <InfoOutlineIcon fontSize="small" />
+              </Typography>
+            </Tooltip>
+          )}
+        </Box>
 
         {comments && comments.length > 0 ? (
           <Box mt={2}>

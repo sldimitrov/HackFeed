@@ -13,6 +13,8 @@ interface Props {
 export default function PostsSection({ loading, posts }: Props) {
   const { t } = useTranslation();
 
+  // TODO: pass comments from here as well
+
   return (
     <Box mt={4}>
       <Typography variant="h6" gutterBottom>

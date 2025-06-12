@@ -190,6 +190,7 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
         setNewComment={setNewComment}
         handleAddComment={handleAddComment}
         userId={user?.id || ''}
+        isPostShared={post.shared}
       />
 
       <PostActions
