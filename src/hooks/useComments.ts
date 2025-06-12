@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import CommentsService from '../services/commentsService.ts';
 import type { PostComment } from '../types/post.ts';
+import { QUERY_COMMENTS_BATCH } from '../contants/queryKeys.ts';
 
 export function useCommentsBatch(postIds: string[]) {
   return useQuery({
-    queryKey: ['comments-batch', postIds.sort()],
+    queryKey: [QUERY_COMMENTS_BATCH, postIds.sort()],
     queryFn: async () => {
       const { data, error } = await CommentsService.getByPostIds(postIds);
       if (error) throw new Error(error.message);

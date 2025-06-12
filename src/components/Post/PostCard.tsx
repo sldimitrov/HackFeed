@@ -18,6 +18,7 @@ import MotionCard from '../Base/MotionCard.tsx';
 import CommentsService from '../../services/commentsService.ts';
 import CommentSection from './CommentsSection.tsx';
 import { useQueryClient } from '@tanstack/react-query';
+import {QUERY_COMMENTS_BATCH} from "../../contants/queryKeys.ts";
 
 export default function PostCard({ post, mutationType, comments }: PostCardProps) {
   const { t } = useTranslation();
@@ -68,7 +69,7 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
       setNewComment('');
 
       queryClient.invalidateQueries({
-        queryKey: ['comments-batch'],
+        queryKey: [QUERY_COMMENTS_BATCH],
       });
     } catch (error) {
       toast.error(t('comments.addError'));
