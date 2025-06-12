@@ -65,14 +65,14 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
         user_id: user.id,
         content: newComment,
       });
-      // TODO: add success toast
+      toast.success(t('toast.comments.commentSuccess'));
       setNewComment('');
 
       queryClient.invalidateQueries({
         queryKey: [QUERY_COMMENTS_BATCH],
       });
     } catch (error) {
-      toast.error(t('comments.addError'));
+      toast.error(t('toast.comments.commentError'));
     }
   };
 

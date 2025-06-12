@@ -95,6 +95,10 @@
     },
     "templates": {
       "shareCooldown": "You can share again in {{seconds}} seconds."
+    },
+    "comments": {
+      "commentSuccess": "Comment added successfully!",
+      "commentError": "Error adding comment. Please try again later."
     }
   }
 }
