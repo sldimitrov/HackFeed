@@ -1,5 +1,7 @@
 import { Avatar, Box, Card, IconButton, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from 'react-router-dom';
+import { slugify } from '../../utils/slugify.ts';
 
 interface CommentCardProps {
   author: string;
@@ -22,10 +24,21 @@ export function CommentCard({
   currentUserId,
   onDeleteRequest,
 }: CommentCardProps) {
+  const navigate = useNavigate();
+
+  const handleProfileNavigate = () => {
+    navigate(`/profile/${userId}/${slugify('user')}`, { state: { userId: userId } });
+  };
+
   return (
     <Card sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2, p: 2, mb: 1 }}>
-        <Avatar src={avatar} alt={author} />
+        <Avatar
+          src={avatar}
+          alt={author}
+          sx={{ cursor: 'pointer' }}
+          onClick={handleProfileNavigate}
+        />
         <Box>
           <Typography fontWeight={600}>{author}</Typography>
           <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
