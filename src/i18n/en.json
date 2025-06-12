@@ -103,7 +103,8 @@
       "commentSuccess": "Comment added successfully!",
       "commentError": "Error adding comment. Please try again later.",
       "deleteSuccess": "Comment deleted successfully!",
-      "deleteError": "Error deleting comment. Please try again later."
+      "deleteError": "Error deleting comment. Please try again later.",
+      "commentCooldown": "You can comment again in {{seconds}} seconds."
     }
   }
 }

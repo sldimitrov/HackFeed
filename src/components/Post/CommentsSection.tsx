@@ -1,4 +1,4 @@
-import { Box, TextField, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, TextField, Tooltip, Typography } from '@mui/material';
 import KEYS from '../../contants/keyCodes';
 import type { PostComment } from '../../types/post';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,7 @@ import { toast } from '../../utils/toast.ts';
 import ConfirmDialog from '../Base/ConfirmDialog.tsx';
 import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
 import { useState } from 'react';
+import CommentIcon from '@mui/icons-material/Comment';
 
 interface CommentSectionProps {
   commentsOpen: boolean;
@@ -75,6 +76,9 @@ export default function CommentSection({
             placeholder={t('posts.comments.addComment')}
             sx={{ mt: 1 }}
           />
+          <IconButton onClick={handleAddComment} sx={{ mt: 1, color: 'orange' }}>
+            <CommentIcon />
+          </IconButton>
           {isPostShared && (
             <Tooltip title={t('posts.comments.tooltip')} arrow>
               <Typography

@@ -49,6 +49,7 @@ export function CommentCard({
           </Typography>
         </Box>
       </Box>
+
       {currentUserId === userId && (
         <Box sx={{ display: 'flex', alignItems: 'center', p: 1 }}>
           <IconButton onClick={() => onDeleteRequest(commentId)} color="error" size="small">

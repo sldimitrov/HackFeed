@@ -35,7 +35,8 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
   const toggleComments = () => setCommentsOpen((prev) => !prev);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [lastSharedTimes, setLastSharedTimes] = useState<{ [postId: number]: number }>({});
-  const COOLDOWN_MS = 1 * 60 * 1000;
+  const [lastCommentTimes, setLastCommentTimes] = useState<{ [postId: number]: number }>({});
+  const COOLDOWN_MS = 60 * 1000; // 1 minute
 
   const updatePost = useUpdatePost(mutationType);
   const sharePost = useSharePost();
@@ -59,12 +60,24 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
   const handleAddComment = async () => {
     if (!newComment.trim() || !user) return;
 
+    const now = Date.now();
+    const lastComment = lastCommentTimes[post.id] || 0;
+
+    if (now - lastComment < COOLDOWN_MS) {
+      const remaining = Math.ceil((COOLDOWN_MS - (now - lastComment)) / 1000);
+      toast.info(t('toast.comments.commentCooldown', { seconds: remaining }));
+      return;
+    }
+
     try {
       await CommentsService.create({
         post_id: post.id,
         user_id: user.id,
         content: newComment,
       });
+
+      setLastCommentTimes((prev) => ({ ...prev, [post.id]: now }));
+
       toast.success(t('toast.comments.commentSuccess'));
       setNewComment('');
 
