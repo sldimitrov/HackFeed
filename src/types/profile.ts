@@ -5,6 +5,7 @@ export interface UserProfile {
   title: string;
   avatar_url: string;
   created_at: string;
+  role: string;
 }
 
 export interface EditableProfile {

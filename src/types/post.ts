@@ -37,6 +37,7 @@ export interface PostCardProps {
   post: Post;
   mutationType?: MutationType;
   comments: PostComment[] | undefined;
+  role?: string;
 }
 
 export interface UpdatePostPayload {

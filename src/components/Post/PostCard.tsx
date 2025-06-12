@@ -20,7 +20,7 @@ import CommentSection from './CommentsSection.tsx';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_COMMENTS_BATCH, QUERY_POSTS } from '../../contants/queryKeys.ts';
 
-export default function PostCard({ post, mutationType, comments }: PostCardProps) {
+export default function PostCard({ post, mutationType, comments, role }: PostCardProps) {
   const { t } = useTranslation();
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
@@ -41,7 +41,9 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
   const sharePost = useSharePost();
   const deletePost = useDeletePost();
   const showDelete =
-    (user?.id === post.user_id && !post.shared_by_id) || user?.id === post.shared_by_id;
+    (user?.id === post.user_id && !post.shared_by_id) ||
+    user?.id === post.shared_by_id ||
+    role === 'admin';
 
   const handleLike = async () => {
     if (!user) return;
