@@ -184,7 +184,7 @@ Views: `feed_posts_shared` (includes shared_by_id, shared_by_name, shared_by_ava
 
 ## 🌐 Live Demo
 
-You can explore the app here: [EXPLORE APP](https://hack-feed-nine.vercel.app/)
+You can explore the app here: [EXPLORE APP](https://hack-feed-real.vercel.app/)
 
 
 ---
