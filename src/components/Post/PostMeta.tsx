@@ -76,16 +76,20 @@ export default function PostMeta({
           justifyContent: 'space-between',
           alignItems: 'center',
           flexGrow: 1,
+          gap: 1,
         }}
       >
         <Box display="flex" alignItems="center" gap={1}>
           <IconButton
             sx={{
-              marginLeft: '18px',
-              width: '25px',
-              height: '25px',
-              background: 'orange',
+              width: 32,
+              height: 32,
+              backgroundColor: '#f9a825',
+              marginLeft: '15px',
               color: 'white',
+              '&:hover': {
+                backgroundColor: '#f57f17',
+              },
             }}
           >
             <ThumbUpOffAltIcon fontSize="small" />
@@ -114,17 +118,24 @@ export default function PostMeta({
           <Box display="flex" alignItems="center">
             <Button
               size="small"
+              variant="outlined"
               startIcon={<OutlinedFlagIcon fontSize="small" />}
               sx={{
                 textTransform: 'none',
-                minWidth: 0,
-                padding: 0,
-                color: 'text.secondary',
-                marginRight: '18px',
+                borderRadius: '20px',
+                padding: '2px 10px',
+                fontSize: '0.75rem',
+                color: '#e53935',
+                marginRight: '15px',
+                borderColor: '#e53935',
+                '&:hover': {
+                  backgroundColor: '#ffe6e6',
+                  borderColor: '#d32f2f',
+                },
               }}
               onClick={() => handleReport(postId || 0)}
             >
-              {t('posts.meta.report')}
+              Report
             </Button>
           </Box>
         )}
