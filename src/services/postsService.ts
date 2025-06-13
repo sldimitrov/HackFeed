@@ -20,8 +20,6 @@ export default class PostsService {
       .or(`and(user_id.eq.${user_id},shared_by_id.is.null),shared_by_id.eq.${user_id}`)
       .order('created_at', { ascending: false });
 
-    console.log('data', data);
-
     if (error) throw new Error(error.message);
     return data as Post[];
   }

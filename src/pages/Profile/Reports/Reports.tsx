@@ -3,6 +3,7 @@ import PostsSection from '../Posts/PostsSection.tsx';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { useInfinitePosts } from '../../../hooks/usePosts.ts';
 import type { UserProfile } from '../../../types/profile.ts';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   loading: boolean;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function Reports({ loading, profile }: Props) {
+  const { t } = useTranslation();
   const { data, isLoading } = useInfinitePosts(100);
   const posts = data?.pages.flat() ?? [];
 
@@ -32,7 +34,7 @@ export default function Reports({ loading, profile }: Props) {
           <CircularProgress />
         ) : (
           <Typography variant="body1" color="text.secondary">
-            No reported posts found.
+            {t('posts.reports.noReportedPosts')}
           </Typography>
         )}
       </Box>

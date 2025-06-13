@@ -15,9 +15,6 @@ interface Props {
 export default function PostsSection({ loading, posts, reports = [] }: Props) {
   const { t } = useTranslation();
 
-  console.log('posts', posts);
-  console.log('reports', reports);
-
   const reportedPostIds = useMemo(() => {
     return [...new Set(reports.map((r) => r.post_id))];
   }, [reports]);

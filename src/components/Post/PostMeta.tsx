@@ -42,9 +42,9 @@ export default function PostMeta({
 
     try {
       await ReportService.reportPost(postId, reason, userId || '');
-      toast.success(t('posts.meta.reportSuccess'));
+      toast.success(t('posts.reports.reportSuccess'));
     } catch (error) {
-      toast.error(t('posts.meta.reportError'));
+      toast.error(t('posts.reports.reportError'));
       console.error(error);
     }
   };

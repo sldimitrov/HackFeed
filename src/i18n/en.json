@@ -63,6 +63,7 @@
       "confirmDeleteContent": "This action cannot be undone. Are you sure you want to delete this comment?"
     },
     "reports": {
+      "reported": "Reported",
       "dialogTitle": "Reported Post Details",
       "noReportsFound": "No reports found for this post.",
       "reason": "Reason: ",
@@ -72,7 +73,8 @@
       "reportSuccess": "The report was sent.",
       "reportError": "Problem with reporting.",
       "showReporterDetails": "Show Reporter Details",
-      "reportedPostsTitle": "Reported Posts"
+      "reportedPostsTitle": "Reported Posts",
+      "noReportedPosts": "No reported posts found."
     }
   },
   "timeAgo": {
