@@ -85,7 +85,7 @@ export default function CommentSection({
                 variant="body2"
                 sx={{ mt: 2, ml: 1, color: 'text.disabled', cursor: 'help' }}
               >
-                <InfoOutlineIcon fontSize="small" />
+                <InfoOutlineIcon fontSize="small" sx={{ color: '#1976d2' }} />
               </Typography>
             </Tooltip>
           )}

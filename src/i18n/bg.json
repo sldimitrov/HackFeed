@@ -35,7 +35,8 @@
     "meta": {
       "likes": "{{likeCount}} харесвания",
       "seeMore": "Виж повече",
-      "seeLess": "Виж по-малко"
+      "seeLess": "Виж по-малко",
+      "report": "Докладвай"
     },
     "creator": {
       "placeholder": "Какво витае днес в твоя хакерски ум?",

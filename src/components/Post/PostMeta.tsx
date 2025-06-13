@@ -1,5 +1,6 @@
 import { Box, Button, IconButton, Typography, CircularProgress } from '@mui/material';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import OutlinedFlagIcon from '@mui/icons-material/OutlinedFlag';
 import { useTranslation } from 'react-i18next';
 
 interface PostMetaProps {
@@ -34,35 +35,60 @@ export default function PostMeta({
         },
       }}
     >
-      <Box display="flex" alignItems="center" gap={1}>
-        <IconButton
-          sx={{
-            marginLeft: '18px',
-            width: '25px',
-            height: '25px',
-            background: 'orange',
-            color: 'white',
-          }}
-        >
-          <ThumbUpOffAltIcon fontSize="small" />
-        </IconButton>
-        <Typography variant="caption" sx={{ paddingTop: '4px' }} color="text.secondary">
-          {t('posts.meta.likes', { likeCount })}
-        </Typography>
-      </Box>
-
       <Box
         sx={{
           display: 'flex',
-          gap: 1,
-          mr: 1,
-          '@media (max-width: 360px)': {
-            mt: 1,
-            justifyContent: 'flex-end',
-          },
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexGrow: 1,
         }}
       >
-        {isEditing && (
+        <Box display="flex" alignItems="center" gap={1}>
+          <IconButton
+            sx={{
+              marginLeft: '18px',
+              width: '25px',
+              height: '25px',
+              background: 'orange',
+              color: 'white',
+            }}
+          >
+            <ThumbUpOffAltIcon fontSize="small" />
+          </IconButton>
+          <Typography variant="caption" sx={{ paddingTop: '4px' }} color="text.secondary">
+            {t('posts.meta.likes', { likeCount })}
+          </Typography>
+        </Box>
+
+        <Box display="flex" alignItems="center">
+          <Button
+            size="small"
+            startIcon={<OutlinedFlagIcon fontSize="small" />}
+            sx={{
+              textTransform: 'none',
+              minWidth: 0,
+              padding: 0,
+              color: 'text.secondary',
+              marginRight: '18px',
+            }}
+          >
+            {t('posts.meta.report')}
+          </Button>
+        </Box>
+      </Box>
+
+      {isEditing && (
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 1,
+            mr: 1,
+            '@media (max-width: 360px)': {
+              mt: 1,
+              justifyContent: 'flex-end',
+            },
+          }}
+        >
           <>
             <Button
               size="small"
@@ -77,8 +103,8 @@ export default function PostMeta({
               {t('feed.cancel')}
             </Button>
           </>
-        )}
-      </Box>
+        </Box>
+      )}
     </Box>
   );
 }
