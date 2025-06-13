@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Typography, CircularProgress } from '@mui/material';
+import { Box, Button, CircularProgress, IconButton, Typography } from '@mui/material';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import OutlinedFlagIcon from '@mui/icons-material/OutlinedFlag';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,7 @@ interface PostMetaProps {
   isSaving?: boolean;
   userId?: string;
   postId?: number;
+  isReported?: boolean;
 }
 
 export default function PostMeta({
@@ -23,14 +24,16 @@ export default function PostMeta({
   isSaving,
   userId,
   postId,
+  isReported = false,
 }: PostMetaProps) {
   const { t } = useTranslation();
 
   const handleReport = async (postId: number) => {
-    console.log('handleReport called with postId:', postId);
+    // TODO: add proper dialog
     const reason = prompt('Защо докладваш този пост?');
     if (!reason) return;
 
+    // TODO: add i18n to toast messages
     try {
       await ReportService.reportPost(postId, reason, userId || '');
       toast.success('Докладът беше изпратен');
@@ -80,22 +83,38 @@ export default function PostMeta({
           </Typography>
         </Box>
 
-        <Box display="flex" alignItems="center">
-          <Button
-            size="small"
-            startIcon={<OutlinedFlagIcon fontSize="small" />}
+        {isReported ? (
+          <Typography
+            variant="caption"
+            color="error"
             sx={{
-              textTransform: 'none',
-              minWidth: 0,
-              padding: 0,
-              color: 'text.secondary',
-              marginRight: '18px',
+              fontWeight: 'bold',
+              backgroundColor: '#ffe6e6',
+              borderRadius: '4px',
+              padding: '2px 4px',
+              marginRight: '15px',
             }}
-            onClick={() => handleReport(postId || 0)}
           >
-            {t('posts.meta.report')}
-          </Button>
-        </Box>
+            Reported by
+          </Typography>
+        ) : (
+          <Box display="flex" alignItems="center">
+            <Button
+              size="small"
+              startIcon={<OutlinedFlagIcon fontSize="small" />}
+              sx={{
+                textTransform: 'none',
+                minWidth: 0,
+                padding: 0,
+                color: 'text.secondary',
+                marginRight: '18px',
+              }}
+              onClick={() => handleReport(postId || 0)}
+            >
+              {t('posts.meta.report')}
+            </Button>
+          </Box>
+        )}
       </Box>
 
       {isEditing && (

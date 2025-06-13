@@ -19,4 +19,11 @@ export default class ReportService {
     if (error) throw new Error(error.message);
     return data;
   }
+
+  static async getReportedPostIds(): Promise<number[]> {
+    const { data, error } = await supabase.from('reports').select('post_id');
+
+    if (error) throw error;
+    return data?.map((r) => r.post_id) ?? [];
+  }
 }

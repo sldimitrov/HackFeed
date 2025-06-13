@@ -20,7 +20,13 @@ import CommentSection from './CommentsSection.tsx';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_COMMENTS_BATCH, QUERY_POSTS } from '../../contants/queryKeys.ts';
 
-export default function PostCard({ post, mutationType, comments, role }: PostCardProps) {
+export default function PostCard({
+  post,
+  mutationType,
+  comments,
+  role,
+  isReported,
+}: PostCardProps) {
   const { t } = useTranslation();
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
@@ -156,6 +162,7 @@ export default function PostCard({ post, mutationType, comments, role }: PostCar
         name={post.shared_by_name || post.name}
         title={post.shared_by_title || post.title}
         created_at={post.created_at}
+        isReported={isReported}
         canEdit={!post.shared && user?.id === post.user_id}
         onEdit={() => setEditing(true)}
       />
@@ -194,6 +201,7 @@ export default function PostCard({ post, mutationType, comments, role }: PostCar
         onCancelEdit={cancelEdit}
         userId={user?.id || ''}
         postId={post?.id || 0}
+        isReported={isReported}
       />
 
       <Divider />

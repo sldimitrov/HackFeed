@@ -98,7 +98,7 @@ export default function UserProfile() {
           handleKeyDown={editMode ? handleKeyDown : undefined}
         />
 
-        <Reports />
+        <Reports loading={loadingPosts} posts={posts || []} />
 
         <PostsSection loading={loadingPosts} posts={posts || []} />
       </Box>

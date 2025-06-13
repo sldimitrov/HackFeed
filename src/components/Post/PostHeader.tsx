@@ -12,6 +12,7 @@ export default function PostHeader({
   name,
   title,
   created_at,
+  isReported,
   canEdit = false,
   onEdit,
 }: {
@@ -20,6 +21,7 @@ export default function PostHeader({
   name: string;
   title: string;
   created_at: string;
+  isReported?: boolean;
   canEdit?: boolean;
   onEdit?: () => void;
 }) {
@@ -49,6 +51,22 @@ export default function PostHeader({
           <Typography variant="caption" color="text.secondary">
             {title || defaultProfile.title}
           </Typography>
+          {isReported && (
+            <Typography
+              variant="caption"
+              color="error"
+              sx={{
+                fontWeight: 'bold',
+                backgroundColor: '#ffe6e6',
+                borderRadius: '4px',
+                marginLeft: '5px',
+                px: 0.5,
+                py: 0.1,
+              }}
+            >
+              Reported
+            </Typography>
+          )}
         </Box>
       }
       action={

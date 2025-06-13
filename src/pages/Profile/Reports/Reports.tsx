@@ -1,53 +1,20 @@
-import { useQuery } from '@tanstack/react-query';
-import { Box, Typography, CircularProgress, Paper, Divider } from '@mui/material';
-import ReportService from '../../../services/reportsService.ts';
+import { useReportedPostIds } from '../../../hooks/useReportedPostIds.ts';
+import PostsSection from '../Posts/PostsSection.tsx';
+import type { Post } from '../../../types/post.ts';
 
-export default function Reports() {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['reports'],
-    queryFn: ReportService.getReports,
-  });
+interface Props {
+  posts: Post[];
+  loading: boolean;
+}
 
-  if (isLoading) {
-    return (
-      <Box display="flex" justifyContent="center" mt={4}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (isError || !data) {
-    return (
-      <Box display="flex" justifyContent="center" mt={4}>
-        <Typography color="error">Грешка при зареждане на докладите</Typography>
-      </Box>
-    );
-  }
+export default function Reports({ posts, loading }: Props) {
+  const { data: reportedPostIds = [], isLoading: loadingReports } = useReportedPostIds();
 
   return (
-    <Box p={3}>
-      <Typography variant="h5" gutterBottom>
-        Докладвани постове
-      </Typography>
-
-      {data.length === 0 ? (
-        <Typography>Няма докладвани постове.</Typography>
-      ) : (
-        data.map((report) => (
-          <Paper key={report.id} sx={{ p: 2, mb: 2 }}>
-            <Typography variant="subtitle1">
-              <strong>Докладван от:</strong> {report.reporter?.name || 'Анонимен'}
-            </Typography>
-            <Typography>
-              <strong>Причина:</strong> {report.reason}
-            </Typography>
-            <Divider sx={{ my: 1 }} />
-            <Typography>
-              <strong>Пост:</strong> {report.post?.content || '[Изтрит]'}
-            </Typography>
-          </Paper>
-        ))
-      )}
-    </Box>
+    <PostsSection
+      loading={loading || loadingReports}
+      posts={posts}
+      reportedPostIds={reportedPostIds}
+    />
   );
 }
