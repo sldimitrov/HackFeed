@@ -7,6 +7,7 @@ import ReportService from '../../services/reportsService.ts';
 import type { ReportDetail } from '../../types/post.ts';
 import ReportDetailsDialog from '../Base/ReportDetailsDialog.tsx';
 import { useState } from 'react';
+import ReportDialog from '../Base/ReportDialog.tsx';
 
 interface PostMetaProps {
   likeCount: number;
@@ -33,15 +34,20 @@ export default function PostMeta({
 }: PostMetaProps) {
   const { t } = useTranslation();
 
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openReportDialog, setOpenReportDialog] = useState(false);
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+  const [reportTargetPostId, setReportTargetPostId] = useState<number | null>(null);
 
-  const handleReport = async (postId: number) => {
-    // TODO: add proper dialog
-    const reason = prompt(t('posts.reports.reportPrompt'));
-    if (!reason) return;
+  const handleReport = (postId: number) => {
+    setReportTargetPostId(postId);
+    setOpenReportDialog(true);
+  };
+
+  const handleReportSubmit = async (reason: string) => {
+    if (!reportTargetPostId) return;
 
     try {
-      await ReportService.reportPost(postId, reason, userId || '');
+      await ReportService.reportPost(reportTargetPostId, reason, userId || '');
       toast.success(t('posts.reports.reportSuccess'));
     } catch (error) {
       toast.error(t('posts.reports.reportError'));
@@ -100,7 +106,7 @@ export default function PostMeta({
               marginRight: '15px',
               cursor: 'pointer',
             }}
-            onClick={() => setOpenDialog(true)}
+            onClick={() => setOpenDetailsDialog(true)}
           >
             {t('posts.reports.showReporterDetails')}
           </Button>
@@ -136,25 +142,30 @@ export default function PostMeta({
             },
           }}
         >
-          <>
-            <Button
-              size="small"
-              variant="contained"
-              color="warning"
-              onClick={onSaveEdit}
-              disabled={isSaving}
-            >
-              {isSaving ? <CircularProgress size={16} /> : t('feed.save')}
-            </Button>
-            <Button size="small" variant="outlined" color="warning" onClick={onCancelEdit}>
-              {t('feed.cancel')}
-            </Button>
-          </>
+          <Button
+            size="small"
+            variant="contained"
+            color="warning"
+            onClick={onSaveEdit}
+            disabled={isSaving}
+          >
+            {isSaving ? <CircularProgress size={16} /> : t('feed.save')}
+          </Button>
+          <Button size="small" variant="outlined" color="warning" onClick={onCancelEdit}>
+            {t('feed.cancel')}
+          </Button>
         </Box>
       )}
+
+      <ReportDialog
+        open={openReportDialog}
+        onClose={() => setOpenReportDialog(false)}
+        onSubmit={handleReportSubmit}
+      />
+
       <ReportDetailsDialog
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
+        open={openDetailsDialog}
+        onClose={() => setOpenDetailsDialog(false)}
         reports={reports || []}
       />
     </Box>

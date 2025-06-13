@@ -123,5 +123,12 @@
       "deleteError": "Error deleting comment. Please try again later.",
       "commentCooldown": "You can comment again in {{seconds}} seconds."
     }
+  },
+  "reportDialog": {
+    "title": "Report Post",
+    "prompt": "Why are you reporting this post?",
+    "placeholder": "Enter reason...",
+    "cancel": "Cancel",
+    "submit": "Submit"
   }
 }
