@@ -19,6 +19,7 @@ import CommentsService from '../../services/commentsService.ts';
 import CommentSection from './CommentsSection.tsx';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_COMMENTS_BATCH, QUERY_POSTS } from '../../contants/queryKeys.ts';
+import { ADMIN_ROLE } from '../../contants/users.ts';
 
 export default function PostCard({
   post,
@@ -50,7 +51,7 @@ export default function PostCard({
   const showDelete =
     (user?.id === post.user_id && !post.shared_by_id) ||
     user?.id === post.shared_by_id ||
-    role === 'admin';
+    role === ADMIN_ROLE;
 
   const handleLike = async () => {
     if (!user) return;
