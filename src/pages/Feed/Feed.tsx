@@ -1,5 +1,4 @@
 import { Box, Button, CircularProgress, Container, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import UserProfileCard from '../../components/UserProfileCard/UserProfileCard.tsx';
 import type { Post } from '../../types/post.ts';
 import PostCreator from '../../components/Post/PostCreator.tsx';
@@ -18,8 +17,7 @@ import { useCommentsBatch } from '../../hooks/useComments.ts';
 
 export function Feed() {
   const { t } = useTranslation();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobile = useMediaQuery('(max-width:780px)');
 
   const { user } = useAuthStore();
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfinitePosts();
@@ -56,7 +54,7 @@ export function Feed() {
     <Box position="relative" minHeight="100vh" bgcolor="#f7f7f7" sx={{ overflowX: 'hidden' }}>
       <Background />
 
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, mt: 5, pb: 10 }}>
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, mt: 5, pb: 5 }}>
         <Box
           display="flex"
           flexDirection={isMobile ? 'column' : 'row'}
