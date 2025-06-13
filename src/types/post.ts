@@ -45,7 +45,7 @@ export interface ReportDetail {
 
 export interface PostCardProps {
   post: Post;
-  mutationType?: MutationType;
+  mutationType: MutationType;
   comments: PostComment[] | undefined;
   role?: UserRoles;
   isReported?: boolean;

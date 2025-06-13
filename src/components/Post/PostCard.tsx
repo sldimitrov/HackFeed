@@ -1,26 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Box, Divider, TextField } from '@mui/material';
 import type { PostCardProps } from '../../types/post.ts';
 import { useAuthStore } from '../../store/useAuthStore.ts';
-import LikesService from '../../services/likesService.ts';
-import { useSharePost } from '../../hooks/useSharePost.ts';
-import { useDeletePost, useUpdatePost } from '../../hooks/usePosts.ts';
 import PostHeader from './PostHeader.tsx';
 import SharedPostContent from './SharedPostContent.tsx';
 import PostContent from './PostContent.tsx';
 import PostActions from './PostActions.tsx';
 import PostMeta from './PostMeta.tsx';
 import ConfirmDialog from '../Base/ConfirmDialog.tsx';
-import { toast } from '../../utils/toast.ts';
 import { useTranslation } from 'react-i18next';
 import KEYS from '../../contants/keyCodes.ts';
 import MotionCard from '../Base/MotionCard.tsx';
-import CommentsService from '../../services/commentsService.ts';
 import CommentSection from './CommentsSection.tsx';
-import { useQueryClient } from '@tanstack/react-query';
-import { QUERY_COMMENTS_BATCH, QUERY_POSTS } from '../../contants/queryKeys.ts';
 import { ADMIN_ROLE } from '../../contants/users.ts';
-import { useCooldown } from '../../hooks/useCooldown.ts';
+import { usePostActions } from '../../hooks/usePostActions.ts';
 
 export default function PostCard({
   post,
@@ -32,123 +25,37 @@ export default function PostCard({
 }: PostCardProps) {
   const { t } = useTranslation();
   const { user } = useAuthStore();
-  const queryClient = useQueryClient();
 
-  const [liked, setLiked] = useState(post.liked_by_current_user || false);
-  const [likeCount, setLikeCount] = useState(0);
-  const [editing, setEditing] = useState(false);
-  const [editedContent, setEditedContent] = useState(post.content);
-  const [newComment, setNewComment] = useState('');
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const toggleComments = () => setCommentsOpen((prev) => !prev);
 
-  const shareCooldown = useCooldown(60_000); // 1 minute
-  const commentCooldown = useCooldown(60_000); // 1 minute
+  const {
+    liked,
+    likeCount,
+    editing,
+    editedContent,
+    newComment,
+    isSaving,
+    setEditing,
+    setEditedContent,
+    setNewComment,
+    handleLike,
+    handleShare,
+    handleAddComment,
+    handleSaveEdit,
+    handleDelete,
+  } = usePostActions(post, mutationType);
 
-  const updatePost = useUpdatePost(mutationType);
-  const sharePost = useSharePost();
-  const deletePost = useDeletePost();
   const showDelete =
     (user?.id === post.user_id && !post.shared_by_id) ||
     user?.id === post.shared_by_id ||
     role === ADMIN_ROLE;
 
-  const handleLike = async () => {
-    if (!user) return;
-    if (liked) {
-      await LikesService.unlike(post.id, user.id);
-      setLikeCount((prev) => prev - 1);
-    } else {
-      await LikesService.like(post.id, user.id);
-      setLikeCount((prev) => prev + 1);
-    }
-    setLiked(!liked);
-  };
-
-  const handleAddComment = async () => {
-    if (!newComment.trim() || !user) return;
-
-    if (commentCooldown.isOnCooldown(post.id)) {
-      const remaining = commentCooldown.getRemaining(post.id);
-      toast.info(t('toast.comments.commentCooldown', { seconds: remaining }));
-      return;
-    }
-
-    try {
-      await CommentsService.create({
-        post_id: post.id,
-        user_id: user.id,
-        content: newComment,
-      });
-
-      commentCooldown.trigger(post.id);
-      toast.success(t('toast.comments.commentSuccess'));
-      setNewComment('');
-
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_COMMENTS_BATCH],
-      });
-    } catch (error) {
-      toast.error(t('toast.comments.commentError'));
-    }
-  };
-
-  const handleShare = async (postId: number) => {
-    if (!user) return;
-
-    if (shareCooldown.isOnCooldown(postId)) {
-      const remaining = shareCooldown.getRemaining(postId);
-      toast.info(t('toast.templates.shareCooldown', { seconds: remaining }));
-      return;
-    }
-
-    try {
-      await sharePost.mutateAsync({ post_id: postId, user_id: user.id });
-      shareCooldown.trigger(postId);
-      toast.success(t('toast.posts.shareSuccess'));
-    } catch (error) {
-      toast.error(t('toast.auth.errorGeneric'));
-    }
-  };
-
-  const handleSaveEdit = async () => {
-    if (!editedContent.trim()) return;
-
-    try {
-      await updatePost.mutateAsync({ id: String(post.id), content: editedContent });
-      toast.success(t('toast.posts.updateSuccess'));
-      setEditing(false);
-    } catch (error) {
-      toast.error(t('toast.posts.updateError'));
-    }
-  };
-
   const cancelEdit = () => {
     setEditedContent(post.content);
     setEditing(false);
   };
-
-  const handleDelete = () => {
-    setDeleteDialogOpen(true);
-  };
-
-  const handleConfirmDelete = () => {
-    try {
-      deletePost.mutate({ post_id: post.id, shared: post.shared });
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_POSTS],
-      });
-      toast.success(t('toast.posts.deleteSuccess'));
-    } catch (error) {
-      toast.error(t('toast.auth.errorGeneric'));
-    }
-    setDeleteDialogOpen(false);
-  };
-
-  useEffect(() => {
-    setLikeCount(post.like_count || 0);
-  }, [post.id, user]);
 
   return (
     <MotionCard sx={{ mb: 3 }}>
@@ -190,11 +97,11 @@ export default function PostCard({
       <PostMeta
         likeCount={likeCount}
         isEditing={editing}
-        isSaving={updatePost.isPending}
+        isSaving={isSaving}
         onSaveEdit={handleSaveEdit}
         onCancelEdit={cancelEdit}
         userId={user?.id || ''}
-        postId={post?.id || 0}
+        postId={post.id}
         isReported={isReported}
         reports={reports}
       />
@@ -214,8 +121,8 @@ export default function PostCard({
       <PostActions
         liked={liked}
         onLike={handleLike}
-        onShare={() => handleShare(post.id)}
-        onDelete={handleDelete}
+        onShare={() => handleShare()}
+        onDelete={() => setDeleteDialogOpen(true)}
         showDelete={showDelete}
         onToggleComments={toggleComments}
       />
@@ -223,7 +130,10 @@ export default function PostCard({
       <ConfirmDialog
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
-        onConfirm={handleConfirmDelete}
+        onConfirm={() => {
+          handleDelete();
+          setDeleteDialogOpen(false);
+        }}
         title={t('posts.confirmDialog.deleteTitle')}
         content={t('posts.confirmDialog.deleteContent')}
       />
