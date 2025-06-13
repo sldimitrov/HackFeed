@@ -20,7 +20,6 @@ export default function UserProfile() {
   const { data: profile, isLoading } = useUserProfile(userId);
   const { data: posts, isLoading: loadingPosts, refetch } = useUserPosts(userId || '');
 
-  // TODO: Avoid showing the default avatar on load
   // TODO: Show cooler when !editing for visiting profile
 
   const {

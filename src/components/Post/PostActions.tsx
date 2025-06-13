@@ -76,7 +76,7 @@ export default function PostActions({
 
       {showDelete && onDelete && (
         <Box display="flex" alignItems="center" gap={2}>
-          <IconButton onClick={onDelete} color="error" >
+          <IconButton onClick={onDelete} color="error">
             <DeleteIcon fontSize="small" />
             <Typography
               variant="caption"
