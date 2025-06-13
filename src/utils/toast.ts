@@ -1,4 +1,3 @@
-// utils/toast.ts
 import { useSnackbar } from 'notistack';
 
 let useSnackbarRef: any;
