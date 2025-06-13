@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabaseClient';
+import type { ReportDetail } from '../types/post.ts';
 
 export default class ReportService {
   static async reportPost(postId: number, reason: string, userId: string) {
@@ -20,10 +21,15 @@ export default class ReportService {
     return data;
   }
 
-  static async getReportedPostIds(): Promise<number[]> {
-    const { data, error } = await supabase.from('reports').select('post_id');
+  static async getReportedPost(): Promise<ReportDetail[]> {
+    const { data, error } = await supabase.from('reports').select(`
+    post_id,
+    reason,
+    reported_by,
+    profiles!reported_by(name)
+  `);
 
     if (error) throw error;
-    return data?.map((r) => r.post_id) ?? [];
+    return data as unknown as ReportDetail[];
   }
 }

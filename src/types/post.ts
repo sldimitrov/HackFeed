@@ -33,12 +33,22 @@ export type PostComment = {
   };
 };
 
+export interface ReportDetail {
+  post_id: number;
+  reason: string;
+  reported_by: string;
+  profiles: {
+    name: string;
+  };
+}
+
 export interface PostCardProps {
   post: Post;
   mutationType?: MutationType;
   comments: PostComment[] | undefined;
   role?: string;
   isReported?: boolean;
+  reports: ReportDetail[];
 }
 
 export interface UpdatePostPayload {

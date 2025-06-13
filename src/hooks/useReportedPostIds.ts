@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import ReportService from '../services/reportsService.ts';
 
-export function useReportedPostIds() {
+export function useReportedPosts() {
   return useQuery({
-    queryKey: ['reported-post-ids'],
-    queryFn: ReportService.getReportedPostIds,
+    queryKey: ['reported-posts'],
+    queryFn: ReportService.getReportedPost,
   });
 }

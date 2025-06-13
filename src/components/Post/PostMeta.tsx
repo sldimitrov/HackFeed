@@ -4,6 +4,9 @@ import OutlinedFlagIcon from '@mui/icons-material/OutlinedFlag';
 import { useTranslation } from 'react-i18next';
 import { toast } from '../../utils/toast.ts';
 import ReportService from '../../services/reportsService.ts';
+import type { ReportDetail } from '../../types/post.ts';
+import ReportDetailsDialog from '../Base/ReportDetailsDialog.tsx';
+import { useState } from 'react';
 
 interface PostMetaProps {
   likeCount: number;
@@ -14,6 +17,7 @@ interface PostMetaProps {
   userId?: string;
   postId?: number;
   isReported?: boolean;
+  reports?: ReportDetail[];
 }
 
 export default function PostMeta({
@@ -25,8 +29,11 @@ export default function PostMeta({
   userId,
   postId,
   isReported = false,
+  reports,
 }: PostMetaProps) {
   const { t } = useTranslation();
+
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleReport = async (postId: number) => {
     // TODO: add proper dialog
@@ -93,9 +100,11 @@ export default function PostMeta({
               borderRadius: '4px',
               padding: '2px 4px',
               marginRight: '15px',
+              cursor: 'pointer',
             }}
+            onClick={() => setOpenDialog(true)}
           >
-            Reported by
+            Show Reporter Details
           </Typography>
         ) : (
           <Box display="flex" alignItems="center">
@@ -145,6 +154,11 @@ export default function PostMeta({
           </>
         </Box>
       )}
+      <ReportDetailsDialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        reports={reports || []}
+      />
     </Box>
   );
 }

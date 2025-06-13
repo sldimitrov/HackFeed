@@ -26,6 +26,7 @@ export default function PostCard({
   comments,
   role,
   isReported,
+  reports,
 }: PostCardProps) {
   const { t } = useTranslation();
   const { user } = useAuthStore();
@@ -202,6 +203,7 @@ export default function PostCard({
         userId={user?.id || ''}
         postId={post?.id || 0}
         isReported={isReported}
+        reports={reports}
       />
 
       <Divider />
