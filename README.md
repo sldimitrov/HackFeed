@@ -57,9 +57,11 @@ HackFeed is a full-stack feed application built with **React** and **Supabase**,
     - Add new posts
     - Like and share posts
     - Delete your own posts
+    - Share posts
+    - Report posts
     - Feed updates reflect in real-time
 - 🧑‍💼 **User Profiles**:
-    - Editable name, title, and avatar
+    - Editable name, title, and avatar (preselect & upload)
     - View own profile and others
 - 🔍 **Filter by User**:
     - Visit another user's profile to view only their posts
