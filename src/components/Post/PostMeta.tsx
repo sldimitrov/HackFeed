@@ -109,6 +109,7 @@ export default function PostMeta({
               padding: '2px 4px',
               marginRight: '15px',
               cursor: 'pointer',
+              maxWidth: '145px',
             }}
             onClick={() => setOpenDetailsDialog(true)}
           >
