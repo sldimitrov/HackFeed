@@ -11,6 +11,7 @@ import AvatarBlock from './Avatar/AvatarBlock.tsx';
 import ProfileFields from './Profile/ProfileFields.tsx';
 import PostsSection from './Posts/PostsSection.tsx';
 import Reports from './Reports/Reports.tsx';
+import { ADMIN_ROLE } from '../../contants/users.ts';
 
 export default function UserProfile() {
   const { logout, user } = useAuthStore();
@@ -18,10 +19,8 @@ export default function UserProfile() {
   const navigate = useNavigate();
 
   const { data: profile, isLoading } = useUserProfile(userId);
+  const { data: currentUserProfile } = useUserProfile(user?.id);
   const { data: posts, isLoading: loadingPosts, refetch } = useUserPosts(userId || '');
-
-  // TODO: Avoid showing the default avatar on load
-  // TODO: Show cooler when !editing for visiting profile
 
   const {
     formData,
@@ -78,6 +77,7 @@ export default function UserProfile() {
 
         <AvatarBlock
           avatarUrl={formData.avatar_url}
+          formData={formData}
           editable={editable}
           editMode={editMode}
           uploading={uploading}
@@ -89,15 +89,19 @@ export default function UserProfile() {
           }}
         />
 
-        <ProfileFields
-          editable={editable}
-          editMode={editMode}
-          formData={formData}
-          handleChange={handleChange}
-          handleKeyDown={editMode ? handleKeyDown : undefined}
-        />
+        {editable && editMode && (
+          <ProfileFields
+            editable={editable}
+            editMode={editMode}
+            formData={formData}
+            handleChange={handleChange}
+            handleKeyDown={editMode ? handleKeyDown : undefined}
+          />
+        )}
 
-        <Reports loading={loadingPosts} profile={profile ?? undefined} />
+        {currentUserProfile?.role === ADMIN_ROLE && (
+          <Reports loading={loadingPosts} profile={profile ?? undefined} />
+        )}
 
         <PostsSection loading={loadingPosts} posts={posts || []} />
       </Box>

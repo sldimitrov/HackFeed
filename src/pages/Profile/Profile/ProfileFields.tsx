@@ -27,7 +27,7 @@ export default function ProfileFields({
         label={t('profile.fields.name')}
         fullWidth
         margin="dense"
-        value={formData.name}
+        value={formData.name ?? ''}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         disabled={disabled}
@@ -37,7 +37,7 @@ export default function ProfileFields({
         label={t('profile.fields.title')}
         fullWidth
         margin="dense"
-        value={formData.title}
+        value={formData.title ?? ''}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         disabled={disabled}
@@ -47,7 +47,7 @@ export default function ProfileFields({
         label={t('profile.fields.avatarUrl')}
         fullWidth
         margin="dense"
-        value={formData.avatar_url}
+        value={formData.avatar_url ?? ''}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         disabled={disabled}

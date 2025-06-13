@@ -61,7 +61,7 @@ export default function PostCard({
     <MotionCard sx={{ mb: 3 }}>
       <PostHeader
         id={post.shared_by_id || post.user_id}
-        avatar={post.shared_by_avatar_url || post.avatar_url}
+        avatar={post.shared ? post.shared_by_avatar_url : post.avatar_url}
         name={post.shared_by_name || post.name}
         title={post.shared_by_title || post.title}
         created_at={post.created_at}
