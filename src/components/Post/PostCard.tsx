@@ -19,8 +19,16 @@ import CommentsService from '../../services/commentsService.ts';
 import CommentSection from './CommentsSection.tsx';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_COMMENTS_BATCH, QUERY_POSTS } from '../../contants/queryKeys.ts';
+import { ADMIN_ROLE } from '../../contants/users.ts';
 
-export default function PostCard({ post, mutationType, comments }: PostCardProps) {
+export default function PostCard({
+  post,
+  mutationType,
+  comments,
+  role,
+  isReported,
+  reports,
+}: PostCardProps) {
   const { t } = useTranslation();
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
@@ -41,7 +49,9 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
   const sharePost = useSharePost();
   const deletePost = useDeletePost();
   const showDelete =
-    (user?.id === post.user_id && !post.shared_by_id) || user?.id === post.shared_by_id;
+    (user?.id === post.user_id && !post.shared_by_id) ||
+    user?.id === post.shared_by_id ||
+    role === ADMIN_ROLE;
 
   const handleLike = async () => {
     if (!user) return;
@@ -154,6 +164,7 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
         name={post.shared_by_name || post.name}
         title={post.shared_by_title || post.title}
         created_at={post.created_at}
+        isReported={isReported}
         canEdit={!post.shared && user?.id === post.user_id}
         onEdit={() => setEditing(true)}
       />
@@ -190,6 +201,10 @@ export default function PostCard({ post, mutationType, comments }: PostCardProps
         isSaving={updatePost.isPending}
         onSaveEdit={handleSaveEdit}
         onCancelEdit={cancelEdit}
+        userId={user?.id || ''}
+        postId={post?.id || 0}
+        isReported={isReported}
+        reports={reports}
       />
 
       <Divider />

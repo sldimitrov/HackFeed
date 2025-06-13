@@ -1,3 +1,5 @@
+import type { UserRoles } from './auth.ts';
+
 export interface UserProfile {
   id: string;
   email: string;
@@ -5,6 +7,7 @@ export interface UserProfile {
   title: string;
   avatar_url: string;
   created_at: string;
+  role: UserRoles;
 }
 
 export interface EditableProfile {

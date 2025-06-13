@@ -31,9 +31,7 @@ export default function SharedPostContent({ post }: { post: any }) {
           </Typography>
         </Box>
       </Box>
-      <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-        <TruncatedText text={post.content} maxLength={140} />
-      </Typography>
+      <TruncatedText text={post.content} maxLength={140} />
     </Box>
   );
 }

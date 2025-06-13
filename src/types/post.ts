@@ -1,4 +1,5 @@
 import type { MutationType } from './mutation.ts';
+import type { UserRoles } from './auth.ts';
 
 export interface Post {
   id: number;
@@ -33,10 +34,22 @@ export type PostComment = {
   };
 };
 
+export interface ReportDetail {
+  post_id: number;
+  reason: string;
+  reported_by: string;
+  profiles: {
+    name: string;
+  };
+}
+
 export interface PostCardProps {
   post: Post;
   mutationType?: MutationType;
   comments: PostComment[] | undefined;
+  role?: UserRoles;
+  isReported?: boolean;
+  reports?: ReportDetail[];
 }
 
 export interface UpdatePostPayload {

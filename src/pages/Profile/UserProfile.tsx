@@ -10,6 +10,7 @@ import ProfileHeader from './Header/ProfileHeader.tsx';
 import AvatarBlock from './Avatar/AvatarBlock.tsx';
 import ProfileFields from './Profile/ProfileFields.tsx';
 import PostsSection from './Posts/PostsSection.tsx';
+import Reports from './Reports/Reports.tsx';
 
 export default function UserProfile() {
   const { logout, user } = useAuthStore();
@@ -96,6 +97,8 @@ export default function UserProfile() {
           handleChange={handleChange}
           handleKeyDown={editMode ? handleKeyDown : undefined}
         />
+
+        <Reports loading={loadingPosts} profile={profile ?? undefined} />
 
         <PostsSection loading={loadingPosts} posts={posts || []} />
       </Box>

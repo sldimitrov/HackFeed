@@ -94,7 +94,7 @@ export function Feed() {
                 const key = isRepost ? `repost-${post.id}-${post.shared_by_id}` : `post-${post.id}`;
                 const comments = groupedComments?.[post.id] ?? [];
 
-                return <PostCard key={key} post={post} comments={comments} />;
+                return <PostCard key={key} post={post} comments={comments} role={profile?.role} />;
               })
             )}
 

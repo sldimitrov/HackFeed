@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { slugify } from '../../utils/slugify.ts';
 import { defaultProfile } from '../../contants/profile.ts';
 import EditIcon from '@mui/icons-material/Edit';
+import { useTranslation } from 'react-i18next';
 
 export default function PostHeader({
   id,
@@ -12,6 +13,7 @@ export default function PostHeader({
   name,
   title,
   created_at,
+  isReported,
   canEdit = false,
   onEdit,
 }: {
@@ -20,9 +22,11 @@ export default function PostHeader({
   name: string;
   title: string;
   created_at: string;
+  isReported?: boolean;
   canEdit?: boolean;
   onEdit?: () => void;
 }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleProfileClick = () => {
@@ -49,6 +53,22 @@ export default function PostHeader({
           <Typography variant="caption" color="text.secondary">
             {title || defaultProfile.title}
           </Typography>
+          {isReported && (
+            <Typography
+              variant="caption"
+              color="error"
+              sx={{
+                fontWeight: 'bold',
+                backgroundColor: '#ffe6e6',
+                borderRadius: '4px',
+                marginLeft: '5px',
+                px: 0.5,
+                py: 0.1,
+              }}
+            >
+              {t('posts.reports.reported')}
+            </Typography>
+          )}
         </Box>
       }
       action={
