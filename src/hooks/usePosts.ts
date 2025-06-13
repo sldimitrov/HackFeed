@@ -18,14 +18,18 @@ export function useInfinitePosts(PAGE_SIZE: number = 5) {
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) =>
       lastPage.length < PAGE_SIZE ? undefined : allPages.length * PAGE_SIZE,
-    staleTime: 10000,
+    staleTime: 1000 * 60 * 2, // 2 minutes
+    gcTime: 1000 * 60 * 5, // 5 minutes
   });
 }
 
 export function useUserPosts(user_id: string) {
   return useQuery<Post[]>({
-    queryKey: [QUERY_USER_POSTS],
+    queryKey: [QUERY_USER_POSTS, user_id],
     queryFn: () => PostsService.listByUser(user_id),
+    enabled: !!user_id,
+    staleTime: 1000 * 60 * 3, // 3 minutes
+    gcTime: 1000 * 60 * 6, // 6 minutes
   });
 }
 

@@ -1,7 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { QUERY_PROFILE } from '../contants/queryKeys.ts';
-import UserService from '../services/userService.ts';
-import type { UserProfile } from '../types/profile.ts';
 import ProfileService from '../services/profileService.ts';
 
 export function useUserProfile(userId: string | undefined) {
@@ -12,16 +10,7 @@ export function useUserProfile(userId: string | undefined) {
       return ProfileService.getCurrentProfile(userId);
     },
     enabled: !!userId,
-  });
-}
-
-export function useUpdateUserProfile(userId: string) {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (updates: Partial<UserProfile>) => UserService.updateProfile(userId, updates),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_PROFILE, userId] });
-    },
+    staleTime: 1000 * 60 * 5, // consider data fresh for 5 mins
+    gcTime: 1000 * 60 * 10, // keep it in memory for 10 mins
   });
 }

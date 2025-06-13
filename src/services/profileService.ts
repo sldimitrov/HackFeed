@@ -20,12 +20,4 @@ export default class ProfileService {
       throw new Error(`Failed to update profile: ${error.message}`);
     }
   }
-
-  static async createProfile(user_id: string, initialData: Partial<UserProfile>): Promise<void> {
-    const { error } = await supabase.from('profiles').insert([{ id: user_id, ...initialData }]);
-
-    if (error) {
-      throw new Error(`Failed to create profile: ${error.message}`);
-    }
-  }
 }
