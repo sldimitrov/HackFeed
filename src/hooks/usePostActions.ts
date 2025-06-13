@@ -9,7 +9,7 @@ import { useSharePost } from './useSharePost.ts';
 import { useAuthStore } from '../store/useAuthStore.ts';
 import type { Post } from '../types/post.ts';
 import CommentsService from '../services/commentsService.ts';
-import { QUERY_COMMENTS_BATCH, QUERY_POSTS } from '../contants/queryKeys.ts';
+import { QUERY_COMMENTS_BATCH, QUERY_POSTS, QUERY_USER_POSTS } from '../contants/queryKeys.ts';
 import type { MutationType } from '../types/mutation.ts';
 import { useTranslation } from 'react-i18next';
 
@@ -102,6 +102,7 @@ export const usePostActions = (post: Post, mutationType: MutationType) => {
     try {
       await deleteMutation.mutateAsync({ post_id: post.id, shared: post.shared });
       queryClient.invalidateQueries({ queryKey: [QUERY_POSTS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_USER_POSTS] });
       toast.success(t('posts.toast.deleteSuccess'));
     } catch (error) {
       toast.error(t('posts.toast.deleteError'));
