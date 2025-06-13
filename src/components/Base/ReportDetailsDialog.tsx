@@ -10,6 +10,7 @@ import {
   ListItemText,
 } from '@mui/material';
 import type { ReportDetail } from '../../types/post.ts';
+import { useTranslation } from 'react-i18next';
 
 interface ReportDetailsDialogProps {
   open: boolean;
@@ -18,19 +19,21 @@ interface ReportDetailsDialogProps {
 }
 
 export default function ReportDetailsDialog({ open, onClose, reports }: ReportDetailsDialogProps) {
+  const { t } = useTranslation();
+
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm" disableScrollLock>
-      <DialogTitle>Reported Post Details</DialogTitle>
+      <DialogTitle>{t('posts.reports.dialogTitle')}</DialogTitle>
       <DialogContent dividers>
         {reports.length === 0 ? (
-          <DialogContentText>No reports found for this post.</DialogContentText>
+          <DialogContentText>{t('posts.reports.noReportsFound')}</DialogContentText>
         ) : (
           <List dense>
             {reports.map((report, index) => (
               <ListItem key={index}>
                 <ListItemText
-                  primary={`Reason: ${report.reason}`}
-                  secondary={`Reported by: ${report.profiles?.name ?? report.reported_by}`}
+                  primary={`${t('posts.reports.reason')} ${report.reason}`}
+                  secondary={`${t('posts.reports.reportedBy')} ${report.profiles?.name ?? report.reported_by}`}
                 />
               </ListItem>
             ))}
@@ -39,7 +42,7 @@ export default function ReportDetailsDialog({ open, onClose, reports }: ReportDe
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} variant="outlined">
-          Close
+          {t('posts.reports.closeButton')}
         </Button>
       </DialogActions>
     </Dialog>

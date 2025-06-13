@@ -37,15 +37,14 @@ export default function PostMeta({
 
   const handleReport = async (postId: number) => {
     // TODO: add proper dialog
-    const reason = prompt('Защо докладваш този пост?');
+    const reason = prompt(t('posts.reports.reportPrompt'));
     if (!reason) return;
 
-    // TODO: add i18n to toast messages
     try {
       await ReportService.reportPost(postId, reason, userId || '');
-      toast.success('Докладът беше изпратен');
+      toast.success(t('posts.meta.reportSuccess'));
     } catch (error) {
-      toast.error('Проблем при докладването');
+      toast.error(t('posts.meta.reportError'));
       console.error(error);
     }
   };
@@ -91,21 +90,20 @@ export default function PostMeta({
         </Box>
 
         {isReported ? (
-          <Typography
-            variant="caption"
+          <Button
             color="error"
             sx={{
-              fontWeight: 'bold',
               backgroundColor: '#ffe6e6',
               borderRadius: '4px',
+              textTransform: 'none',
               padding: '2px 4px',
               marginRight: '15px',
               cursor: 'pointer',
             }}
             onClick={() => setOpenDialog(true)}
           >
-            Show Reporter Details
-          </Typography>
+            {t('posts.reports.showReporterDetails')}
+          </Button>
         ) : (
           <Box display="flex" alignItems="center">
             <Button

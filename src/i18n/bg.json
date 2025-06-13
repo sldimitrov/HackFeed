@@ -65,6 +65,18 @@
       "commentPlaceholder": "Напиши коментар...",
       "confirmDeleteTitle": "Изтриване на този коментар?",
       "confirmDeleteContent": "Това действие не може да бъде отменено. Сигурни ли сте, че искате да изтриете този коментар?"
+    },
+    "reports": {
+      "dialogTitle": "Детайли за докладвания пост",
+      "noReportsFound": "Няма намерени доклади за този пост.",
+      "reason": "Причина: ",
+      "reportedBy": "Докладван от: ",
+      "closeButton": "Затвори",
+      "reportPrompt": "Защо докладвате този пост?",
+      "reportSuccess": "Докладът беше изпратен.",
+      "reportError": "Проблем при докладването.",
+      "showReporterDetails": "Покажи детайли за докладващия",
+      "reportedPostsTitle": "Докладвани постове"
     }
   },
   "timeAgo": {

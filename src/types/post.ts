@@ -48,7 +48,7 @@ export interface PostCardProps {
   comments: PostComment[] | undefined;
   role?: string;
   isReported?: boolean;
-  reports: ReportDetail[];
+  reports?: ReportDetail[];
 }
 
 export interface UpdatePostPayload {

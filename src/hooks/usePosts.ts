@@ -11,9 +11,7 @@ import type { Post, UpdatePostPayload } from '../types/post.ts';
 import { MUTATION_TYPE } from '../contants/mutationType.ts';
 import type { MutationType } from '../types/mutation.ts';
 
-export function useInfinitePosts() {
-  const PAGE_SIZE = 5;
-
+export function useInfinitePosts(PAGE_SIZE: number = 5) {
   return useInfiniteQuery<Post[], Error, InfiniteData<Post[]>, string[], number>({
     queryKey: [QUERY_POSTS],
     queryFn: ({ pageParam = 0 }) => PostsService.list(pageParam, PAGE_SIZE),

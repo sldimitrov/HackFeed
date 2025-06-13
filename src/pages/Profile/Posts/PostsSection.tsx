@@ -15,6 +15,9 @@ interface Props {
 export default function PostsSection({ loading, posts, reports = [] }: Props) {
   const { t } = useTranslation();
 
+  console.log('posts', posts);
+  console.log('reports', reports);
+
   const reportedPostIds = useMemo(() => {
     return [...new Set(reports.map((r) => r.post_id))];
   }, [reports]);
@@ -44,23 +47,25 @@ export default function PostsSection({ loading, posts, reports = [] }: Props) {
       ) : posts.length === 0 ? (
         <NoPosts message={t('profile.postsSection.noPosts')} />
       ) : (
-        posts.map((post: Post) => {
-          const isRepost = post.shared;
-          const key = isRepost ? `repost-${post.id}-${post.shared_by_id}` : `post-${post.id}`;
-          const comments = groupedComments?.[post.id] ?? [];
-          const isReported = reportedPostIds.includes(post.id);
-          const reportDetails = reportsByPostId[post.id] || [];
+        posts
+          .filter((post) => !isReportedView || reportedPostIds.includes(post.id))
+          .map((post: Post) => {
+            const isRepost = post.shared;
+            const key = isRepost ? `repost-${post.id}-${post.shared_by_id}` : `post-${post.id}`;
+            const comments = groupedComments?.[post.id] ?? [];
+            const isReported = reportedPostIds.includes(post.id);
+            const reportDetails = reportsByPostId[post.id] || [];
 
-          return (
-            <PostCard
-              key={key}
-              post={post}
-              comments={comments}
-              isReported={isReported}
-              reports={reportDetails}
-            />
-          );
-        })
+            return (
+              <PostCard
+                key={key}
+                post={post}
+                comments={comments}
+                isReported={isReported}
+                reports={reportDetails}
+              />
+            );
+          })
       )}
     </Box>
   );
