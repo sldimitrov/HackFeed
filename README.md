@@ -157,6 +157,25 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 npm run dev
 ```
 
+# 🛡️ Admin Access for Report System Testing
+
+To test the **report flow** (flagging and reviewing posts), you can use the following administrator credentials:
+
+
+With this account, you will have access to:
+
+- Deleting **all posts** including those that have been reported
+- Seeing detailed **user information** related to each post
+- Accessing the **admin interface** to review and act on reports
+
+The admin flow includes:
+
+- Role-based access control
+- Moderation features (report handling)
+- Visibility into all user-generated content
+
+---
+
 ## 📌 Project Goals
 
 - Build a real-world, data-driven React application
