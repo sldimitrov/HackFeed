@@ -2,6 +2,8 @@ import { Box, Button, IconButton, Typography, CircularProgress } from '@mui/mate
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import OutlinedFlagIcon from '@mui/icons-material/OutlinedFlag';
 import { useTranslation } from 'react-i18next';
+import { toast } from '../../utils/toast.ts';
+import ReportService from '../../services/reportsService.ts';
 
 interface PostMetaProps {
   likeCount: number;
@@ -9,6 +11,8 @@ interface PostMetaProps {
   onCancelEdit?: () => void;
   isEditing?: boolean;
   isSaving?: boolean;
+  userId?: string;
+  postId?: number;
 }
 
 export default function PostMeta({
@@ -17,8 +21,24 @@ export default function PostMeta({
   onCancelEdit,
   isEditing,
   isSaving,
+  userId,
+  postId,
 }: PostMetaProps) {
   const { t } = useTranslation();
+
+  const handleReport = async (postId: number) => {
+    console.log('handleReport called with postId:', postId);
+    const reason = prompt('Защо докладваш този пост?');
+    if (!reason) return;
+
+    try {
+      await ReportService.reportPost(postId, reason, userId || '');
+      toast.success('Докладът беше изпратен');
+    } catch (error) {
+      toast.error('Проблем при докладването');
+      console.error(error);
+    }
+  };
 
   return (
     <Box
@@ -71,6 +91,7 @@ export default function PostMeta({
               color: 'text.secondary',
               marginRight: '18px',
             }}
+            onClick={() => handleReport(postId || 0)}
           >
             {t('posts.meta.report')}
           </Button>

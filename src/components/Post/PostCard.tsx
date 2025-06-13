@@ -192,6 +192,8 @@ export default function PostCard({ post, mutationType, comments, role }: PostCar
         isSaving={updatePost.isPending}
         onSaveEdit={handleSaveEdit}
         onCancelEdit={cancelEdit}
+        userId={user?.id || ''}
+        postId={post?.id || 0}
       />
 
       <Divider />
