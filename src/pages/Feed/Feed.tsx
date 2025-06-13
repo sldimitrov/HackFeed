@@ -14,6 +14,7 @@ import { useInfinitePosts } from '../../hooks/usePosts.ts';
 import { warningButtonStyles } from '../../styles/buttonStyles.ts';
 import { fetchNextPageSafe } from '../../utils/pagination.ts';
 import { useCommentsBatch } from '../../hooks/useComments.ts';
+import { MUTATION_TYPE } from '../../contants/mutationType.ts';
 
 export function Feed() {
   const { t } = useTranslation();
@@ -92,7 +93,15 @@ export function Feed() {
                 const key = isRepost ? `repost-${post.id}-${post.shared_by_id}` : `post-${post.id}`;
                 const comments = groupedComments?.[post.id] ?? [];
 
-                return <PostCard key={key} post={post} comments={comments} role={profile?.role} />;
+                return (
+                  <PostCard
+                    key={key}
+                    post={post}
+                    comments={comments}
+                    mutationType={MUTATION_TYPE.FEED_POST}
+                    role={profile?.role}
+                  />
+                );
               })
             )}
 

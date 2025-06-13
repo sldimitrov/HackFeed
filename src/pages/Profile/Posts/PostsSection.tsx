@@ -5,6 +5,7 @@ import type { Post, ReportDetail } from '../../../types/post.ts';
 import { useCommentsBatch } from '../../../hooks/useComments.ts';
 import NoPosts from '../../../components/Post/NoPosts.tsx';
 import PostCard from '../../../components/Post/PostCard.tsx';
+import { MUTATION_TYPE } from '../../../contants/mutationType.ts';
 
 interface Props {
   loading: boolean;
@@ -57,6 +58,7 @@ export default function PostsSection({ loading, posts, reports = [] }: Props) {
               <PostCard
                 key={key}
                 post={post}
+                mutationType={MUTATION_TYPE.USER_POST}
                 comments={comments}
                 isReported={isReported}
                 reports={reportDetails}

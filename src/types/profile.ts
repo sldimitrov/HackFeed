@@ -25,3 +25,26 @@ export interface UserProfileCardProps {
   posts: number;
   onEdit?: () => void;
 }
+
+export interface ProfileFormData {
+  name: string;
+  title: string;
+  avatar_url: string;
+}
+
+export interface UseProfileFormProps {
+  profile?: ProfileFormData | null;
+  userId?: string;
+  onSaveSuccess?: () => void;
+}
+
+export interface UseProfileFormReturn {
+  formData: ProfileFormData;
+  setFormData: React.Dispatch<React.SetStateAction<ProfileFormData>>;
+  editMode: boolean;
+  setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
+  saving: boolean;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSave: (data?: ProfileFormData) => void;
+  handleKeyDown: (e: React.KeyboardEvent) => void;
+}

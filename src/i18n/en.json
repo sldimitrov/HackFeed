@@ -75,6 +75,20 @@
       "showReporterDetails": "Show Reporter Details",
       "reportedPostsTitle": "Reported Posts",
       "noReportedPosts": "No reported posts found."
+    },
+    "posts": {
+      "toast": {
+        "shareCooldown": "You must wait {{remaining}}s before sharing again.",
+        "shareSuccess": "Post shared!",
+        "shareError": "Failed to share post.",
+        "commentCooldown": "You must wait {{remaining}}s before commenting again.",
+        "commentSuccess": "Comment added!",
+        "commentError": "Failed to add comment.",
+        "editSuccess": "Post updated!",
+        "editError": "Failed to update post.",
+        "deleteSuccess": "Post deleted!",
+        "deleteError": "Failed to delete post."
+      }
     }
   },
   "timeAgo": {

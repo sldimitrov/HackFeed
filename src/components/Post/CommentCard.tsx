@@ -35,7 +35,6 @@ export function CommentCard({
     <Card
       sx={{
         display: 'flex',
-        flexDirection: { xs: 'column', md: 'row' },
         justifyContent: 'space-between',
       }}
     >
