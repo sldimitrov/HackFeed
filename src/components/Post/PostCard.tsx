@@ -20,6 +20,7 @@ import CommentSection from './CommentsSection.tsx';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_COMMENTS_BATCH, QUERY_POSTS } from '../../contants/queryKeys.ts';
 import { ADMIN_ROLE } from '../../contants/users.ts';
+import { useCooldown } from '../../hooks/useCooldown.ts';
 
 export default function PostCard({
   post,
@@ -39,11 +40,11 @@ export default function PostCard({
   const [editedContent, setEditedContent] = useState(post.content);
   const [newComment, setNewComment] = useState('');
   const [commentsOpen, setCommentsOpen] = useState(false);
-  const toggleComments = () => setCommentsOpen((prev) => !prev);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [lastSharedTimes, setLastSharedTimes] = useState<{ [postId: number]: number }>({});
-  const [lastCommentTimes, setLastCommentTimes] = useState<{ [postId: number]: number }>({});
-  const COOLDOWN_MS = 60 * 1000; // 1 minute
+  const toggleComments = () => setCommentsOpen((prev) => !prev);
+
+  const shareCooldown = useCooldown(60_000); // 1 minute
+  const commentCooldown = useCooldown(60_000); // 1 minute
 
   const updatePost = useUpdatePost(mutationType);
   const sharePost = useSharePost();
@@ -68,11 +69,8 @@ export default function PostCard({
   const handleAddComment = async () => {
     if (!newComment.trim() || !user) return;
 
-    const now = Date.now();
-    const lastComment = lastCommentTimes[post.id] || 0;
-
-    if (now - lastComment < COOLDOWN_MS) {
-      const remaining = Math.ceil((COOLDOWN_MS - (now - lastComment)) / 1000);
+    if (commentCooldown.isOnCooldown(post.id)) {
+      const remaining = commentCooldown.getRemaining(post.id);
       toast.info(t('toast.comments.commentCooldown', { seconds: remaining }));
       return;
     }
@@ -84,8 +82,7 @@ export default function PostCard({
         content: newComment,
       });
 
-      setLastCommentTimes((prev) => ({ ...prev, [post.id]: now }));
-
+      commentCooldown.trigger(post.id);
       toast.success(t('toast.comments.commentSuccess'));
       setNewComment('');
 
@@ -100,18 +97,15 @@ export default function PostCard({
   const handleShare = async (postId: number) => {
     if (!user) return;
 
-    const now = Date.now();
-    const lastShared = lastSharedTimes[postId] || 0;
-
-    if (now - lastShared < COOLDOWN_MS) {
-      const remaining = Math.ceil((COOLDOWN_MS - (now - lastShared)) / 1000);
+    if (shareCooldown.isOnCooldown(postId)) {
+      const remaining = shareCooldown.getRemaining(postId);
       toast.info(t('toast.templates.shareCooldown', { seconds: remaining }));
       return;
     }
 
     try {
       await sharePost.mutateAsync({ post_id: postId, user_id: user.id });
-      setLastSharedTimes((prev) => ({ ...prev, [postId]: now }));
+      shareCooldown.trigger(postId);
       toast.success(t('toast.posts.shareSuccess'));
     } catch (error) {
       toast.error(t('toast.auth.errorGeneric'));
@@ -171,23 +165,21 @@ export default function PostCard({
 
       <Box sx={{ padding: 1 }}>
         {editing ? (
-          <>
-            <TextField
-              fullWidth
-              multiline
-              minRows={4}
-              value={editedContent}
-              onChange={(e) => setEditedContent(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === KEYS.ENTER && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSaveEdit();
-                }
-              }}
-              variant="outlined"
-              sx={{ mb: 1 }}
-            />
-          </>
+          <TextField
+            fullWidth
+            multiline
+            minRows={4}
+            value={editedContent}
+            onChange={(e) => setEditedContent(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === KEYS.ENTER && !e.shiftKey) {
+                e.preventDefault();
+                handleSaveEdit();
+              }
+            }}
+            variant="outlined"
+            sx={{ mb: 1 }}
+          />
         ) : post.shared ? (
           <SharedPostContent post={post} />
         ) : (
