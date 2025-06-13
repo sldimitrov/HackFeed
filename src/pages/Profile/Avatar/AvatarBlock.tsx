@@ -1,9 +1,11 @@
 import { Avatar, Box, CircularProgress } from '@mui/material';
 import defaultAvatar from '../../../assets/defaultAvatar.jpeg';
 import { predefinedAvatars } from '../../../contants/predefinedAvatars.ts';
+import type { EditableProfile } from '../../../types/profile.ts';
 
 interface Props {
   avatarUrl: string;
+  formData: EditableProfile;
   editable: boolean;
   editMode: boolean;
   uploading: boolean;
@@ -13,6 +15,7 @@ interface Props {
 
 export default function AvatarBlock({
   avatarUrl,
+  formData,
   editable,
   editMode,
   uploading,
@@ -21,9 +24,22 @@ export default function AvatarBlock({
 }: Props) {
   return (
     <Box display="flex" flexDirection="column" alignItems="center" my={3}>
-      <Avatar src={avatarUrl || defaultAvatar} sx={{ width: 100, height: 100 }} />
+      {/* Avatar */}
+      <Avatar src={avatarUrl || defaultAvatar} sx={{ width: 100, height: 100, mb: 1 }} />
+
+      {/* Name & Title */}
+      <Box textAlign="center" mb={2}>
+        <Box fontWeight={600} fontSize="1.1rem">
+          {formData.name || '—'}
+        </Box>
+        <Box fontSize="0.9rem" color="text.secondary">
+          {formData.title || '—'}
+        </Box>
+      </Box>
+
+      {/* Avatar selection */}
       {editable && editMode && (
-        <Box display="flex" gap={1} flexWrap="wrap" mt={2}>
+        <Box display="flex" gap={1} flexWrap="wrap" justifyContent="center" mt={1}>
           {predefinedAvatars.map((url: string) => (
             <Avatar
               key={url}
