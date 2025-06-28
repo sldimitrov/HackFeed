@@ -88,6 +88,7 @@ export function Feed() {
             ) : posts && posts.length === 0 ? (
               <NoPosts message={t('profile.postsSection.noPosts')} />
             ) : (
+              // TODO: Outsource the mapping logic outside the template for cleaner JSX
               posts.map((post: Post) => {
                 const isRepost = post.shared;
                 const key = isRepost ? `repost-${post.id}-${post.shared_by_id}` : `post-${post.id}`;

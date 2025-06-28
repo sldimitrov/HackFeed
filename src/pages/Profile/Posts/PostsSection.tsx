@@ -54,6 +54,7 @@ export default function PostsSection({ loading, posts, reports = [] }: Props) {
             const isReported = reportedPostIds.includes(post.id);
             const reportDetails = reportsByPostId[post.id] || [];
 
+            // TODO: Pass profile role in order to give access to delete button for ADMIN_ROLE
             return (
               <PostCard
                 key={key}

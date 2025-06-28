@@ -13,6 +13,7 @@ export default function PostCreator() {
   const createPostMutation = useCreatePost();
   const [content, setContent] = useState('');
 
+  // TODO: Outsource service logic into a separate file
   const handleSubmit = async () => {
     if (!content.trim() || !user?.id || content.trim().length < 5) {
       toast.error(t('toast.posts.createContentTooShort'));
