@@ -3,6 +3,7 @@ import { useState } from 'react';
 export const useCooldown = (cooldownMs: number = 60_000) => {
   const [lastTimes, setLastTimes] = useState<Record<string, number>>({});
 
+  // TODO: Add persistence layer (e.g localStorage) to keep cooldowns across reloads
   const isOnCooldown = (id: string | number) => {
     const now = Date.now();
     const last = lastTimes[id] || 0;
