@@ -41,6 +41,7 @@ export function useDeleteComment() {
       if (error) throw new Error(error.message);
     },
     onSuccess: () => {
+      // TODO: replace string with QUERY_COMMENTS_BATCH const for better maintainability
       queryClient.invalidateQueries({ queryKey: ['comments-batch'] });
     },
   });

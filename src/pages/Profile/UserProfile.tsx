@@ -62,6 +62,7 @@ export default function UserProfile() {
           boxShadow: 3,
         }}
       >
+        {/*TODO: Remove ('s Profile) from title - It's is already being handled in the ProfileHeader */}
         <ProfileHeader
           title={editable ? 'My Profile' : `${profile?.name || 'Hacker'}'s Profile`}
           editable={editable}

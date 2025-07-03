@@ -1,7 +1,7 @@
 import defaultAvatar from '../assets/defaultAvatar.jpeg';
 
 export const defaultProfile = {
-  name: 'Anonymous',
-  title: 'Hacker',
+  name: 'Unknown User',
+  title: 'Profile Title',
   avatar_url: defaultAvatar,
 };

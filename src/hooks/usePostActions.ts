@@ -24,6 +24,7 @@ export const usePostActions = (post: Post, mutationType: MutationType) => {
   const [editing, setEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(post.content);
 
+  //  TODO: Pass cooldownMs param only if it differs from the default
   const commentCooldown = useCooldown(60_000);
   const shareCooldown = useCooldown(60_000);
 
@@ -71,6 +72,7 @@ export const usePostActions = (post: Post, mutationType: MutationType) => {
     }
 
     try {
+      // TODO: Outsource this to a service and use a mutation hook
       await CommentsService.create({
         post_id: post.id,
         user_id: user.id,
